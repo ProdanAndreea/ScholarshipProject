@@ -1,19 +1,83 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
 
-<AnchorPane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-            fx:controller="com.siemens.controller.ClientController"
-            prefHeight="400.0" prefWidth="600.0">
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane prefHeight="448.0" prefWidth="434.0" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.siemens.controller.ClientController">
 
     <children>
         <MenuBar VBox.vgrow="NEVER" />
-        <AnchorPane maxHeight="-1.0" maxWidth="-1.0" prefHeight="-1.0" prefWidth="-1.0" VBox.vgrow="ALWAYS">
+        <AnchorPane layoutX="3.0" maxHeight="-1.0" maxWidth="-1.0" prefHeight="620.0" prefWidth="449.0" VBox.vgrow="ALWAYS">
             <children>
-                <Button fx:id="test_button" layoutX="46.0" layoutY="24.0" mnemonicParsing="false" text="Button" />
-                <TextArea fx:id="textarea" layoutX="46.0" layoutY="74.0" prefHeight="200.0" prefWidth="200.0" />
-                <DatePicker fx:id="datePicker" layoutX="122.0" layoutY="24.0" />
+                <DatePicker fx:id="datePicker" layoutX="36.0" layoutY="276.0" prefHeight="25.0" prefWidth="131.0" />
+            <Label layoutX="77.0" layoutY="117.0" text="Nume Prenume" />
+            <Label layoutX="77.0" layoutY="151.0" text="Poziție Angajat" />
+            <TextField layoutX="184.0" layoutY="113.0" />
+            <TextField layoutX="184.0" layoutY="147.0" />
+            <Label layoutX="56.0" layoutY="208.0" text="Ore Învoire" textFill="#4173a3">
+               <font>
+                  <Font name="System Bold" size="21.0" />
+               </font>
+            </Label>
+            <Label layoutX="48.0" layoutY="254.0" text="Ziua învoirii, data">
+               <font>
+                  <Font name="System Italic" size="12.0" />
+               </font></Label>
+            <ComboBox layoutX="217.0" layoutY="275.0" prefHeight="25.0" prefWidth="66.0" />
+            <Label layoutX="213.0" layoutY="253.0" text="Nr. ore învoite">
+               <font>
+                  <Font name="System Italic" size="12.0" />
+               </font>
+            </Label>
+            <Label layoutX="337.0" layoutY="253.0" text="Ora plecării">
+               <font>
+                  <Font name="System Italic" size="12.0" />
+               </font></Label>
+            <DatePicker layoutX="321.0" layoutY="275.0" prefHeight="25.0" prefWidth="92.0" />
+            <Label layoutX="115.0" layoutY="31.0" text="Bilet Învoire" textFill="#40a480">
+               <font>
+                  <Font name="System Bold" size="36.0" />
+               </font>
+            </Label>
+            <Label layoutX="59.0" layoutY="339.0" text="Ore Recuperare" textFill="#bc1c2c">
+               <font>
+                  <Font name="System Bold" size="21.0" />
+               </font>
+            </Label>
+            <Label layoutX="49.0" layoutY="388.0" text="Ziua recuperării, data">
+               <font>
+                  <Font name="System Italic" size="12.0" />
+               </font>
+            </Label>
+            <DatePicker layoutX="39.0" layoutY="412.0" prefHeight="25.0" prefWidth="131.0" />
+            <Label layoutX="203.0" layoutY="388.0" text="Nr. ore recuperate">
+               <font>
+                  <Font name="System Italic" size="12.0" />
+               </font>
+            </Label>
+            <ComboBox layoutX="217.0" layoutY="412.0" prefHeight="25.0" prefWidth="66.0" />
+            <Label layoutX="328.0" layoutY="388.0" text="Oră recuperare">
+               <font>
+                  <Font name="System Italic" size="12.0" />
+               </font>
+            </Label>
+            <DatePicker layoutX="321.0" layoutY="412.0" prefHeight="25.0" prefWidth="92.0" />
+            <Button layoutX="39.0" layoutY="450.0" mnemonicParsing="false" text="+" textFill="#099417">
+               <opaqueInsets>
+                  <Insets />
+               </opaqueInsets>
+               <font>
+                  <Font name="System Bold" size="13.0" />
+               </font>
+            </Button>
             </children>
         </AnchorPane>
     </children>

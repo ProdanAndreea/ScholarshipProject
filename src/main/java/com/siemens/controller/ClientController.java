@@ -28,8 +28,8 @@ public class ClientController {
     // called by the FXML loader after the labels declared above are injected
     public void initialize() {
 
-        test_button.setOnAction((event) -> {
-            textarea.appendText("Hello!");
-        });
+//        test_button.setOnAction((event) -> {
+//            textarea.appendText("Hello!");
+//        });
     }
 }

@@ -2,7 +2,16 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="0c54bfc1-f874-4cec-8f44-d054e601dcf2" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/siemens/view/ClientStart.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/classes/com/siemens/ClientStart.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/classes/com/siemens/XMLMapper.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/classes/com/siemens/XMLMapper.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/classes/com/siemens/controller/ClientController$TestActionListener.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/classes/com/siemens/controller/ClientController.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/classes/com/siemens/controller/ClientController.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/classes/com/siemens/view/ClientView.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/siemens/ClientStart.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/siemens/controller/ClientController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/siemens/controller/ClientController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/siemens/view/ClientView.java" beforeDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <ignored path="$PROJECT_DIR$/.gradle/" />
@@ -31,8 +40,9 @@
       <usages-collector id="statistics.file.extensions.open">
         <counts>
           <entry key="form" value="7" />
-          <entry key="gradle" value="3" />
-          <entry key="java" value="24" />
+          <entry key="fxml" value="3" />
+          <entry key="gradle" value="4" />
+          <entry key="java" value="26" />
           <entry key="properties" value="2" />
           <entry key="xml" value="2" />
         </counts>
@@ -40,26 +50,27 @@
       <usages-collector id="statistics.file.types.open">
         <counts>
           <entry key="GUI_DESIGNER_FORM" value="7" />
-          <entry key="Groovy" value="3" />
-          <entry key="JAVA" value="24" />
+          <entry key="Groovy" value="4" />
+          <entry key="JAVA" value="26" />
           <entry key="Properties" value="2" />
-          <entry key="XML" value="2" />
+          <entry key="XML" value="5" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
           <entry key="dummy" value="18" />
+          <entry key="fxml" value="128" />
           <entry key="gradle" value="9" />
-          <entry key="java" value="1540" />
+          <entry key="java" value="2050" />
           <entry key="xml" value="5" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
           <entry key="Groovy" value="9" />
-          <entry key="JAVA" value="1540" />
+          <entry key="JAVA" value="2050" />
           <entry key="PLAIN_TEXT" value="18" />
-          <entry key="XML" value="5" />
+          <entry key="XML" value="133" />
         </counts>
       </usages-collector>
     </session>
@@ -67,58 +78,20 @@
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
       <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/main/java/com/siemens/view/ClientView.java">
+        <entry file="file://$PROJECT_DIR$/src/main/resources/client_view.fxml">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="151">
-              <caret line="40" column="39" lean-forward="true" selection-start-line="40" selection-start-column="39" selection-end-line="40" selection-end-column="39" />
-              <folding>
-                <element signature="imports" expanded="true" />
-                <element signature="e#1259#1260#0" expanded="true" />
-                <element signature="e#1295#1296#0" expanded="true" />
-              </folding>
+            <state relative-caret-position="255">
+              <caret line="15" column="45" selection-start-line="15" selection-start-column="45" selection-end-line="15" selection-end-column="45" />
             </state>
           </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/com/siemens/model/Client.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="527">
-              <caret line="31" lean-forward="true" selection-start-line="31" selection-end-line="31" />
-              <folding>
-                <element signature="imports" expanded="true" />
-                <element signature="e#428#429#0" expanded="true" />
-                <element signature="e#460#461#0" expanded="true" />
-                <element signature="e#506#507#0" expanded="true" />
-                <element signature="e#540#541#0" expanded="true" />
-                <element signature="e#571#572#0" expanded="true" />
-                <element signature="e#598#599#0" expanded="true" />
-                <element signature="e#630#631#0" expanded="true" />
-                <element signature="e#658#659#0" expanded="true" />
-                <element signature="e#637#638#0" expanded="true" />
-                <element signature="e#695#696#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/com/siemens/XMLMapper.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="319">
-              <caret line="25" lean-forward="true" selection-start-line="25" selection-end-line="25" />
-              <folding>
-                <element signature="imports" expanded="true" />
-              </folding>
-            </state>
-          </provider>
+          <provider editor-type-id="JavaFX-Scene-Builder" />
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/com/siemens/controller/ClientController.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="202">
-              <caret line="40" column="40" selection-start-line="40" selection-start-column="40" selection-end-line="40" selection-end-column="40" />
+            <state relative-caret-position="226">
+              <caret line="25" column="33" selection-start-line="25" selection-start-column="23" selection-end-line="25" selection-end-column="33" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -127,13 +100,14 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/com/siemens/ClientStart.java">
+        <entry file="file://$PROJECT_DIR$/src/main/java/com/siemens/view/ClientStart.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="34">
-              <caret line="2" column="47" selection-start-line="2" selection-start-column="47" selection-end-line="2" selection-end-column="47" />
+            <state relative-caret-position="294">
+              <caret line="27" column="41" selection-start-line="27" selection-start-column="41" selection-end-line="27" selection-end-column="41" />
               <folding>
-                <element signature="e#456#457#0" expanded="true" />
-                <element signature="e#490#491#0" expanded="true" />
+                <element signature="imports" expanded="true" />
+                <element signature="e#790#791#0" expanded="true" />
+                <element signature="e#818#819#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -145,6 +119,7 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="Class" />
+        <option value="FxmlFile" />
       </list>
     </option>
   </component>
@@ -469,12 +444,16 @@
         <option value="$PROJECT_DIR$/src/main/java/com/siemens/ClientDao.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/siemens/config/HibernateUtil.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/siemens/dao/ClientDao.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/siemens/controller/ClientController.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/siemens/view/ClientView.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/siemens/ClientStart.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/siemens/model/Client.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/siemens/XMLMapper.java" />
         <option value="$PROJECT_DIR$/build.gradle" />
+        <option value="$PROJECT_DIR$/src/main/java/com/siemens/view/ClientView.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/siemens/ClientStart.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/siemens/view/main_view.fxml" />
+        <option value="$PROJECT_DIR$/src/main/java/com/siemens/view/client_view.fxml" />
+        <option value="$PROJECT_DIR$/src/main/java/com/siemens/view/ClientStart.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/siemens/controller/ClientController.java" />
+        <option value="$PROJECT_DIR$/src/main/resources/client_view.fxml" />
       </list>
     </option>
   </component>
@@ -556,6 +535,13 @@
               <item name="siemens" type="462c0819:PsiDirectoryNode" />
               <item name="view" type="462c0819:PsiDirectoryNode" />
             </path>
+            <path>
+              <item name="scholarship.project" type="b2602c69:ProjectViewProjectNode" />
+              <item name="scholarship_project" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
+              <item name="resources" type="462c0819:PsiDirectoryNode" />
+            </path>
           </expand>
           <select />
         </subPane>
@@ -569,17 +555,18 @@
     <property name="Repository.Attach.Sources" value="false" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1564040041375" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1564052746165" />
     <property name="last_opened_file_path" value="C:/College/DS/Lab1.1/assignment-one/assignment-one" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
     <property name="project.structure.last.edited" value="Modules" />
     <property name="project.structure.proportion" value="0.15234375" />
     <property name="project.structure.side.proportion" value="0.3859447" />
-    <property name="settings.editor.selected.configurable" value="configurable.group.appearance" />
+    <property name="settings.editor.selected.configurable" value="preferences.JavaFX" />
   </component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Siemens\scholarship_project\src\main\resources" />
       <recent name="C:\Siemens\scholarship_project\src\main\java\com\siemens\view" />
     </key>
   </component>
@@ -595,9 +582,9 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Application.XMLMapper">
+  <component name="RunManager" selected="Application.ClientStart">
     <configuration name="ClientStart" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="com.siemens.ClientStart" />
+      <option name="MAIN_CLASS_NAME" value="com.siemens.view.ClientStart" />
       <module name="scholarship.project_main" />
       <extension name="coverage">
         <pattern>
@@ -614,7 +601,7 @@
       <module name="scholarship.project_main" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="com.siemens.*" />
+          <option name="PATTERN" value="com.siemens.controller.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
@@ -628,8 +615,8 @@
     </list>
     <recent_temporary>
       <list>
-        <item itemvalue="Application.XMLMapper" />
         <item itemvalue="Application.ClientStart" />
+        <item itemvalue="Application.XMLMapper" />
       </list>
     </recent_temporary>
   </component>
@@ -644,18 +631,18 @@
       <option name="presentableId" value="Default" />
       <updated>1563980887262</updated>
       <workItem from="1563980896735" duration="11143000" />
-      <workItem from="1564033583740" duration="6375000" />
+      <workItem from="1564033583740" duration="12074000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="17518000" />
+    <option name="totallyTimeSpent" value="23217000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-7" y="-7" width="1550" height="838" extended-state="7" />
+    <frame x="-7" y="-7" width="1550" height="838" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.19261745" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.19261745" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Persistence" order="2" side_tool="true" />
       <window_info id="Designer" order="3" />
@@ -665,7 +652,7 @@
       <window_info id="Capture Tool" order="7" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
-      <window_info anchor="bottom" id="Run" order="2" visible="true" weight="0.26241136" />
+      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.27375886" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.39858156" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -767,23 +754,37 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/siemens/controller/ClientController.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/siemens/view/main_view.fxml">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="202">
-          <caret line="40" column="40" selection-start-line="40" selection-start-column="40" selection-end-line="40" selection-end-column="40" />
+        <state relative-caret-position="306">
+          <caret line="18" column="13" lean-forward="true" selection-start-line="10" selection-start-column="2" selection-end-line="18" selection-end-column="13" />
+        </state>
+      </provider>
+      <provider editor-type-id="JavaFX-Scene-Builder" />
+    </entry>
+    <entry file="jar://C:/Program Files/Java/jdk1.8.0_181/javafx-src.zip!/javafx/application/Application.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-1185">
+          <caret line="144" column="22" selection-start-line="144" selection-start-column="22" selection-end-line="144" selection-end-column="22" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/siemens/view/ClientView.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="68">
+          <caret line="24" column="23" selection-start-line="24" selection-start-column="23" selection-end-line="24" selection-end-column="23" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/siemens/ClientStart.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/siemens/XMLMapper.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="34">
-          <caret line="2" column="47" selection-start-line="2" selection-start-column="47" selection-end-line="2" selection-end-column="47" />
+        <state relative-caret-position="319">
+          <caret line="25" lean-forward="true" selection-start-line="25" selection-end-line="25" />
           <folding>
-            <element signature="e#456#457#0" expanded="true" />
-            <element signature="e#490#491#0" expanded="true" />
+            <element signature="imports" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -808,34 +809,42 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/siemens/XMLMapper.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="319">
-          <caret line="25" lean-forward="true" selection-start-line="25" selection-end-line="25" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/build.gradle">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="302">
+        <state relative-caret-position="357">
           <caret line="21" column="55" lean-forward="true" selection-start-line="21" selection-start-column="55" selection-end-line="21" selection-end-column="55" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/siemens/view/ClientView.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/siemens/view/ClientStart.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="151">
-          <caret line="40" column="39" lean-forward="true" selection-start-line="40" selection-start-column="39" selection-end-line="40" selection-end-column="39" />
+        <state relative-caret-position="294">
+          <caret line="27" column="41" selection-start-line="27" selection-start-column="41" selection-end-line="27" selection-end-column="41" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#1259#1260#0" expanded="true" />
-            <element signature="e#1295#1296#0" expanded="true" />
+            <element signature="e#790#791#0" expanded="true" />
+            <element signature="e#818#819#0" expanded="true" />
           </folding>
         </state>
       </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/siemens/controller/ClientController.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="226">
+          <caret line="25" column="33" selection-start-line="25" selection-start-column="23" selection-end-line="25" selection-end-column="33" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/resources/client_view.fxml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="255">
+          <caret line="15" column="45" selection-start-line="15" selection-start-column="45" selection-end-line="15" selection-end-column="45" />
+        </state>
+      </provider>
+      <provider editor-type-id="JavaFX-Scene-Builder" />
     </entry>
   </component>
   <component name="masterDetails">

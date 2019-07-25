@@ -2,25 +2,40 @@ package com.siemens.model;
 
 import lombok.*;
 
-import javax.persistence.*;
+import javax.xml.bind.annotation.XmlRootElement;
 
-@Entity
-@Table(name = "client")
-@Getter
-@Setter
-@NoArgsConstructor
-@AllArgsConstructor
+@XmlRootElement
 @Builder
 public class Client {
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
 
-    @Column(name = "name")
     private String name;
+    private String email;
+
+    public Client() {}
+
+    public Client(String name, String email) {
+        this.name = name;
+        this.email = email;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getEmail() {
+        return email;
+    }
 
     @Override
     public String toString() {
-        return "Student [id=" + id + ", name=" + name + "]";
+        return "Student [name=" + name + ", email=" + email + "]";
     }
 }

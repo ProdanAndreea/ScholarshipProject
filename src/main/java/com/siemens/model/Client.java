@@ -10,12 +10,14 @@ public class Client {
 
     private String name;
     private String email;
+    private String occupiedPosition;
 
     public Client() {}
 
-    public Client(String name, String email) {
+    public Client(String name, String email, String occupiedPosition) {
         this.name = name;
         this.email = email;
+        this.occupiedPosition = occupiedPosition;
     }
 
     public void setName(String name) {

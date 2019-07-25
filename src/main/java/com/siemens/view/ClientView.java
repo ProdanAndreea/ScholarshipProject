@@ -1,5 +1,4 @@
 package com.siemens.view;
-
 import javax.swing.*;
 import javax.swing.border.Border;
 import javax.swing.border.CompoundBorder;
@@ -9,7 +8,6 @@ import java.awt.*;
 import java.awt.event.ActionListener;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-
 import org.jdesktop.swingx.JXDatePicker;
 
 /**

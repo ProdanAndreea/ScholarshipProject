@@ -14,14 +14,14 @@ public class XMLMapper {
     public static void main(String[] args)
     {
         //Java object. We will convert it to XML.
-        Client client = new Client("Dexter", "dexter@gmail.com"); //Client.builder().name("Dexter").email("dexter@gmail.com").build();
-
-        //Method which uses JAXB to convert object to XML
-        jaxbObjectToXML(client);
-
-        // Unmarshalling
-        client = jaxbXMLToObject("emails.xml");
-        System.out.println(client);
+//        //Client client = new Client("Dexter", "dexter@gmail.com"); //Client.builder().name("Dexter").email("dexter@gmail.com").build();
+//
+//        //Method which uses JAXB to convert object to XML
+//        jaxbObjectToXML(client);
+//
+//        // Unmarshalling
+//        client = jaxbXMLToObject("emails.xml");
+//        System.out.println(client);
     }
 
     private static Client jaxbXMLToObject(String filename) {

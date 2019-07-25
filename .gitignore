@@ -20,6 +20,7 @@ jmx.log
 derby.log
 spring-test/test-output/
 .gradle
+.idea
 argfile*
 pom.xml
 activemq-data/

@@ -1,9 +1,9 @@
 package com.siemens.controller;
 
-import com.siemens.view.ClientView;
-import javax.swing.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import javafx.fxml.FXML;
+import javafx.scene.control.Button;
+import javafx.scene.control.DatePicker;
+import javafx.scene.control.TextArea;
 
 /**
  * @Author: Siemens CT Cluj-Napoca, Romania
@@ -13,36 +13,23 @@ import java.awt.event.ActionListener;
  */
 public class ClientController {
 
-    private static final String NUMBER_FORMAT_EXCEPTION_MESSAGE = "Please enter a number!";
-
-    private ClientView clientView;
-
-    public ClientController() {
-        clientView = new ClientView();
-        clientView.setVisible(true);
-
-        clientView.addBtnTestActionListener(new TestActionListener());
-    }
+    public ClientController() { }
 
 
-    public void displayErrorMessage(String message) {
-        clientView.clear();
-        JOptionPane.showMessageDialog(clientView, message, "Error", JOptionPane.ERROR_MESSAGE);
-    }
+    @FXML
+    private TextArea textarea;
 
-    /**
-     * Provides functionality for the TEST button.
-     */
-    class TestActionListener implements ActionListener {
+    @FXML
+    private Button test_button;
 
-        @Override
-        public void actionPerformed(ActionEvent e) {
-            try {
-                clientView.printHello();
+    @FXML
+    private DatePicker datePicker;
 
-            } catch (NumberFormatException ex) {
-                displayErrorMessage(NUMBER_FORMAT_EXCEPTION_MESSAGE);
-            }
-        }
+    // called by the FXML loader after the labels declared above are injected
+    public void initialize() {
+
+        test_button.setOnAction((event) -> {
+            textarea.appendText("Hello!");
+        });
     }
 }

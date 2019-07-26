@@ -1,6 +1,7 @@
 package com.siemens.controller;
 
 import com.jfoenix.controls.JFXTimePicker;
+import com.siemens.view.ClientStart;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -8,6 +9,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.StringConverter;
 import java.time.LocalDate;
@@ -98,6 +100,15 @@ public class ClientController {
         setDatePickerFormat(datePickerInvoire);
         setDatePickerFormat(datePickerRecuperare);
 
+        // disable add button
+        addRecuperare.setDisable(true);
+        nrOreInvoire.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                    addRecuperare.setDisable(false);
+            }
+        });
+
         // autocomplete
         TextFields.bindAutoCompletion(pozitieAngajat, possibleChoises);
 
@@ -114,6 +125,10 @@ public class ClientController {
                     Parent root = fxmlLoader.load();
                     Stage stage = new Stage();
                     stage.setTitle("Ore Recuperare");
+
+                    stage.initModality(Modality.WINDOW_MODAL);
+                    stage.initOwner(ClientStart.primaryStage.getScene().getWindow());
+
                     stage.setScene(new Scene(root));
                     stage.show();
                 } catch (Exception e) {

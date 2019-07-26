@@ -11,13 +11,13 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="620.0" prefWidth="395.0" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.siemens.controller.ClientController">
+<AnchorPane prefHeight="620.0" prefWidth="395.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.siemens.controller.ClientController">
 
     <children>
         <MenuBar VBox.vgrow="NEVER" />
         <AnchorPane layoutX="2.0" maxHeight="-1.0" maxWidth="-1.0" prefHeight="620.0" prefWidth="389.0" VBox.vgrow="ALWAYS">
             <children>
-                <DatePicker fx:id="datePickerInvoire" layoutX="59.0" layoutY="285.0" prefHeight="25.0" prefWidth="131.0" />
+                <DatePicker fx:id="datePickerInvoire" editable="false" layoutX="59.0" layoutY="285.0" prefHeight="25.0" prefWidth="131.0" />
             <Label layoutX="62.0" layoutY="124.0" text="Nume Prenume" />
             <Label layoutX="62.0" layoutY="158.0" text="Poziție Angajat" />
             <TextField fx:id="nume" layoutX="169.0" layoutY="120.0" />
@@ -52,7 +52,7 @@
                   <Font name="System Italic" size="12.0" />
                </font>
             </Label>
-            <DatePicker fx:id="datePickerRecuperare" layoutX="61.0" layoutY="413.0" prefHeight="25.0" prefWidth="131.0" />
+            <DatePicker fx:id="datePickerRecuperare" editable="false" layoutX="61.0" layoutY="413.0" prefHeight="25.0" prefWidth="131.0" />
             <Label layoutX="225.0" layoutY="389.0" text="Nr. ore recuperate">
                <font>
                   <Font name="System Italic" size="12.0" />

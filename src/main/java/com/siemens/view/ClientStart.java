@@ -14,6 +14,8 @@ import javafx.stage.Stage;
  */
 public class ClientStart extends Application {
 
+    public static Stage primaryStage;
+
     public ClientStart() {}
 
     @Override
@@ -23,6 +25,8 @@ public class ClientStart extends Application {
         stage.setTitle("Invoire");
         stage.setScene(scene);
         stage.show();
+
+        primaryStage = stage;
     }
 
     public static void main(String[] args) {

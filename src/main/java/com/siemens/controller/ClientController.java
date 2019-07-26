@@ -78,15 +78,17 @@ public class ClientController {
     @FXML
     private TextField pozitieAngajat;
     @FXML
-    private JFXTimePicker timePickerInvoire;
+    private TextField nume;
+   // @FXML
+   // private JFXTimePicker timePickerInvoire;
     @FXML
     private ComboBox nrOreInvoire;
     @FXML
     private ComboBox nrOreRecuperare;
     @FXML
     private Button addRecuperare;
-    @FXML
-    private Label remainedHours;
+    //@FXML
+    //private Label remainedHours;
 
     public ClientController() { }
 
@@ -119,15 +121,6 @@ public class ClientController {
                 }
             }
         });
-
-        nrOreInvoire.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                remainedHours.setText(nrOreInvoire.getValue().toString());
-            }
-        });
-
-
     }
 
     private void setDatePickerFormat(DatePicker datePicker) {

@@ -17,11 +17,11 @@
         <MenuBar VBox.vgrow="NEVER" />
         <AnchorPane layoutX="2.0" maxHeight="-1.0" maxWidth="-1.0" prefHeight="620.0" prefWidth="389.0" VBox.vgrow="ALWAYS">
             <children>
-                <DatePicker fx:id="datePicker" layoutX="59.0" layoutY="285.0" prefHeight="25.0" prefWidth="131.0" />
+                <DatePicker fx:id="datePickerInvoire" layoutX="59.0" layoutY="285.0" prefHeight="25.0" prefWidth="131.0" />
             <Label layoutX="62.0" layoutY="124.0" text="Nume Prenume" />
             <Label layoutX="62.0" layoutY="158.0" text="Poziție Angajat" />
-            <TextField layoutX="169.0" layoutY="120.0" />
-            <TextField layoutX="169.0" layoutY="154.0" />
+            <TextField fx:id="nume" layoutX="169.0" layoutY="120.0" />
+            <TextField fx:id="pozitieAngajat" layoutX="169.0" layoutY="154.0" />
             <Label layoutX="22.0" layoutY="219.0" text="Ore Învoire" textFill="#4173a3">
                <font>
                   <Font name="System Bold" size="21.0" />
@@ -31,7 +31,7 @@
                <font>
                   <Font name="System Italic" size="12.0" />
                </font></Label>
-            <ComboBox layoutX="240.0" layoutY="284.0" prefHeight="25.0" prefWidth="66.0" />
+            <ComboBox fx:id="nrOreInvoire" layoutX="240.0" layoutY="284.0" prefHeight="25.0" prefWidth="66.0" />
             <Label layoutX="236.0" layoutY="262.0" text="Nr. ore învoite">
                <font>
                   <Font name="System Italic" size="12.0" />
@@ -52,14 +52,14 @@
                   <Font name="System Italic" size="12.0" />
                </font>
             </Label>
-            <DatePicker layoutX="61.0" layoutY="413.0" prefHeight="25.0" prefWidth="131.0" />
+            <DatePicker fx:id="datePickerRecuperare" layoutX="61.0" layoutY="413.0" prefHeight="25.0" prefWidth="131.0" />
             <Label layoutX="225.0" layoutY="389.0" text="Nr. ore recuperate">
                <font>
                   <Font name="System Italic" size="12.0" />
                </font>
             </Label>
-            <ComboBox layoutX="239.0" layoutY="413.0" prefHeight="25.0" prefWidth="66.0" />
-            <Button layoutX="63.0" layoutY="455.0" mnemonicParsing="false" prefHeight="29.0" prefWidth="243.0" text="Adaugă dată nouă" textFill="#099417">
+            <ComboBox fx:id="nrOreRecuperare" layoutX="239.0" layoutY="413.0" prefHeight="25.0" prefWidth="66.0" />
+            <Button fx:id="addRecuperare" layoutX="63.0" layoutY="455.0" mnemonicParsing="false" prefHeight="29.0" prefWidth="243.0" text="Adaugă dată nouă" textFill="#099417">
                <opaqueInsets>
                   <Insets />
                </opaqueInsets>

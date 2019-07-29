@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<superiors>
+    <superior>
+        <name>Mark</name>
+        <email>mark@gmail.com</email>
+        <PositionEnum>Sef Departament</PositionEnum>
+    </superior>
+    <superior>
+        <name>Anna</name>
+        <email>anna@gmail.com</email>
+        <PositionEnum>Sef Direct</PositionEnum>
+    </superior>
+    <superior>
+        <name>Red</name>
+        <email>red@gmail.com</email>
+        <PositionEnum>Sef Departament</PositionEnum>
+    </superior>
+    <superior>
+        <name>Vlad</name>
+        <email>vlad@gmail.com</email>
+        <PositionEnum>Sef Direct</PositionEnum>
+    </superior>
+</superiors>

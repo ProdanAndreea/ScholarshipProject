@@ -3,9 +3,13 @@ package com.siemens.controller;
 import com.jfoenix.controls.JFXTimePicker;
 import com.siemens.model.Leave;
 import com.siemens.model.Recovery;
+import com.siemens.model.PositionEnum;
+import com.siemens.model.Superior;
+import com.siemens.model.Superiors;
 import com.siemens.view.ClientStart;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import com.siemens.xml.XMLMapper;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -28,6 +32,8 @@ import java.time.format.DateTimeFormatter;
 import java.time.temporal.TemporalAccessor;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import org.controlsfx.control.textfield.TextFields;
 
@@ -88,6 +94,11 @@ public class ClientController {
     @FXML
     private javafx.scene.control.TableView<Recovery> recoveryTableView;
 
+    private String[] sefDirectChoises;
+    private String[] sefDepartamentChoises;
+    private List<Superior> sefiDirecti;
+    private List<Superior> sefiDepartament;
+
     @FXML
     private TableColumn<Recovery, LocalTime> numberOfHours;
 
@@ -113,6 +124,8 @@ public class ClientController {
     private Button addRecuperare;
     //@FXML
     //private Label remainedHours;
+    @FXML
+    private ComboBox sefDirect;
 
     public ClientController() {
         recoveryList = new ArrayList<>();
@@ -197,6 +210,29 @@ public class ClientController {
 
 
 
+
+        getSuperiors();
+    }
+
+
+    void getSuperiors() {
+        XMLMapper<Superiors> xmlMapperClient = new XMLMapper<>();
+        List<Superior> sups = xmlMapperClient.jaxbXMLToObjects( Superiors.class, "superiors.xml").getSuperiors();
+
+        sefiDirecti = sups.stream().filter(superior -> superior.getPositionEnum().equals(PositionEnum.DIRECT)).collect(Collectors.toList());
+        sefiDepartament = sups.stream().filter(superior -> superior.getPositionEnum().equals(PositionEnum.DEPARTAMENT)).collect(Collectors.toList());
+
+        sefDirectChoises = new String[sefiDirecti.size()];
+        for (int i = 0; i < sefiDirecti.size(); i++) {
+            sefDirectChoises[i] = sefiDirecti.get(i).getName();
+        }
+        sefDirect.getItems().addAll(sefDirectChoises);
+
+        sefDepartamentChoises = new String[sefiDepartament.size()];
+        for (int i = 0; i < sefiDepartament.size(); i++) {
+            sefDirectChoises[i] = sefiDepartament.get(i).getName();
+        }
+        // sefDepartamentChoises.getItems().addAll(sefDirectChoises);
     }
 
     public static void setDatePickerFormat(DatePicker datePicker) {

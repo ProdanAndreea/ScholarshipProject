@@ -5,17 +5,17 @@
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="620.0" prefWidth="395.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.siemens.controller.ClientController">
+<AnchorPane prefHeight="620.0" prefWidth="362.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.siemens.controller.ClientController">
 
     <children>
-        <MenuBar VBox.vgrow="NEVER" />
-        <AnchorPane layoutX="2.0" maxHeight="-1.0" maxWidth="-1.0" prefHeight="620.0" prefWidth="389.0" VBox.vgrow="ALWAYS">
+        <AnchorPane layoutX="2.0" maxHeight="-1.0" maxWidth="-1.0" prefHeight="620.0" prefWidth="356.0" VBox.vgrow="ALWAYS">
             <children>
                 <DatePicker fx:id="datePickerInvoire" editable="false" layoutX="59.0" layoutY="285.0" prefHeight="25.0" prefWidth="131.0" />
             <Label layoutX="62.0" layoutY="124.0" text="Nume Prenume" />
@@ -31,35 +31,23 @@
                <font>
                   <Font name="System Italic" size="12.0" />
                </font></Label>
-            <ComboBox fx:id="nrOreInvoire" layoutX="240.0" layoutY="284.0" prefHeight="25.0" prefWidth="66.0" />
+            <ComboBox fx:id="nrOreInvoire" layoutX="240.0" layoutY="284.0" prefHeight="25.0" prefWidth="94.0" />
             <Label layoutX="236.0" layoutY="262.0" text="Nr. ore învoite">
                <font>
                   <Font name="System Italic" size="12.0" />
                </font>
             </Label>
-            <Label layoutX="87.0" layoutY="32.0" text="Bilet Învoire" textFill="#009999">
+            <Label layoutX="74.0" layoutY="32.0" prefHeight="53.0" prefWidth="219.0" text="Bilet Învoire" textFill="#009999">
                <font>
                   <Font name="System Bold" size="36.0" />
                </font>
             </Label>
-            <Label layoutX="22.0" layoutY="347.0" text="Ore Recuperare" textFill="#bc1c2c">
+            <Label layoutX="22.0" layoutY="347.0" prefHeight="31.0" prefWidth="154.0" text="Ore Recuperare" textFill="#bc1c2c">
                <font>
                   <Font name="System Bold" size="21.0" />
                </font>
             </Label>
-            <Label layoutX="71.0" layoutY="389.0" text="Ziua recuperării, data">
-               <font>
-                  <Font name="System Italic" size="12.0" />
-               </font>
-            </Label>
-            <DatePicker fx:id="datePickerRecuperare" editable="false" layoutX="61.0" layoutY="413.0" prefHeight="25.0" prefWidth="131.0" />
-            <Label layoutX="225.0" layoutY="389.0" text="Nr. ore recuperate">
-               <font>
-                  <Font name="System Italic" size="12.0" />
-               </font>
-            </Label>
-            <ComboBox fx:id="nrOreRecuperare" layoutX="239.0" layoutY="413.0" prefHeight="25.0" prefWidth="66.0" />
-            <Button fx:id="addRecuperare" layoutX="63.0" layoutY="455.0" mnemonicParsing="false" prefHeight="29.0" prefWidth="243.0" text="Adaugă dată nouă" textFill="#099417">
+            <Button fx:id="addRecuperare" layoutX="63.0" layoutY="502.0" mnemonicParsing="false" prefHeight="31.0" prefWidth="243.0" text="Adaugă dată nouă" textFill="#099417">
                <opaqueInsets>
                   <Insets />
                </opaqueInsets>
@@ -69,6 +57,13 @@
             </Button>
             <Label layoutX="79.0" layoutY="542.0" text="Șef direct" />
             <ComboBox layoutX="142.0" layoutY="538.0" prefHeight="25.0" prefWidth="149.0" />
+            <Label layoutX="193.0" layoutY="354.0" prefHeight="17.0" prefWidth="111.0" text="(Maxim 4 recuperari)" textFill="#683d3d" />
+            <TableView fx:id="recoveryTableView" layoutX="-3.0" layoutY="376.0" prefHeight="119.0" prefWidth="362.0">
+              <columns>
+                <TableColumn fx:id="leaveDate" prefWidth="176.0" text="Recuperare in data de" />
+                <TableColumn fx:id="numberOfHours" minWidth="0.0" prefWidth="185.0" text="Durata recuperarii (HH:mm)" />
+              </columns>
+            </TableView>
             </children>
         </AnchorPane>
     </children>

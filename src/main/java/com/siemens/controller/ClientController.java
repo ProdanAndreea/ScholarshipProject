@@ -1,7 +1,11 @@
 package com.siemens.controller;
 
 import com.jfoenix.controls.JFXTimePicker;
+import com.siemens.model.Leave;
+import com.siemens.model.Recovery;
 import com.siemens.view.ClientStart;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -9,14 +13,21 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.MouseEvent;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.StringConverter;
+
+
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.Period;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.TemporalAccessor;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.controlsfx.control.textfield.TextFields;
 
@@ -27,9 +38,11 @@ import org.controlsfx.control.textfield.TextFields;
  *  Controller for the interface elements of the view client_view.
  */
 public class ClientController {
-
+    private List<Recovery> recoveryList;
+    private Leave desiredLeave = null;
     private final String pattern = "dd-MM-yyyy";
-    DateTimeFormatter format = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+    static DateTimeFormatter format = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+    static DateTimeFormatter hourFormatter = DateTimeFormatter.ofPattern("HH:mm");
     private final String[] possibleChoises = {
             "Application Developer",
             "Applications Engineer",
@@ -62,7 +75,7 @@ public class ClientController {
             "Webmaster"
     };
 
-    private final String[] nrOre = {
+    public static final String[] nrOre = {
             "00:30",
             "01:00",
             "01:30",
@@ -72,11 +85,21 @@ public class ClientController {
             "03:30",
             "04:00",
     };
+    @FXML
+    private javafx.scene.control.TableView<Recovery> recoveryTableView;
+
+    @FXML
+    private TableColumn<Recovery, LocalTime> numberOfHours;
+
+    @FXML
+    private TableColumn<Recovery, LocalDate> leaveDate;
+
+    @FXML
+    private ListView recoveryListView;
 
     @FXML
     private DatePicker datePickerInvoire;
-    @FXML
-    private DatePicker datePickerRecuperare;
+
     @FXML
     private TextField pozitieAngajat;
     @FXML
@@ -85,26 +108,36 @@ public class ClientController {
    // private JFXTimePicker timePickerInvoire;
     @FXML
     private ComboBox nrOreInvoire;
-    @FXML
-    private ComboBox nrOreRecuperare;
+
     @FXML
     private Button addRecuperare;
     //@FXML
     //private Label remainedHours;
 
-    public ClientController() { }
+    public ClientController() {
+        recoveryList = new ArrayList<>();
+    }
 
     // called by the FXML loader after the labels declared above are injected
     public void initialize() {
 
         setDatePickerFormat(datePickerInvoire);
-        setDatePickerFormat(datePickerRecuperare);
 
         // disable add button
         addRecuperare.setDisable(true);
+
         nrOreInvoire.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
+
+                if(datePickerInvoire.getValue() != null)
+                        addRecuperare.setDisable(false);
+            }
+        });
+        datePickerInvoire.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                if(nrOreInvoire.getValue() != null)
                     addRecuperare.setDisable(false);
             }
         });
@@ -113,12 +146,28 @@ public class ClientController {
         TextFields.bindAutoCompletion(pozitieAngajat, possibleChoises);
 
         nrOreInvoire.getItems().addAll(nrOre);
-        nrOreRecuperare.getItems().addAll(nrOre);
+        //MAKE THE LIST OF RECOVERIES
+        ObservableList<Recovery> listOfRecoveries = FXCollections.observableArrayList();
+        //SET CELL VALUES FOR THE TABLE
+        leaveDate.setCellValueFactory(new PropertyValueFactory<Recovery, LocalDate>("leaveDate"));
+        numberOfHours.setCellValueFactory(new PropertyValueFactory<Recovery, LocalTime>("numberOfHours"));
+
+        recoveryTableView.setItems(listOfRecoveries);
+
+        addRecuperare.addEventHandler(
+                MouseEvent.MOUSE_ENTERED,
+                new EventHandler<MouseEvent>() {
+                    @Override
+                    public void handle(MouseEvent e) {
+                        if(recoveryList.size() >= 4)
+                            addRecuperare.setDisable(true);
+                    }
+                }
+        );
 
         addRecuperare.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                System.out.println("Opening dialog");
 
                 try {
                     FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/add_recuperare.fxml"));
@@ -129,6 +178,15 @@ public class ClientController {
                     stage.initModality(Modality.WINDOW_MODAL);
                     stage.initOwner(ClientStart.primaryStage.getScene().getWindow());
 
+                    RecuperareController recuperareController = fxmlLoader.getController();
+
+                    if(desiredLeave == null)
+                        desiredLeave = new Leave(
+                                datePickerInvoire.getValue(),
+                                LocalTime.parse(nrOreInvoire.getValue().toString(), hourFormatter)
+                                );
+                    recuperareController.initialize(desiredLeave, recoveryList, listOfRecoveries);
+
                     stage.setScene(new Scene(root));
                     stage.show();
                 } catch (Exception e) {
@@ -136,9 +194,12 @@ public class ClientController {
                 }
             }
         });
+
+
+
     }
 
-    private void setDatePickerFormat(DatePicker datePicker) {
+    public static void setDatePickerFormat(DatePicker datePicker) {
         datePicker.setConverter(new StringConverter<LocalDate>() {
             String pattern = "dd-MM-yyyy";
             DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern(pattern);

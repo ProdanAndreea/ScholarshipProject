@@ -1,10 +1,22 @@
 package com.siemens.controller;
 
+import com.siemens.model.Leave;
+import com.siemens.model.Recovery;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.DatePicker;
+import javafx.scene.control.Label;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
+
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.util.Date;
+import java.util.List;
 
 /**
  * @Author: Siemens CT Cluj-Napoca, Romania
@@ -16,19 +28,75 @@ public class RecuperareController {
 
     @FXML
     private Button okButton;
+    @FXML
+    private ComboBox nrOreRecuperare;
+    @FXML
+    private DatePicker datePickerRecuperare;
+    @FXML
+    private Label timeToRecoverLabel;
+    @FXML
+    private Text recoveryCompleteText;
 
     public RecuperareController() {}
 
-    public void initialize() {
+    public void initialize(Leave leave, List<Recovery> recoveryList, ObservableList<Recovery> recoveryView) {
+
+        recoveryCompleteText.setOpacity(0);
+
+        ClientController.setDatePickerFormat(datePickerRecuperare);
+
+        int i = 0;
+        while(
+                i < ClientController.nrOre.length &&
+                ClientController.nrOre[i].compareTo(leave.getHoursToCover().toString()) <= 0){
+
+            nrOreRecuperare.getItems().add(ClientController.nrOre[i]);
+            i++;
+        }
+
+        if(nrOreRecuperare.getItems().size() == 0){
+            recoveryCompleteText.setOpacity(100);
+            timeToRecoverLabel.setDisable(true);
+        }
+
+        okButton.setDisable(true);
+
+        timeToRecoverLabel.setText(
+                "Mai aveti de recuperat " + leave.getHoursToCover().toString()
+        );
+
+        nrOreRecuperare.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                if(datePickerRecuperare.getValue() != null)
+                    okButton.setDisable(false);
+            }
+        });
+        datePickerRecuperare.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                if(nrOreRecuperare.getValue() != null)
+                    okButton.setDisable(false);
+            }
+        });
 
         okButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                System.out.println("Closing dialog");
 
                 // get a handle to the stage
                 Stage stage = (Stage) okButton.getScene().getWindow();
                 // do what you have to do
+                Recovery recovery = new Recovery(
+                        leave.getLeaveDate(),
+                        datePickerRecuperare.getValue(),
+                        LocalTime.parse(nrOreRecuperare.getValue().toString(), ClientController.hourFormatter)
+                );
+                leave.setCoveredHours(
+                        LocalTime.parse(nrOreRecuperare.getValue().toString(), ClientController.hourFormatter)
+                );
+                recoveryList.add(recovery);
+                recoveryView.add(recovery);
                 stage.close();
             }
         });

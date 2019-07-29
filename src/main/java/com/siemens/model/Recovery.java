@@ -1,35 +1,38 @@
 package com.siemens.model;
 
+import javafx.beans.property.SimpleStringProperty;
 import lombok.Builder;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.Date;
 
 //@Builder
 public class Recovery {
-    private Date leaveDate;
-    private Date recoveryDate;
-    private Integer numberOfHours;
+    private LocalDate leaveDate;
+    private LocalDate recoveryDate;
+    private LocalTime numberOfHours;
+    //if the need to keep track of recovery time interval
     private LocalDateTime startTime;
     private LocalDateTime endTime;
 
-    public Recovery(Date leaveDate, Date recoveryDate, Integer numberOfHours, LocalDateTime startTime) {
+    public Recovery(LocalDate leaveDate, LocalDate recoveryDate, LocalTime numberOfHours) {
         this.leaveDate = leaveDate;
         this.recoveryDate = recoveryDate;
         this.numberOfHours = numberOfHours;
-        this.startTime = startTime;
-        endTime = startTime.plusHours(numberOfHours);
+
     }
 
-    public Date getLeaveDate() {
+    public LocalDate getLeaveDate() {
         return leaveDate;
     }
 
-    public Date getRecoveryDate() {
+    public LocalDate getRecoveryDate() {
         return recoveryDate;
     }
 
-    public Integer getNumberOfHours() {
+    public LocalTime getNumberOfHours() {
         return numberOfHours;
     }
 

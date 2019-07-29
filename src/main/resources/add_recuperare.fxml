@@ -1,16 +1,33 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
 
-
-<VBox prefHeight="400.0" prefWidth="640.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.siemens.controller.RecuperareController">
-  <children>
-    <AnchorPane maxHeight="-1.0" maxWidth="-1.0" prefHeight="-1.0" prefWidth="-1.0" VBox.vgrow="ALWAYS">
+<AnchorPane prefHeight="254.0" prefWidth="487.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.siemens.controller.RecuperareController">
+   <children>
+      <AnchorPane fx:id="addAnchor" layoutX="204.0" layoutY="78.0" maxHeight="-1.0" maxWidth="-1.0" prefHeight="235.0" prefWidth="487.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
-            <Button fx:id="okButton" layoutX="304.0" layoutY="333.0" mnemonicParsing="false" text="OK" />
+            <Button fx:id="okButton" layoutX="227.0" layoutY="161.0" mnemonicParsing="false" text="OK" />
+            <DatePicker fx:id="datePickerRecuperare" editable="false" layoutX="113.0" layoutY="103.0" prefHeight="25.0" prefWidth="131.0" />
+            <Label layoutX="123.0" layoutY="83.0" text="Ziua recuperării, data">
+               <font>
+                  <Font name="System Italic" size="12.0" />
+               </font>
+            </Label>
+            <Label layoutX="260.0" layoutY="83.0" text="Nr. ore recuperate">
+               <font>
+                  <Font name="System Italic" size="12.0" />
+               </font>
+            </Label>
+            <ComboBox fx:id="nrOreRecuperare" layoutX="260.0" layoutY="103.0" prefHeight="25.0" prefWidth="94.0" />
+            <Label fx:id="timeToRecoverLabel" alignment="CENTER" layoutX="140.0" layoutY="47.0" prefHeight="36.0" prefWidth="209.0" textAlignment="CENTER" AnchorPane.bottomAnchor="171.0" AnchorPane.leftAnchor="140.0" AnchorPane.rightAnchor="138.0" AnchorPane.topAnchor="47.0" />
+            <Text fx:id="recoveryCompleteText" fill="#f82626" layoutX="121.0" layoutY="27.0" strokeType="OUTSIDE" strokeWidth="0.0" text="ATI ACOPERIT TOATE ORELE DE RECUPERARE!" textAlignment="CENTER" />
          </children>
-    </AnchorPane>
-  </children>
-</VBox>
+      </AnchorPane>
+   </children>
+</AnchorPane>

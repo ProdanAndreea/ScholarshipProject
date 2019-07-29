@@ -2,50 +2,50 @@ package com.siemens.model;
 
 import lombok.Builder;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.Date;
 
 //@Builder
 public class Leave {
-    private Date leaveDate;
-    private Integer numberOfHours;
-    private Integer coveredHours;
-    private LocalDateTime startHour;
-    private LocalDateTime endHour;
+    private LocalDate leaveDate;
+    private LocalTime numberOfHours;
+    private LocalTime hoursToCover;
+    //in case the need to keep track of missing interval time appears
+    private LocalTime startHour;
+    private LocalTime endHour;
 
-    public Leave(Date leaveDate, Integer numberOfHours, LocalDateTime startHour) {
+    public Leave(LocalDate leaveDate, LocalTime numberOfHours) {
         this.leaveDate = leaveDate;
         this.numberOfHours = numberOfHours;
-        this.startHour = startHour;
-        this.coveredHours = 0;
-        endHour = startHour.plusHours(numberOfHours);
+        this.hoursToCover = numberOfHours;
+
     }
 
-    public Date getLeaveDate() {
+    public LocalDate getLeaveDate() {
         return leaveDate;
     }
 
-    public Integer getNumberOfHours() {
+    public LocalTime getNumberOfHours() {
         return numberOfHours;
     }
 
-    public Integer getCoveredHours() {
-        return coveredHours;
+    public LocalTime getHoursToCover() {
+        return hoursToCover;
     }
 
-    public LocalDateTime getStartHour() {
+    public LocalTime getStartHour() {
         return startHour;
     }
 
-    public LocalDateTime getEndHour() {
+    public LocalTime getEndHour() {
         return endHour;
     }
 
-    public void setCoveredHours(Integer coveredHours) {
-        this.coveredHours = coveredHours;
+    public void setCoveredHours(LocalTime coveredHours) {
+        hoursToCover = hoursToCover.minusMinutes(coveredHours.getMinute());
+        hoursToCover = hoursToCover.minusHours(coveredHours.getHour());
     }
 
-    public void setEndHour(LocalDateTime endHour) {
-        this.endHour = endHour;
-    }
 }

@@ -1,6 +1,8 @@
 package com.siemens.controller;
 
 import com.itextpdf.io.font.FontConstants;
+import com.itextpdf.io.font.PdfEncodings;
+import com.itextpdf.io.font.constants.FontStyles;
 import com.itextpdf.kernel.colors.DeviceRgb;
 import com.itextpdf.kernel.font.PdfFont;
 import com.itextpdf.kernel.font.PdfFontFactory;
@@ -156,25 +158,25 @@ public class ClientController {
         recoveryList = new ArrayList<>();
     }
 
-    private void setFieldsListeners() {
+    private void setFieldsListeners(){
         //Enable add recovery button only if all necessary fields have been completed
-        setDatePickerFormat(datePickerInvoire);
         nume.textProperty().addListener(
                 new ChangeListener<String>() {
                     @Override
                     public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
-                        if (
+                        if(
                                 datePickerInvoire.getValue() != null &&
                                         nrOreInvoire.getValue() != null &&
                                         pozitieAngajat.getCharacters().length() != 0
-                        )
+                                )
                             addRecuperare.setDisable(false);
-                        if (nume.getCharacters().length() == 0 || pozitieAngajat.getCharacters().length() == 0){
-                            addRecuperare.setDisable(true);
-                            btnTrimite.setDisable(true);
-                        }
-                        else if(nume.getCharacters().length() != 0 && pozitieAngajat.getCharacters().length() != 0 && recoveryList.size()!= 0)
-                            btnTrimite.setDisable(false);
+                        if (nume.getCharacters().length() == 0 || pozitieAngajat.getCharacters().length() == 0)
+                           addRecuperare.setDisable(true);
+
+
+
+        setDatePickerFormat(datePickerInvoire);
+
                     }
                 }
         );
@@ -182,19 +184,14 @@ public class ClientController {
                 new ChangeListener<String>() {
                     @Override
                     public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
-                        if (
+                        if(
                                 datePickerInvoire.getValue() != null &&
                                         nrOreInvoire.getValue() != null &&
                                         nume.getCharacters().length() != 0
-                        )
+                                )
                             addRecuperare.setDisable(false);
-                        if (nume.getCharacters().length() == 0 || pozitieAngajat.getCharacters().length() == 0){
+                        if (nume.getCharacters().length() == 0 || pozitieAngajat.getCharacters().length() == 0)
                             addRecuperare.setDisable(true);
-                            btnTrimite.setDisable(true);
-                        }
-                        else if(nume.getCharacters().length() != 0 && pozitieAngajat.getCharacters().length() != 0 && recoveryList.size()!= 0)
-                            btnTrimite.setDisable(false);
-
                     }
                 }
         );
@@ -202,12 +199,12 @@ public class ClientController {
             @Override
             public void handle(ActionEvent event) {
 
-                if (
+                if(
                         datePickerInvoire.getValue() != null &&
                                 nume.getCharacters().length() != 0 &&
                                 pozitieAngajat.getCharacters().length() != 0
 
-                )
+                        )
                     addRecuperare.setDisable(false);
                 else
                     addRecuperare.setDisable(true);
@@ -216,49 +213,24 @@ public class ClientController {
         datePickerInvoire.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                if (
+                if(
                         nrOreInvoire.getValue() != null &&
                                 nume.getCharacters().length() != 0 &&
                                 pozitieAngajat.getCharacters().length() != 0
-                )
+                        )
                     addRecuperare.setDisable(false);
                 else
                     addRecuperare.setDisable(true);
             }
         });
-        sefDepartament.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                if(
-                        nume.getCharacters().length() != 0 &&
-                                pozitieAngajat.getCharacters().length() != 0 &&
-                                recoveryList.size() != 0 &&
-                                sefDirect.getValue() != null
-                        )
-                    btnTrimite.setDisable(false);
-            }
-        });
-        sefDirect.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                if(
-                        nume.getCharacters().length() != 0 &&
-                                pozitieAngajat.getCharacters().length() != 0 &&
-                                recoveryList.size() != 0 &&
-                                sefDepartament.getValue() != null
-                        )
-                    btnTrimite.setDisable(false);
-            }
-        });
     }
-
-    private void setButtonEvents(ObservableList<Recovery> listOfRecoveries) {
+    private void setButtonEvents(ObservableList<Recovery> listOfRecoveries){
         addRecuperare.addEventHandler(
                 MouseEvent.MOUSE_ENTERED,
                 new EventHandler<MouseEvent>() {
                     @Override
                     public void handle(MouseEvent e) {
-                        if (recoveryList.size() >= 4)
+                        if(recoveryList.size() >= 4)
                             addRecuperare.setDisable(true);
                     }
                 }
@@ -284,7 +256,7 @@ public class ClientController {
                                 datePickerInvoire.getValue(),
                                 LocalTime.parse(nrOreInvoire.getValue().toString(), hourFormatter)
                         );
-                    recuperareController.initialize(desiredLeave, recoveryList, listOfRecoveries);
+                    recuperareController.initialize(desiredLeave, recoveryList, listOfRecoveries, datePickerInvoire);
 
                     stage.setScene(new Scene(root));
                     stage.show();
@@ -316,7 +288,6 @@ public class ClientController {
             }
         });
     }
-
     // called by the FXML loader after the labels declared above are injected
     public void initialize() {
 
@@ -327,8 +298,6 @@ public class ClientController {
         // disable add button
         addRecuperare.setDisable(true);
 
-        //disable send button until all details are completed
-        btnTrimite.setDisable(true);
         setFieldsListeners();
 
         // autocomplete
@@ -351,7 +320,7 @@ public class ClientController {
 
     void getSuperiors() {
         XMLMapper<Superiors> xmlMapperClient = new XMLMapper<>();
-        List<Superior> sups = xmlMapperClient.jaxbXMLToObjects(Superiors.class, "superiors.xml").getSuperiors();
+        List<Superior> sups = xmlMapperClient.jaxbXMLToObjects( Superiors.class, "superiors.xml").getSuperiors();
 
         sefiDirecti = sups.stream().filter(superior -> superior.getPositionEnum().equals(PositionEnum.DIRECT)).collect(Collectors.toList());
         sefiDepartament = sups.stream().filter(superior -> superior.getPositionEnum().equals(PositionEnum.DEPARTAMENT)).collect(Collectors.toList());
@@ -378,8 +347,7 @@ public class ClientController {
                 datePicker.setPromptText(pattern.toLowerCase());
             }
 
-            @Override
-            public String toString(LocalDate date) {
+            @Override public String toString(LocalDate date) {
                 if (date != null) {
                     return dateFormatter.format(date);
                 } else {
@@ -387,8 +355,7 @@ public class ClientController {
                 }
             }
 
-            @Override
-            public LocalDate fromString(String string) {
+            @Override public LocalDate fromString(String string) {
                 if (string != null && !string.isEmpty()) {
                     return LocalDate.parse(string, dateFormatter);
                 } else {
@@ -426,7 +393,7 @@ public class ClientController {
             PdfDocument pdf = new PdfDocument(writer);
             Document document = new Document(pdf, PageSize.A4);
             document.setMargins(20, 20, 20, 20);
-            PdfFont font = PdfFontFactory.createFont(FontConstants.TIMES_ROMAN);
+            PdfFont font = PdfFontFactory.createFont("/FreeSans.ttf", PdfEncodings.IDENTITY_H);
 
 
             document.add(

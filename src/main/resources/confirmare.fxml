@@ -6,17 +6,14 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane prefHeight="108.0" prefWidth="329.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.siemens.controller.ConfirmareController">
+<AnchorPane prefHeight="159.0" prefWidth="330.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.siemens.controller.ConfirmareController">
    <children>
-      <Button fx:id="btnOk" layoutX="54.0" layoutY="81.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="77.0" text="Ok" />
-      <Button fx:id="btnCancel" layoutX="186.0" layoutY="81.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="77.0" text="Cancel" />
-      <Text  layoutX="38.0" layoutY="27.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Un e-mail de notificare va fi trimis sefilor" textAlignment="CENTER" wrappingWidth="248.62890625" />
-      <Text  fill="#0a0a0a" layoutX="54.0" layoutY="44.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Biletul de invoire format pdf va fi salvat pe dektop" textAlignment="CENTER" />
-      <Text  fill="#0a0a0a" layoutX="54.0" layoutY="72.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Doriti sa continuati? " textAlignment="CENTER" />
-      <Text layoutX="42.0" layoutY="20.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Un e-mail de notificare va fi trimis sefilor" textAlignment="CENTER" wrappingWidth="287.62890625" />
-      <Text fill="#0a0a0a" layoutX="54.0" layoutY="44.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Biletul de invoire format pdf va fi salvat pe dektop" textAlignment="CENTER" />
-      <Text fill="#0a0a0a" layoutX="54.0" layoutY="72.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Doriti sa continuati? " textAlignment="CENTER" />
-      <ImageView fitHeight="89.0" fitWidth="31.0" layoutX="14.0" layoutY="22.0" pickOnBounds="true" preserveRatio="true">
+      <Button fx:id="btnOk" layoutX="54.0" layoutY="111.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="77.0" text="Ok" />
+      <Button fx:id="btnCancel" layoutX="186.0" layoutY="111.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="77.0" text="Cancel" />
+      <Text layoutX="33.0" layoutY="28.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Un e-mail de notificare va fi trimis sefilor" textAlignment="CENTER" wrappingWidth="312.62890625" />
+      <Text fill="#0a0a0a" layoutX="54.0" layoutY="84.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Doriti sa continuati? " textAlignment="CENTER" />
+      <Text fill="#0a0a0a" layoutX="54.0" layoutY="54.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Biletul de invoire format pdf va fi salvat pe dektop" textAlignment="CENTER" />
+      <ImageView fitHeight="121.0" fitWidth="36.0" layoutX="14.0" layoutY="19.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@pictures/exclamation.jpg" />
          </image>

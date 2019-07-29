@@ -6,10 +6,7 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.DatePicker;
-import javafx.scene.control.Label;
+import javafx.scene.control.*;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
@@ -39,7 +36,7 @@ public class RecuperareController {
 
     public RecuperareController() {}
 
-    public void initialize(Leave leave, List<Recovery> recoveryList, ObservableList<Recovery> recoveryView) {
+    public void initialize(Leave leave, List<Recovery> recoveryList, ObservableList<Recovery> recoveryView, DatePicker datePickerInvoire) {
 
         recoveryCompleteText.setOpacity(0);
 
@@ -98,6 +95,17 @@ public class RecuperareController {
                 recoveryList.add(recovery);
                 recoveryView.add(recovery);
                 stage.close();
+            }
+        });
+
+        disablePastDates(datePickerRecuperare, LocalDate.parse(datePickerInvoire.getValue().toString()));
+    }
+
+    private void disablePastDates(DatePicker datePicker, LocalDate selectedDate) {
+        datePicker.setDayCellFactory(picker -> new DateCell() {
+            public void updateItem(LocalDate date, boolean empty) {
+                super.updateItem(date, empty);
+                setDisable(empty || date.compareTo(selectedDate) < 0 );
             }
         });
     }

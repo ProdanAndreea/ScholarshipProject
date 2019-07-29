@@ -8,8 +8,8 @@
    <children>
       <Button fx:id="btnOk" layoutX="54.0" layoutY="81.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="77.0" text="Ok" />
       <Button fx:id="btnCancel" layoutX="186.0" layoutY="81.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="77.0" text="Cancel" />
-      <Text fx:id="recoveryCompleteText" layoutX="38.0" layoutY="27.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Un e-mail de notificare va fi trimis sefilor" textAlignment="CENTER" wrappingWidth="248.62890625" />
-      <Text fx:id="recoveryCompleteText" fill="#0a0a0a" layoutX="54.0" layoutY="44.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Biletul de invoire format pdf va fi salvat pe dektop" textAlignment="CENTER" />
-      <Text fx:id="recoveryCompleteText" fill="#0a0a0a" layoutX="54.0" layoutY="72.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Doriti sa continuati? " textAlignment="CENTER" />
+      <Text  layoutX="38.0" layoutY="27.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Un e-mail de notificare va fi trimis sefilor" textAlignment="CENTER" wrappingWidth="248.62890625" />
+      <Text  fill="#0a0a0a" layoutX="54.0" layoutY="44.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Biletul de invoire format pdf va fi salvat pe dektop" textAlignment="CENTER" />
+      <Text  fill="#0a0a0a" layoutX="54.0" layoutY="72.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Doriti sa continuati? " textAlignment="CENTER" />
    </children>
 </AnchorPane>

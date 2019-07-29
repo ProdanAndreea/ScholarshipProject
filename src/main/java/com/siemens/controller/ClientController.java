@@ -16,6 +16,7 @@ import com.itextpdf.layout.property.TextAlignment;
 import com.itextpdf.layout.property.UnitValue;
 import com.itextpdf.layout.property.VerticalAlignment;
 import com.jfoenix.controls.JFXTimePicker;
+import com.siemens.configuration.MailConfiguration;
 import com.siemens.model.Leave;
 import com.siemens.model.Recovery;
 import com.siemens.model.PositionEnum;
@@ -156,6 +157,7 @@ public class ClientController {
 
     private void setFieldsListeners(){
         //Enable add recovery button only if all necessary fields have been completed
+        setDatePickerFormat(datePickerInvoire);
         nume.textProperty().addListener(
                 new ChangeListener<String>() {
                     @Override
@@ -166,13 +168,12 @@ public class ClientController {
                                         pozitieAngajat.getCharacters().length() != 0
                                 )
                             addRecuperare.setDisable(false);
-                        if (nume.getCharacters().length() == 0 || pozitieAngajat.getCharacters().length() == 0)
-                           addRecuperare.setDisable(true);
-
-
-
-        setDatePickerFormat(datePickerInvoire);
-
+                        if (nume.getCharacters().length() == 0 || pozitieAngajat.getCharacters().length() == 0){
+                            addRecuperare.setDisable(true);
+                            btnTrimite.setDisable(true);
+                        }
+                        else if(nume.getCharacters().length() != 0 && pozitieAngajat.getCharacters().length() != 0 && recoveryList.size()!= 0)
+                            btnTrimite.setDisable(false);
                     }
                 }
         );
@@ -186,8 +187,13 @@ public class ClientController {
                                         nume.getCharacters().length() != 0
                                 )
                             addRecuperare.setDisable(false);
-                        if (nume.getCharacters().length() == 0 || pozitieAngajat.getCharacters().length() == 0)
+                        if (nume.getCharacters().length() == 0 || pozitieAngajat.getCharacters().length() == 0){
                             addRecuperare.setDisable(true);
+                            btnTrimite.setDisable(true);
+                        }
+                        else if(nume.getCharacters().length() != 0 && pozitieAngajat.getCharacters().length() != 0 && recoveryList.size()!= 0)
+                            btnTrimite.setDisable(false);
+
                     }
                 }
         );
@@ -217,6 +223,30 @@ public class ClientController {
                     addRecuperare.setDisable(false);
                 else
                     addRecuperare.setDisable(true);
+            }
+        });
+        sefDepartament.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                if(
+                        nume.getCharacters().length() != 0 &&
+                                pozitieAngajat.getCharacters().length() != 0 &&
+                                recoveryList.size() != 0 &&
+                                sefDirect.getValue() != null
+                        )
+                    btnTrimite.setDisable(false);
+            }
+        });
+        sefDirect.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                if(
+                        nume.getCharacters().length() != 0 &&
+                                pozitieAngajat.getCharacters().length() != 0 &&
+                                recoveryList.size() != 0 &&
+                                sefDepartament.getValue() != null
+                        )
+                    btnTrimite.setDisable(false);
             }
         });
     }
@@ -294,6 +324,8 @@ public class ClientController {
         // disable add button
         addRecuperare.setDisable(true);
 
+        //disable send button until all details are completed
+        btnTrimite.setDisable(true);
         setFieldsListeners();
 
         // autocomplete
@@ -381,7 +413,11 @@ public class ClientController {
 
     public void generatePdf(){
         try{
-            PdfWriter writer = new PdfWriter("test.pdf");
+            String pdfFilePath =
+                    "C:\\Users\\Public\\Desktop\\Invoire_"+nume.getCharacters().toString()+
+                    "_"+desiredLeave.getLeaveDate().toString()
+                            +"_"+LocalTime.now().format(DateTimeFormatter.ofPattern("HH mm")).toString()+".pdf";
+            PdfWriter writer = new PdfWriter(pdfFilePath);
             PdfDocument pdf = new PdfDocument(writer);
             Document document = new Document(pdf, PageSize.A4);
             document.setMargins(20,20,20,20);
@@ -539,10 +575,22 @@ public class ClientController {
 
             document.close();
             //APEL PENTRU TRIMITERE MAIL
+
+            generateMailData(pdfFilePath);
+
             System.exit(0);
 
         }catch (Exception e){
             System.out.println(e.getMessage());
         }
+    }
+    private void generateMailData(String pdfFilePath){
+        Superior directLeader = sefiDirecti.stream()
+                .filter(boss -> boss.getName().equals(sefDirect.getValue().toString())).findFirst().get();
+        Superior departmentLeader = sefiDepartament.stream()
+                .filter(departLeader ->  departLeader.getName().equals(sefDepartament.getValue().toString()))
+                .findFirst().get();
+        String message = "ATI PRIMIT O CERERE PENTRU INVOIRE DE LA " + nume.getCharacters().toString().toUpperCase();
+        MailConfiguration.sendMessage(directLeader.getEmail(), "CERERE INVOIRE", message, pdfFilePath);
     }
 }

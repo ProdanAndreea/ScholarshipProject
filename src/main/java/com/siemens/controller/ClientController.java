@@ -128,6 +128,10 @@ public class ClientController {
     private ComboBox sefDirect;
     @FXML
     private ComboBox sefDepartament;
+    @FXML
+    private Button btnTrimite;
+
+    private ClientController clientController;
 
     public ClientController() {
         recoveryList = new ArrayList<>();
@@ -135,6 +139,8 @@ public class ClientController {
 
     // called by the FXML loader after the labels declared above are injected
     public void initialize() {
+
+        clientController = this;
 
         setDatePickerFormat(datePickerInvoire);
 
@@ -211,6 +217,28 @@ public class ClientController {
         });
 
 
+        btnTrimite.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                try {
+                    FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/confirmare.fxml"));
+                    Parent root = fxmlLoader.load();
+                    Stage stage = new Stage();
+                    stage.setTitle("Confirmare");
+
+                    stage.initModality(Modality.WINDOW_MODAL);
+                    stage.initOwner(ClientStart.primaryStage.getScene().getWindow());
+
+                    ConfirmareController confirmareController = fxmlLoader.getController();
+                    confirmareController.initialize(clientController);
+
+                    stage.setScene(new Scene(root));
+                    stage.show();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
 
 
         getSuperiors();
@@ -262,5 +290,10 @@ public class ClientController {
                 }
             }
         });
+    }
+
+
+    public void generatePDF() {
+        System.out.println(this.nume);
     }
 }

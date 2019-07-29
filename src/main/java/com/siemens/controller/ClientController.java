@@ -145,6 +145,10 @@ public class ClientController {
     private ComboBox sefDirect;
     @FXML
     private ComboBox sefDepartament;
+    @FXML
+    private Button btnTrimite;
+
+    private ClientController clientController;
 
     public ClientController() {
         recoveryList = new ArrayList<>();
@@ -165,6 +169,9 @@ public class ClientController {
                         if (nume.getCharacters().length() == 0 || pozitieAngajat.getCharacters().length() == 0)
                            addRecuperare.setDisable(true);
 
+        clientController = this;
+
+        setDatePickerFormat(datePickerInvoire);
 
                     }
                 }
@@ -268,6 +275,28 @@ public class ClientController {
         // autocomplete
         TextFields.bindAutoCompletion(pozitieAngajat, possibleChoises);
 
+        btnTrimite.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                try {
+                    FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/confirmare.fxml"));
+                    Parent root = fxmlLoader.load();
+                    Stage stage = new Stage();
+                    stage.setTitle("Confirmare");
+
+                    stage.initModality(Modality.WINDOW_MODAL);
+                    stage.initOwner(ClientStart.primaryStage.getScene().getWindow());
+
+                    ConfirmareController confirmareController = fxmlLoader.getController();
+                    confirmareController.initialize(clientController);
+
+                    stage.setScene(new Scene(root));
+                    stage.show();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
         nrOreInvoire.getItems().addAll(nrOre);
         //MAKE THE LIST OF RECOVERIES
         ObservableList<Recovery> listOfRecoveries = FXCollections.observableArrayList();

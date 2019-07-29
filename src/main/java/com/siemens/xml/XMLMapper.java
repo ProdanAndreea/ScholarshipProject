@@ -1,8 +1,6 @@
 package com.siemens.xml;
 
-import com.siemens.model.PositionEnum;
-import com.siemens.model.Superior;
-import com.siemens.model.Superiors;
+import com.siemens.model.*;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
@@ -55,4 +53,22 @@ public class XMLMapper<T> {
         }
         return null;
     }
+
+    public Client getClient(String name, String filename) {
+        try {
+            JAXBContext jaxbContext = JAXBContext.newInstance(Clients.class);
+            Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
+
+            Clients clients = (Clients) jaxbUnmarshaller.unmarshal(new File(filename));
+            Optional optional = clients.getClients().stream().filter(client -> client.getName().equals(name)).findFirst();
+            if (optional.isPresent()) {
+                return (Client) optional.get();
+            }
+        } catch (JAXBException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+
 }

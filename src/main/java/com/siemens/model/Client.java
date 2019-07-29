@@ -2,9 +2,14 @@ package com.siemens.model;
 
 import lombok.*;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlType;
 
-@XmlRootElement
+@XmlRootElement(name = "client")
+@XmlAccessorType(XmlAccessType.FIELD)
+@XmlType(propOrder={"name","email", "occupiedPosition"})
 @Builder
 public class Client {
 

@@ -7,10 +7,12 @@ import com.itextpdf.kernel.font.PdfFontFactory;
 import com.itextpdf.kernel.geom.PageSize;
 import com.itextpdf.kernel.pdf.PdfDocument;
 import com.itextpdf.kernel.pdf.PdfWriter;
+import com.itextpdf.kernel.pdf.canvas.parser.listener.TextChunk;
 import com.itextpdf.layout.Document;
 import com.itextpdf.layout.element.Cell;
 import com.itextpdf.layout.element.Paragraph;
 import com.itextpdf.layout.element.Table;
+import com.itextpdf.layout.element.Text;
 import com.itextpdf.layout.property.HorizontalAlignment;
 import com.itextpdf.layout.property.TextAlignment;
 import com.itextpdf.layout.property.UnitValue;
@@ -58,8 +60,7 @@ import org.controlsfx.control.textfield.TextFields;
 /**
  * @Author: Siemens CT Cluj-Napoca, Romania
  * @Since: Jul 25, 2019
- * @Description:
- *  Controller for the interface elements of the view client_view.
+ * @Description: Controller for the interface elements of the view client_view.
  */
 public class ClientController {
     private List<Recovery> recoveryList;
@@ -133,8 +134,8 @@ public class ClientController {
     private TextField pozitieAngajat;
     @FXML
     private TextField nume;
-   // @FXML
-   // private JFXTimePicker timePickerInvoire;
+    // @FXML
+    // private JFXTimePicker timePickerInvoire;
     @FXML
     private ComboBox nrOreInvoire;
 
@@ -155,18 +156,18 @@ public class ClientController {
         recoveryList = new ArrayList<>();
     }
 
-    private void setFieldsListeners(){
+    private void setFieldsListeners() {
         //Enable add recovery button only if all necessary fields have been completed
         setDatePickerFormat(datePickerInvoire);
         nume.textProperty().addListener(
                 new ChangeListener<String>() {
                     @Override
                     public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
-                        if(
+                        if (
                                 datePickerInvoire.getValue() != null &&
                                         nrOreInvoire.getValue() != null &&
                                         pozitieAngajat.getCharacters().length() != 0
-                                )
+                        )
                             addRecuperare.setDisable(false);
                         if (nume.getCharacters().length() == 0 || pozitieAngajat.getCharacters().length() == 0){
                             addRecuperare.setDisable(true);
@@ -181,11 +182,11 @@ public class ClientController {
                 new ChangeListener<String>() {
                     @Override
                     public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
-                        if(
+                        if (
                                 datePickerInvoire.getValue() != null &&
                                         nrOreInvoire.getValue() != null &&
                                         nume.getCharacters().length() != 0
-                                )
+                        )
                             addRecuperare.setDisable(false);
                         if (nume.getCharacters().length() == 0 || pozitieAngajat.getCharacters().length() == 0){
                             addRecuperare.setDisable(true);
@@ -201,12 +202,12 @@ public class ClientController {
             @Override
             public void handle(ActionEvent event) {
 
-                if(
+                if (
                         datePickerInvoire.getValue() != null &&
                                 nume.getCharacters().length() != 0 &&
                                 pozitieAngajat.getCharacters().length() != 0
 
-                        )
+                )
                     addRecuperare.setDisable(false);
                 else
                     addRecuperare.setDisable(true);
@@ -215,11 +216,11 @@ public class ClientController {
         datePickerInvoire.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                if(
+                if (
                         nrOreInvoire.getValue() != null &&
                                 nume.getCharacters().length() != 0 &&
                                 pozitieAngajat.getCharacters().length() != 0
-                        )
+                )
                     addRecuperare.setDisable(false);
                 else
                     addRecuperare.setDisable(true);
@@ -250,13 +251,14 @@ public class ClientController {
             }
         });
     }
-    private void setButtonEvents(ObservableList<Recovery> listOfRecoveries){
+
+    private void setButtonEvents(ObservableList<Recovery> listOfRecoveries) {
         addRecuperare.addEventHandler(
                 MouseEvent.MOUSE_ENTERED,
                 new EventHandler<MouseEvent>() {
                     @Override
                     public void handle(MouseEvent e) {
-                        if(recoveryList.size() >= 4)
+                        if (recoveryList.size() >= 4)
                             addRecuperare.setDisable(true);
                     }
                 }
@@ -277,7 +279,7 @@ public class ClientController {
 
                     RecuperareController recuperareController = fxmlLoader.getController();
 
-                    if(desiredLeave == null)
+                    if (desiredLeave == null)
                         desiredLeave = new Leave(
                                 datePickerInvoire.getValue(),
                                 LocalTime.parse(nrOreInvoire.getValue().toString(), hourFormatter)
@@ -314,6 +316,7 @@ public class ClientController {
             }
         });
     }
+
     // called by the FXML loader after the labels declared above are injected
     public void initialize() {
 
@@ -348,7 +351,7 @@ public class ClientController {
 
     void getSuperiors() {
         XMLMapper<Superiors> xmlMapperClient = new XMLMapper<>();
-        List<Superior> sups = xmlMapperClient.jaxbXMLToObjects( Superiors.class, "superiors.xml").getSuperiors();
+        List<Superior> sups = xmlMapperClient.jaxbXMLToObjects(Superiors.class, "superiors.xml").getSuperiors();
 
         sefiDirecti = sups.stream().filter(superior -> superior.getPositionEnum().equals(PositionEnum.DIRECT)).collect(Collectors.toList());
         sefiDepartament = sups.stream().filter(superior -> superior.getPositionEnum().equals(PositionEnum.DEPARTAMENT)).collect(Collectors.toList());
@@ -375,7 +378,8 @@ public class ClientController {
                 datePicker.setPromptText(pattern.toLowerCase());
             }
 
-            @Override public String toString(LocalDate date) {
+            @Override
+            public String toString(LocalDate date) {
                 if (date != null) {
                     return dateFormatter.format(date);
                 } else {
@@ -383,7 +387,8 @@ public class ClientController {
                 }
             }
 
-            @Override public LocalDate fromString(String string) {
+            @Override
+            public LocalDate fromString(String string) {
                 if (string != null && !string.isEmpty()) {
                     return LocalDate.parse(string, dateFormatter);
                 } else {
@@ -420,10 +425,8 @@ public class ClientController {
             PdfWriter writer = new PdfWriter(pdfFilePath);
             PdfDocument pdf = new PdfDocument(writer);
             Document document = new Document(pdf, PageSize.A4);
-            document.setMargins(20,20,20,20);
+            document.setMargins(20, 20, 20, 20);
             PdfFont font = PdfFontFactory.createFont(FontConstants.TIMES_ROMAN);
-
-
 
 
             document.add(
@@ -431,27 +434,30 @@ public class ClientController {
                             .setTextAlignment(TextAlignment.LEFT)
                             .setFontSize(22)
                             .setBold()
-                            .setFontColor(new DeviceRgb(0,153,153))
+                            .setFontColor(new DeviceRgb(0, 153, 153))
             );
             document.add(
-                    new Paragraph("Bilet Invoire")
+                    new Paragraph("Bilet Învoire")
                             .setTextAlignment(TextAlignment.CENTER)
                             .setFontSize(20)
                             .setBold()
             );
-            document.add(
-                    new Paragraph(
-                            "Subsemnatul/a " + nume.getCharacters().toString() + " doresc " +
-                                    " a beneficia de o invoire avand durata de "+ nrOreInvoire.getValue().toString() +
-                                    " ore, " +
-                                    "perioada necesara pentru rezolvarea unor probleme cu caracter personal."
 
-                    )
+
+            Text text1 = new Text("Subsemnatul/a ");
+            Text text2 = new Text(nume.getCharacters().toString()).setBold();
+            Text text3 = new Text(" doresc a beneficia de o învoire având durata de ");
+            Text text4 = new Text(nrOreInvoire.getValue().toString()).setBold();
+            Text text5 = new Text(" ore, " +
+                    "perioada necesară pentru rezolvarea unor probleme cu caracter personal.");
+
+            document.add(
+                    new Paragraph().add(text1).add(text2).add(text3).add(text4).add(text5)
                             .setFirstLineIndent(40)
                             .setFontSize(14)
             );
             document.add(
-                    new Paragraph("Invoire:")
+                    new Paragraph("Învoire:")
                             .setBold()
                             .setFontSize(16)
                             .setFirstLineIndent(40)
@@ -462,12 +468,12 @@ public class ClientController {
 
             table.addHeaderCell(
                     new com.itextpdf.layout.element.Cell().add(
-                            new Paragraph("Data invoirii")
+                            new Paragraph("Data învoirii")
                     )
             );
             table.addHeaderCell(
                     new com.itextpdf.layout.element.Cell().add(
-                            new Paragraph("Nr de ore")
+                            new Paragraph("Nr. ore")
                     )
             );
             table.addCell(
@@ -490,7 +496,7 @@ public class ClientController {
                             .setFirstLineIndent(40)
             );
 
-            Table recoveryTable = new Table(new float[]{2,2,2});
+            Table recoveryTable = new Table(new float[]{2, 2, 2});
             recoveryTable.setWidth(UnitValue.createPercentValue(80));
 
             recoveryTable.addHeaderCell(
@@ -500,7 +506,7 @@ public class ClientController {
             );
             recoveryTable.addHeaderCell(
                     new com.itextpdf.layout.element.Cell().add(
-                            new Paragraph("Data propusa pentru recuperare")
+                            new Paragraph("Data propusă pentru recuperare")
                     )
             );
             recoveryTable.addHeaderCell(
@@ -508,7 +514,7 @@ public class ClientController {
                             new Paragraph("Nr. ore recuperate")
                     )
             );
-            for(Recovery recovery : recoveryList){
+            for (Recovery recovery : recoveryList) {
                 recoveryTable.addCell(
                         new Paragraph(
                                 recovery.getLeaveDate().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")).toString()
@@ -530,17 +536,17 @@ public class ClientController {
             document.add(recoveryTable);
 
 
-            Table approvalTable = new Table(new float[]{1,2});
+            Table approvalTable = new Table(new float[]{1, 2});
             approvalTable.addCell(
-                    new com.itextpdf.layout.element.Cell(1,2 ).add(new Paragraph("  Aprobare"))
+                    new com.itextpdf.layout.element.Cell(1, 2).add(new Paragraph("  Aprobare"))
             );
-            approvalTable.addCell("Sef");
-            approvalTable.addCell("Semnatura");
+            approvalTable.addCell("Șef");
+            approvalTable.addCell("Semnătură");
             approvalTable.addCell(
                     new com.itextpdf.layout.element.Cell()
                             .add(new Paragraph("Direct:"))
                             .add(new Paragraph(sefDirect.getValue().toString())
-            ));
+                            ));
             approvalTable.addCell("");
             approvalTable.addCell(
                     new Cell()
@@ -551,17 +557,23 @@ public class ClientController {
 
 
             document.add(new Paragraph("\n\n"));
-            document.add(
-                    new Paragraph(
-                            "Data de azi: " + LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd/MM/yyyy"))
-                    )
-                            .setVerticalAlignment(VerticalAlignment.BOTTOM)
-                            .setHorizontalAlignment(HorizontalAlignment.LEFT)
-                            .setFontSize(12)
-            );
+
+
+            Paragraph dataDeAzi = new Paragraph(
+                    "Data de azi: "
+            )
+                    .setVerticalAlignment(VerticalAlignment.BOTTOM)
+                    .setHorizontalAlignment(HorizontalAlignment.LEFT)
+                    .setFontSize(12);
+
+
+            Text text = new Text(LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd/MM/yyyy"))).setBold();
+            dataDeAzi.add(text);
+
+            document.add(dataDeAzi);
 
             document.add(
-                    new Paragraph("Semnatura angajat: ")
+                    new Paragraph("Semnătură angajat: ")
                             .setVerticalAlignment(VerticalAlignment.BOTTOM)
                             .setHorizontalAlignment(HorizontalAlignment.LEFT)
                             .setFontSize(12)
@@ -580,7 +592,7 @@ public class ClientController {
 
             System.exit(0);
 
-        }catch (Exception e){
+        } catch (Exception e) {
             System.out.println(e.getMessage());
         }
     }

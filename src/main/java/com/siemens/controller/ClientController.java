@@ -418,7 +418,7 @@ public class ClientController {
             );
             table.addCell(
                     new Paragraph(
-                            desiredLeave.getLeaveDate().toString()
+                            desiredLeave.getLeaveDate().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")).toString()
                     )
             );
             table.addCell(
@@ -457,12 +457,12 @@ public class ClientController {
             for(Recovery recovery : recoveryList){
                 recoveryTable.addCell(
                         new Paragraph(
-                                recovery.getLeaveDate().toString()
+                                recovery.getLeaveDate().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")).toString()
                         )
                 );
                 recoveryTable.addCell(
                         new Paragraph(
-                                recovery.getRecoveryDate().toString()
+                                recovery.getRecoveryDate().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")).toString()
                         )
                 );
                 recoveryTable.addCell(

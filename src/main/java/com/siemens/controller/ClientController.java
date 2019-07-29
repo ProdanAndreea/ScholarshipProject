@@ -165,48 +165,45 @@ public class ClientController {
                     public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
                         if (
                                 datePickerInvoire.getValue() != null &&
-                                        nrOreInvoire.getValue() != null &&
-                                        pozitieAngajat.getCharacters().length() != 0
+                                        nrOreInvoire.getValue() != null
                         )
                             addRecuperare.setDisable(false);
-                        if (nume.getCharacters().length() == 0 || pozitieAngajat.getCharacters().length() == 0){
+                        if (nume.getCharacters().length() == 0) {
                             addRecuperare.setDisable(true);
                             btnTrimite.setDisable(true);
                         }
-                        else if(nume.getCharacters().length() != 0 && pozitieAngajat.getCharacters().length() != 0 && recoveryList.size()!= 0)
+                        else if(nume.getCharacters().length() != 0 && recoveryList.size()!= 0)
                             btnTrimite.setDisable(false);
                     }
                 }
         );
-        pozitieAngajat.textProperty().addListener(
-                new ChangeListener<String>() {
-                    @Override
-                    public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
-                        if (
-                                datePickerInvoire.getValue() != null &&
-                                        nrOreInvoire.getValue() != null &&
-                                        nume.getCharacters().length() != 0
-                        )
-                            addRecuperare.setDisable(false);
-                        if (nume.getCharacters().length() == 0 || pozitieAngajat.getCharacters().length() == 0){
-                            addRecuperare.setDisable(true);
-                            btnTrimite.setDisable(true);
-                        }
-                        else if(nume.getCharacters().length() != 0 && pozitieAngajat.getCharacters().length() != 0 && recoveryList.size()!= 0)
-                            btnTrimite.setDisable(false);
-
-                    }
-                }
-        );
+//        pozitieAngajat.textProperty().addListener(
+//                new ChangeListener<String>() {
+//                    @Override
+//                    public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+//                        if (
+//                                datePickerInvoire.getValue() != null &&
+//                                        nrOreInvoire.getValue() != null &&
+//                                        nume.getCharacters().length() != 0
+//                        )
+//                            addRecuperare.setDisable(false);
+//                        if (nume.getCharacters().length() == 0 ){
+//                            addRecuperare.setDisable(true);
+//                            btnTrimite.setDisable(true);
+//                        }
+//                        else if(nume.getCharacters().length() != 0 && recoveryList.size()!= 0)
+//                            btnTrimite.setDisable(false);
+//
+//                    }
+//                }
+//        );
         nrOreInvoire.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
 
                 if (
                         datePickerInvoire.getValue() != null &&
-                                nume.getCharacters().length() != 0 &&
-                                pozitieAngajat.getCharacters().length() != 0
-
+                                nume.getCharacters().length() != 0
                 )
                     addRecuperare.setDisable(false);
                 else
@@ -218,8 +215,7 @@ public class ClientController {
             public void handle(ActionEvent event) {
                 if (
                         nrOreInvoire.getValue() != null &&
-                                nume.getCharacters().length() != 0 &&
-                                pozitieAngajat.getCharacters().length() != 0
+                                nume.getCharacters().length() != 0
                 )
                     addRecuperare.setDisable(false);
                 else
@@ -231,7 +227,6 @@ public class ClientController {
             public void handle(ActionEvent event) {
                 if(
                         nume.getCharacters().length() != 0 &&
-                                pozitieAngajat.getCharacters().length() != 0 &&
                                 recoveryList.size() != 0 &&
                                 sefDirect.getValue() != null
                         )
@@ -243,7 +238,6 @@ public class ClientController {
             public void handle(ActionEvent event) {
                 if(
                         nume.getCharacters().length() != 0 &&
-                                pozitieAngajat.getCharacters().length() != 0 &&
                                 recoveryList.size() != 0 &&
                                 sefDepartament.getValue() != null
                         )
@@ -332,7 +326,7 @@ public class ClientController {
         setFieldsListeners();
 
         // autocomplete
-        TextFields.bindAutoCompletion(pozitieAngajat, possibleChoises);
+//        TextFields.bindAutoCompletion(pozitieAngajat, possibleChoises);
 
 
         nrOreInvoire.getItems().addAll(nrOre);
@@ -572,12 +566,12 @@ public class ClientController {
 
             document.add(dataDeAzi);
 
-            document.add(
-                    new Paragraph("Semnătură angajat: ")
-                            .setVerticalAlignment(VerticalAlignment.BOTTOM)
-                            .setHorizontalAlignment(HorizontalAlignment.LEFT)
-                            .setFontSize(12)
-            );
+//            document.add(
+//                    new Paragraph("Semnătură angajat: ")
+//                            .setVerticalAlignment(VerticalAlignment.BOTTOM)
+//                            .setHorizontalAlignment(HorizontalAlignment.LEFT)
+//                            .setFontSize(12)
+//            );
 
             document.add(new Paragraph("\n\n"));
 

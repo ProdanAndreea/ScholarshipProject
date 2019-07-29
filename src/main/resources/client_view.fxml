@@ -12,16 +12,14 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="620.0" prefWidth="362.0" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.siemens.controller.ClientController">
+<AnchorPane prefHeight="620.0" prefWidth="362.0" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.siemens.controller.ClientController">
 
     <children>
         <AnchorPane layoutX="1.0" maxHeight="-1.0" maxWidth="-1.0" prefHeight="673.0" prefWidth="388.0" VBox.vgrow="ALWAYS">
             <children>
                 <DatePicker fx:id="datePickerInvoire" editable="false" layoutX="55.0" layoutY="283.0" prefHeight="25.0" prefWidth="131.0" />
-            <Label layoutX="62.0" layoutY="124.0" text="Nume Prenume" />
-            <Label layoutX="62.0" layoutY="158.0" text="Poziție Angajat" />
-            <TextField fx:id="nume" layoutX="169.0" layoutY="120.0" />
-            <TextField fx:id="pozitieAngajat" layoutX="169.0" layoutY="154.0" />
+            <Label layoutX="64.0" layoutY="147.0" text="Nume Prenume" />
+            <TextField fx:id="nume" layoutX="171.0" layoutY="143.0" />
             <Label layoutX="22.0" layoutY="219.0" text="Ore Învoire" textFill="#4173a3">
                <font>
                   <Font name="System Bold" size="21.0" />

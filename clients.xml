@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<clients>
+    <client>
+        <name>Radu</name>
+        <email>radu@gmail.com</email>
+        <occupiedPosition>Programmer</occupiedPosition>
+    </client>
+    <client>
+        <name>Doru</name>
+        <email>doru@gmail.com</email>
+        <occupiedPosition>Programmer</occupiedPosition>
+    </client>
+</clients>

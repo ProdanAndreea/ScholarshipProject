@@ -64,6 +64,8 @@
                 <TableColumn fx:id="numberOfHours" minWidth="0.0" prefWidth="185.0" text="Durata recuperarii (HH:mm)" />
               </columns>
             </TableView>
+            <Label layoutX="82.0" layoutY="577.0" text="Șef departament" />
+            <ComboBox fx:id="sefDepartament" layoutX="198.0" layoutY="572.0" prefWidth="150.0" />
             </children>
         </AnchorPane>
     </children>

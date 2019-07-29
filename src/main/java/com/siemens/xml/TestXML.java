@@ -1,9 +1,6 @@
 package com.siemens.xml;
 
-import com.siemens.model.Client;
-import com.siemens.model.PositionEnum;
-import com.siemens.model.Superior;
-import com.siemens.model.Superiors;
+import com.siemens.model.*;
 
 import javax.xml.bind.JAXBException;
 import java.util.ArrayList;
@@ -36,14 +33,13 @@ public class TestXML {
         /*
          *  Superiors Unmarshalling
          */
-        XMLMapper<Superiors> xmlMapperClient = new XMLMapper<>();
-        Superiors sups = xmlMapperClient.jaxbXMLToObjects( Superiors.class, "superiors.xml");
+        XMLMapper<Superiors> xmlMapperSuperior = new XMLMapper<>();
+        Superiors sups = xmlMapperSuperior.jaxbXMLToObjects( Superiors.class, "superiors.xml");
         for(Superior sup : sups.getSuperiors())
         {
             System.out.println(sup.getName());
             System.out.println(sup.getPositionEnum());
         }
-
     }
 
 }

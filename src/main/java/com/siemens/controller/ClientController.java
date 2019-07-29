@@ -304,7 +304,7 @@ public class ClientController {
         //MAKE THE LIST OF RECOVERIES
         ObservableList<Recovery> listOfRecoveries = FXCollections.observableArrayList();
         //SET CELL VALUES FOR THE TABLE
-        leaveDate.setCellValueFactory(new PropertyValueFactory<Recovery, LocalDate>("leaveDate"));
+        leaveDate.setCellValueFactory(new PropertyValueFactory<Recovery, LocalDate>("recoveryDate"));
         numberOfHours.setCellValueFactory(new PropertyValueFactory<Recovery, LocalTime>("numberOfHours"));
 
         recoveryTableView.setItems(listOfRecoveries);

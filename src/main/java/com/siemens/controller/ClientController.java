@@ -169,7 +169,7 @@ public class ClientController {
                         if (nume.getCharacters().length() == 0 || pozitieAngajat.getCharacters().length() == 0)
                            addRecuperare.setDisable(true);
 
-        clientController = this;
+
 
         setDatePickerFormat(datePickerInvoire);
 
@@ -261,20 +261,6 @@ public class ClientController {
                 }
             }
         });
-    }
-    // called by the FXML loader after the labels declared above are injected
-    public void initialize() {
-
-        setDatePickerFormat(datePickerInvoire);
-
-        // disable add button
-        addRecuperare.setDisable(true);
-
-        setFieldsListeners();
-
-        // autocomplete
-        TextFields.bindAutoCompletion(pozitieAngajat, possibleChoises);
-
         btnTrimite.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
@@ -297,6 +283,23 @@ public class ClientController {
                 }
             }
         });
+    }
+    // called by the FXML loader after the labels declared above are injected
+    public void initialize() {
+
+        setDatePickerFormat(datePickerInvoire);
+
+        clientController = this;
+
+        // disable add button
+        addRecuperare.setDisable(true);
+
+        setFieldsListeners();
+
+        // autocomplete
+        TextFields.bindAutoCompletion(pozitieAngajat, possibleChoises);
+
+
         nrOreInvoire.getItems().addAll(nrOre);
         //MAKE THE LIST OF RECOVERIES
         ObservableList<Recovery> listOfRecoveries = FXCollections.observableArrayList();
@@ -482,13 +485,13 @@ public class ClientController {
             approvalTable.addCell(
                     new com.itextpdf.layout.element.Cell()
                             .add(new Paragraph("Direct:"))
-                            .add(new Paragraph("Nume sef direct"))
-            );
+                            .add(new Paragraph(sefDirect.getValue().toString())
+            ));
             approvalTable.addCell("");
             approvalTable.addCell(
                     new Cell()
                             .add(new Paragraph("Departament:"))
-                            .add(new Paragraph("Nume sef depatament"))
+                            .add(new Paragraph(sefDepartament.getValue().toString()))
             );
             approvalTable.addCell("");
 

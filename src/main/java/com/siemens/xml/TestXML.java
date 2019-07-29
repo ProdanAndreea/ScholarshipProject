@@ -43,7 +43,6 @@ public class TestXML {
             System.out.println(sup.getName());
             System.out.println(sup.getPositionEnum());
         }
-
     }
 
 }

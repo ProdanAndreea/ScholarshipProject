@@ -126,6 +126,8 @@ public class ClientController {
     //private Label remainedHours;
     @FXML
     private ComboBox sefDirect;
+    @FXML
+    private ComboBox sefDepartament;
 
     public ClientController() {
         recoveryList = new ArrayList<>();
@@ -232,7 +234,7 @@ public class ClientController {
         for (int i = 0; i < sefiDepartament.size(); i++) {
             sefDirectChoises[i] = sefiDepartament.get(i).getName();
         }
-        // sefDepartamentChoises.getItems().addAll(sefDirectChoises);
+        sefDepartament.getItems().addAll(sefDirectChoises);
     }
 
     public static void setDatePickerFormat(DatePicker datePicker) {

@@ -2,12 +2,15 @@ package com.siemens.xml;
 
 import com.siemens.model.PositionEnum;
 import com.siemens.model.Superior;
+import com.siemens.model.Superiors;
+
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
 import javax.xml.bind.annotation.XmlSeeAlso;
 import java.io.*;
+import java.util.Optional;
 
 @XmlSeeAlso({Superior.class, PositionEnum.class})
 public class XMLMapper<T> {
@@ -31,6 +34,22 @@ public class XMLMapper<T> {
             Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
 
             return (T) jaxbUnmarshaller.unmarshal( new File(filename) );
+        } catch (JAXBException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public Superior getSuperior(String name, String filename) {
+        try {
+            JAXBContext jaxbContext = JAXBContext.newInstance(Superiors.class);
+            Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
+
+            Superiors sup = (Superiors) jaxbUnmarshaller.unmarshal(new File(filename));
+            Optional optional = sup.getSuperiors().stream().filter(superior -> superior.getName().equals(name)).findFirst();
+            if (optional.isPresent()) {
+                return (Superior) optional.get();
+            }
         } catch (JAXBException e) {
             e.printStackTrace();
         }

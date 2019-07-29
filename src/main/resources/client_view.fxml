@@ -12,7 +12,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="620.0" prefWidth="362.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.siemens.controller.ClientController">
+<AnchorPane prefHeight="620.0" prefWidth="362.0" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.siemens.controller.ClientController">
 
     <children>
         <AnchorPane layoutX="2.0" maxHeight="-1.0" maxWidth="-1.0" prefHeight="673.0" prefWidth="388.0" VBox.vgrow="ALWAYS">
@@ -55,8 +55,8 @@
                   <Font name="System Bold" size="13.0" />
                </font>
             </Button>
-            <Label layoutX="79.0" layoutY="542.0" text="Șef direct" />
-            <ComboBox fx:id="sefDirect" layoutX="142.0" layoutY="538.0" prefHeight="25.0" prefWidth="149.0" />
+            <Label layoutX="97.0" layoutY="558.0" text="Șef direct" />
+            <ComboBox fx:id="sefDirect" layoutX="159.0" layoutY="554.0" prefHeight="25.0" prefWidth="150.0" />
             <Label layoutX="193.0" layoutY="354.0" prefHeight="21.0" prefWidth="149.0" text="(Maxim 4 recuperari)" textFill="#683d3d" />
             <TableView fx:id="recoveryTableView" layoutX="-3.0" layoutY="376.0" prefHeight="119.0" prefWidth="390.0">
               <columns>
@@ -64,9 +64,9 @@
                 <TableColumn fx:id="numberOfHours" minWidth="0.0" prefWidth="210.0" text="Durata recuperarii (HH:mm)" />
               </columns>
             </TableView>
-            <Label layoutX="82.0" layoutY="577.0" text="Șef departament" />
-            <ComboBox fx:id="sefDepartament" layoutX="198.0" layoutY="572.0" prefWidth="150.0" />
-            <Button fx:id="btnTrimite" layoutX="161.0" layoutY="617.0" mnemonicParsing="false" text="Trimite" />
+            <Label layoutX="59.0" layoutY="590.0" text="Șef departament" />
+            <ComboBox fx:id="sefDepartament" layoutX="159.0" layoutY="586.0" prefWidth="150.0" />
+            <Button fx:id="btnTrimite" layoutX="158.0" layoutY="634.0" mnemonicParsing="false" text="Trimite" />
             </children>
         </AnchorPane>
     </children>

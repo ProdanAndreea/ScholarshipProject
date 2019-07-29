@@ -7,6 +7,8 @@ import com.siemens.model.PositionEnum;
 import com.siemens.model.Superior;
 import com.siemens.model.Superiors;
 import com.siemens.view.ClientStart;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import com.siemens.xml.XMLMapper;
@@ -131,42 +133,70 @@ public class ClientController {
         recoveryList = new ArrayList<>();
     }
 
-    // called by the FXML loader after the labels declared above are injected
-    public void initialize() {
+    private void setFieldsListeners(){
+        //Enable add recovery button only if all necessary fields have been completed
+        nume.textProperty().addListener(
+                new ChangeListener<String>() {
+                    @Override
+                    public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+                        if(
+                                datePickerInvoire.getValue() != null &&
+                                        nrOreInvoire.getValue() != null &&
+                                        pozitieAngajat.getCharacters().length() != 0
+                                )
+                            addRecuperare.setDisable(false);
+                        if (nume.getCharacters().length() == 0 || pozitieAngajat.getCharacters().length() == 0)
+                           addRecuperare.setDisable(true);
 
-        setDatePickerFormat(datePickerInvoire);
 
-        // disable add button
-        addRecuperare.setDisable(true);
-
+                    }
+                }
+        );
+        pozitieAngajat.textProperty().addListener(
+                new ChangeListener<String>() {
+                    @Override
+                    public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+                        if(
+                                datePickerInvoire.getValue() != null &&
+                                        nrOreInvoire.getValue() != null &&
+                                        nume.getCharacters().length() != 0
+                                )
+                            addRecuperare.setDisable(false);
+                        if (nume.getCharacters().length() == 0 || pozitieAngajat.getCharacters().length() == 0)
+                            addRecuperare.setDisable(true);
+                    }
+                }
+        );
         nrOreInvoire.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
 
-                if(datePickerInvoire.getValue() != null)
-                        addRecuperare.setDisable(false);
+                if(
+                        datePickerInvoire.getValue() != null &&
+                                nume.getCharacters().length() != 0 &&
+                                pozitieAngajat.getCharacters().length() != 0
+
+                        )
+                    addRecuperare.setDisable(false);
+                else
+                    addRecuperare.setDisable(true);
             }
         });
         datePickerInvoire.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                if(nrOreInvoire.getValue() != null)
+                if(
+                        nrOreInvoire.getValue() != null &&
+                                nume.getCharacters().length() != 0 &&
+                                pozitieAngajat.getCharacters().length() != 0
+                        )
                     addRecuperare.setDisable(false);
+                else
+                    addRecuperare.setDisable(true);
             }
         });
-
-        // autocomplete
-        TextFields.bindAutoCompletion(pozitieAngajat, possibleChoises);
-
-        nrOreInvoire.getItems().addAll(nrOre);
-        //MAKE THE LIST OF RECOVERIES
-        ObservableList<Recovery> listOfRecoveries = FXCollections.observableArrayList();
-        //SET CELL VALUES FOR THE TABLE
-        leaveDate.setCellValueFactory(new PropertyValueFactory<Recovery, LocalDate>("leaveDate"));
-        numberOfHours.setCellValueFactory(new PropertyValueFactory<Recovery, LocalTime>("numberOfHours"));
-
-        recoveryTableView.setItems(listOfRecoveries);
-
+    }
+    private void setButtonEvents(ObservableList<Recovery> listOfRecoveries){
         addRecuperare.addEventHandler(
                 MouseEvent.MOUSE_ENTERED,
                 new EventHandler<MouseEvent>() {
@@ -197,7 +227,7 @@ public class ClientController {
                         desiredLeave = new Leave(
                                 datePickerInvoire.getValue(),
                                 LocalTime.parse(nrOreInvoire.getValue().toString(), hourFormatter)
-                                );
+                        );
                     recuperareController.initialize(desiredLeave, recoveryList, listOfRecoveries);
 
                     stage.setScene(new Scene(root));
@@ -207,9 +237,30 @@ public class ClientController {
                 }
             }
         });
+    }
+    // called by the FXML loader after the labels declared above are injected
+    public void initialize() {
 
+        setDatePickerFormat(datePickerInvoire);
 
+        // disable add button
+        addRecuperare.setDisable(true);
 
+        setFieldsListeners();
+
+        // autocomplete
+        TextFields.bindAutoCompletion(pozitieAngajat, possibleChoises);
+
+        nrOreInvoire.getItems().addAll(nrOre);
+        //MAKE THE LIST OF RECOVERIES
+        ObservableList<Recovery> listOfRecoveries = FXCollections.observableArrayList();
+        //SET CELL VALUES FOR THE TABLE
+        leaveDate.setCellValueFactory(new PropertyValueFactory<Recovery, LocalDate>("leaveDate"));
+        numberOfHours.setCellValueFactory(new PropertyValueFactory<Recovery, LocalTime>("numberOfHours"));
+
+        recoveryTableView.setItems(listOfRecoveries);
+
+        setButtonEvents(listOfRecoveries);
 
         getSuperiors();
     }

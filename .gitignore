@@ -12,7 +12,7 @@
 .sts4-cache
 bin
 logs
-
+out
 integration-repo
 ivy-cache
 jxl.log

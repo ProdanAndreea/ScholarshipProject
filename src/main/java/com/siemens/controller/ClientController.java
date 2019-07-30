@@ -28,6 +28,7 @@ import com.siemens.view.ClientStart;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
+import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import com.siemens.xml.XMLMapper;
 import javafx.event.ActionEvent;
@@ -44,6 +45,8 @@ import javafx.stage.Stage;
 import javafx.util.StringConverter;
 
 
+import java.io.FileNotFoundException;
+import java.io.InputStream;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -53,6 +56,7 @@ import java.time.temporal.TemporalAccessor;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.List;
+import java.util.Properties;
 import java.util.stream.Collectors;
 
 import org.controlsfx.control.textfield.TextFields;
@@ -117,6 +121,12 @@ public class ClientController {
     private String[] sefDepartamentChoises;
     private List<Superior> sefiDirecti;
     private List<Superior> sefiDepartament;
+
+    @FXML
+    private CheckBox bossAvailability;
+
+    @FXML
+    private Button bossButton;
 
     @FXML
     private TableColumn<Recovery, LocalTime> numberOfHours;
@@ -287,6 +297,26 @@ public class ClientController {
                 }
             }
         });
+        bossButton.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                try{
+                    FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/pagina_sef.fxml"));
+                    Parent root = fxmlLoader.load();
+                    Stage stage = new Stage();
+                    stage.setTitle("Pagina Superior");
+
+                    stage.initModality(Modality.WINDOW_MODAL);
+                    stage.initOwner(ClientStart.primaryStage.getScene().getWindow());
+
+                    stage.setScene(new Scene(root));
+                    stage.show();
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+
+            }
+        });
         btnTrimite.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
@@ -310,9 +340,49 @@ public class ClientController {
             }
         });
     }
+    private void loadUserData(){
+        Properties property = new Properties();
+        String userProperties = "user.properties";
+        InputStream inputStream = getClass().getClassLoader().getResourceAsStream(userProperties);
+        try{
+            if (inputStream != null) {
+                property.load(inputStream);
+                String userName = property.getProperty("appUser");
+                String userPosition = property.getProperty("userOccupiedPosition");
+                String superiorName = property.getProperty("superiorName");
+                String departmentSuperior = property.getProperty("departmentSuperiorName");
+
+                if(userPosition.equals("Team Leader") || userPosition.equals("Department Leader")){
+                    bossAvailability.setOpacity(100);
+                    bossAvailability.setDisable(false);
+
+                    bossButton.setOpacity(100);
+                    bossButton.setDisable(false);
+                }
+
+                nume.setText(userName);
+                sefDirect.setValue(superiorName);
+                sefDepartament.setValue(departmentSuperior);
+            } else {
+                throw new FileNotFoundException("property file '" + userProperties + "' not found in the classpath");
+            }
+        }catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+
+
+    }
 
     // called by the FXML loader after the labels declared above are injected
     public void initialize() {
+        bossAvailability.setOpacity(0);
+        bossAvailability.setDisable(true);
+
+        bossButton.setOpacity(0);
+        bossButton.setDisable(true);
+
+        loadUserData();
 
         setDatePickerFormat(datePickerInvoire);
 
@@ -332,6 +402,14 @@ public class ClientController {
         nrOreInvoire.getItems().addAll(nrOre);
         //MAKE THE LIST OF RECOVERIES
         ObservableList<Recovery> listOfRecoveries = FXCollections.observableArrayList();
+
+        listOfRecoveries.addListener(new ListChangeListener<Recovery>() {
+            @Override
+            public void onChanged(Change<? extends Recovery> c) {
+                if(recoveryList.size() > 0)
+                    btnTrimite.setDisable(false);
+            }
+        });
         //SET CELL VALUES FOR THE TABLE
         leaveDate.setCellValueFactory(new PropertyValueFactory<Recovery, LocalDate>("recoveryDate"));
         numberOfHours.setCellValueFactory(new PropertyValueFactory<Recovery, LocalTime>("numberOfHours"));
@@ -413,9 +491,9 @@ public class ClientController {
     public void generatePdf(){
         try{
             String pdfFilePath =
-                    "C:\\Users\\Public\\Desktop\\Invoire_"+nume.getCharacters().toString()+
+                    ClientStart.fileDirectoryPath +"\\Invoire_"+nume.getCharacters().toString()+
                     "_"+desiredLeave.getLeaveDate().toString()
-                            +"_"+LocalTime.now().format(DateTimeFormatter.ofPattern("HH mm")).toString()+".pdf";
+                            +"_"+LocalTime.now().format(DateTimeFormatter.ofPattern("HH-mm")).toString()+".pdf";
             PdfWriter writer = new PdfWriter(pdfFilePath);
             PdfDocument pdf = new PdfDocument(writer);
             Document document = new Document(pdf, PageSize.A4);

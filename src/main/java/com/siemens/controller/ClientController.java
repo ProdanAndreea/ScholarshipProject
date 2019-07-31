@@ -1,14 +1,18 @@
 package com.siemens.controller;
 
+import com.itextpdf.forms.PdfAcroForm;
+import com.itextpdf.forms.fields.PdfFormField;
+import com.itextpdf.forms.fields.PdfSignatureFormField;
 import com.itextpdf.io.font.FontConstants;
 import com.itextpdf.io.font.PdfEncodings;
-import com.itextpdf.io.font.constants.FontStyles;
 import com.itextpdf.kernel.colors.DeviceRgb;
 import com.itextpdf.kernel.font.PdfFont;
 import com.itextpdf.kernel.font.PdfFontFactory;
 import com.itextpdf.kernel.geom.PageSize;
-import com.itextpdf.kernel.pdf.PdfDocument;
-import com.itextpdf.kernel.pdf.PdfWriter;
+import com.itextpdf.kernel.geom.Rectangle;
+import com.itextpdf.kernel.pdf.*;
+import com.itextpdf.kernel.pdf.annot.PdfAnnotation;
+import com.itextpdf.kernel.pdf.annot.PdfWidgetAnnotation;
 import com.itextpdf.kernel.pdf.canvas.parser.listener.TextChunk;
 import com.itextpdf.layout.Document;
 import com.itextpdf.layout.element.Cell;
@@ -19,6 +23,8 @@ import com.itextpdf.layout.property.HorizontalAlignment;
 import com.itextpdf.layout.property.TextAlignment;
 import com.itextpdf.layout.property.UnitValue;
 import com.itextpdf.layout.property.VerticalAlignment;
+import com.itextpdf.signatures.SignaturePermissions;
+import com.itextpdf.signatures.SignatureUtil;
 import com.jfoenix.controls.JFXTimePicker;
 import com.siemens.configuration.MailConfiguration;
 import com.siemens.model.Leave;
@@ -46,6 +52,7 @@ import javafx.stage.Stage;
 import javafx.util.StringConverter;
 
 
+import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -55,9 +62,12 @@ import java.time.temporal.TemporalAccessor;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import org.controlsfx.control.textfield.TextFields;
+
+import static com.itextpdf.kernel.pdf.PdfName.BaseFont;
 
 /**
  * @Author: Siemens CT Cluj-Napoca, Romania
@@ -158,53 +168,55 @@ public class ClientController {
         recoveryList = new ArrayList<>();
     }
 
-    private void setFieldsListeners(){
+    private void setFieldsListeners() {
         //Enable add recovery button only if all necessary fields have been completed
+        setDatePickerFormat(datePickerInvoire);
         nume.textProperty().addListener(
                 new ChangeListener<String>() {
                     @Override
                     public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
-                        if(
+                        if (
                                 datePickerInvoire.getValue() != null &&
-                                        nrOreInvoire.getValue() != null &&
-                                        pozitieAngajat.getCharacters().length() != 0
-                                )
+                                        nrOreInvoire.getValue() != null
+                        )
                             addRecuperare.setDisable(false);
-                        if (nume.getCharacters().length() == 0 || pozitieAngajat.getCharacters().length() == 0)
-                           addRecuperare.setDisable(true);
-
-
-
-        setDatePickerFormat(datePickerInvoire);
-
-                    }
-                }
-        );
-        pozitieAngajat.textProperty().addListener(
-                new ChangeListener<String>() {
-                    @Override
-                    public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
-                        if(
-                                datePickerInvoire.getValue() != null &&
-                                        nrOreInvoire.getValue() != null &&
-                                        nume.getCharacters().length() != 0
-                                )
-                            addRecuperare.setDisable(false);
-                        if (nume.getCharacters().length() == 0 || pozitieAngajat.getCharacters().length() == 0)
+                        if (nume.getCharacters().length() == 0) {
                             addRecuperare.setDisable(true);
+                            btnTrimite.setDisable(true);
+                        }
+                        else if(nume.getCharacters().length() != 0 && recoveryList.size()!= 0)
+                            btnTrimite.setDisable(false);
                     }
                 }
         );
+//        pozitieAngajat.textProperty().addListener(
+//                new ChangeListener<String>() {
+//                    @Override
+//                    public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+//                        if (
+//                                datePickerInvoire.getValue() != null &&
+//                                        nrOreInvoire.getValue() != null &&
+//                                        nume.getCharacters().length() != 0
+//                        )
+//                            addRecuperare.setDisable(false);
+//                        if (nume.getCharacters().length() == 0 ){
+//                            addRecuperare.setDisable(true);
+//                            btnTrimite.setDisable(true);
+//                        }
+//                        else if(nume.getCharacters().length() != 0 && recoveryList.size()!= 0)
+//                            btnTrimite.setDisable(false);
+//
+//                    }
+//                }
+//        );
         nrOreInvoire.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
 
-                if(
+                if (
                         datePickerInvoire.getValue() != null &&
-                                nume.getCharacters().length() != 0 &&
-                                pozitieAngajat.getCharacters().length() != 0
-
-                        )
+                                nume.getCharacters().length() != 0
+                )
                     addRecuperare.setDisable(false);
                 else
                     addRecuperare.setDisable(true);
@@ -213,24 +225,46 @@ public class ClientController {
         datePickerInvoire.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                if(
+                if (
                         nrOreInvoire.getValue() != null &&
-                                nume.getCharacters().length() != 0 &&
-                                pozitieAngajat.getCharacters().length() != 0
-                        )
+                                nume.getCharacters().length() != 0
+                )
                     addRecuperare.setDisable(false);
                 else
                     addRecuperare.setDisable(true);
             }
         });
+        sefDepartament.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                if(
+                        nume.getCharacters().length() != 0 &&
+                                recoveryList.size() != 0 &&
+                                sefDirect.getValue() != null
+                        )
+                    btnTrimite.setDisable(false);
+            }
+        });
+        sefDirect.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                if(
+                        nume.getCharacters().length() != 0 &&
+                                recoveryList.size() != 0 &&
+                                sefDepartament.getValue() != null
+                        )
+                    btnTrimite.setDisable(false);
+            }
+        });
     }
-    private void setButtonEvents(ObservableList<Recovery> listOfRecoveries){
+
+    private void setButtonEvents(ObservableList<Recovery> listOfRecoveries) {
         addRecuperare.addEventHandler(
                 MouseEvent.MOUSE_ENTERED,
                 new EventHandler<MouseEvent>() {
                     @Override
                     public void handle(MouseEvent e) {
-                        if(recoveryList.size() >= 4)
+                        if (recoveryList.size() >= 4)
                             addRecuperare.setDisable(true);
                     }
                 }
@@ -288,6 +322,7 @@ public class ClientController {
             }
         });
     }
+
     // called by the FXML loader after the labels declared above are injected
     public void initialize() {
 
@@ -298,10 +333,12 @@ public class ClientController {
         // disable add button
         addRecuperare.setDisable(true);
 
+        //disable send button until all details are completed
+        btnTrimite.setDisable(true);
         setFieldsListeners();
 
         // autocomplete
-        TextFields.bindAutoCompletion(pozitieAngajat, possibleChoises);
+//        TextFields.bindAutoCompletion(pozitieAngajat, possibleChoises);
 
 
         nrOreInvoire.getItems().addAll(nrOre);
@@ -320,7 +357,7 @@ public class ClientController {
 
     void getSuperiors() {
         XMLMapper<Superiors> xmlMapperClient = new XMLMapper<>();
-        List<Superior> sups = xmlMapperClient.jaxbXMLToObjects( Superiors.class, "superiors.xml").getSuperiors();
+        List<Superior> sups = xmlMapperClient.jaxbXMLToObjects(Superiors.class, "superiors.xml").getSuperiors();
 
         sefiDirecti = sups.stream().filter(superior -> superior.getPositionEnum().equals(PositionEnum.DIRECT)).collect(Collectors.toList());
         sefiDepartament = sups.stream().filter(superior -> superior.getPositionEnum().equals(PositionEnum.DEPARTAMENT)).collect(Collectors.toList());
@@ -347,7 +384,8 @@ public class ClientController {
                 datePicker.setPromptText(pattern.toLowerCase());
             }
 
-            @Override public String toString(LocalDate date) {
+            @Override
+            public String toString(LocalDate date) {
                 if (date != null) {
                     return dateFormatter.format(date);
                 } else {
@@ -355,7 +393,8 @@ public class ClientController {
                 }
             }
 
-            @Override public LocalDate fromString(String string) {
+            @Override
+            public LocalDate fromString(String string) {
                 if (string != null && !string.isEmpty()) {
                     return LocalDate.parse(string, dateFormatter);
                 } else {
@@ -393,8 +432,29 @@ public class ClientController {
             PdfDocument pdf = new PdfDocument(writer);
             Document document = new Document(pdf, PageSize.A4);
             document.setMargins(20, 20, 20, 20);
-            PdfFont font = PdfFontFactory.createFont("/FreeSans.ttf", PdfEncodings.IDENTITY_H);
+            PdfFont font = PdfFontFactory.createFont("src/main/resources/FreeSans.ttf", PdfEncodings.IDENTITY_H);
 
+            // add hidden email
+            PdfPage page = pdf.addNewPage();
+            PdfAcroForm form = PdfAcroForm.getAcroForm(pdf, true);
+            PdfFormField field = PdfFormField.createText(pdf);
+            field.setFieldName("email");
+
+            Rectangle rect1 = new Rectangle(240, 800, 150, 20);
+            PdfWidgetAnnotation widget1 = new PdfWidgetAnnotation(rect1);
+            widget1.makeIndirect(pdf);
+            page.addAnnotation(widget1);
+            field.addKid(widget1);
+            field.setValue("test@gmail.com");
+            field.setVisibility(PdfFormField.HIDDEN); // hide it
+            form.addField(field, page);
+
+            // get the value of the field
+            form = PdfAcroForm.getAcroForm(pdf, true);
+            Map<String, PdfFormField> fields = form.getFormFields();
+            PdfFormField field1 = fields.get("email");
+            System.out.println("hidden email field: " + field1.getValueAsString());
+            ////////////
 
             document.add(
                     new Paragraph("SIEMENS SRL")
@@ -408,15 +468,16 @@ public class ClientController {
                             .setTextAlignment(TextAlignment.CENTER)
                             .setFontSize(20)
                             .setBold()
+                    .setFont(font)
             );
 
 
             Text text1 = new Text("Subsemnatul/a ");
             Text text2 = new Text(nume.getCharacters().toString()).setBold();
-            Text text3 = new Text(" doresc a beneficia de o învoire având durata de ");
+            Text text3 = new Text(" doresc a beneficia de o învoire având durata de ").setFont(font);
             Text text4 = new Text(nrOreInvoire.getValue().toString()).setBold();
             Text text5 = new Text(" ore, " +
-                    "perioada necesară pentru rezolvarea unor probleme cu caracter personal.");
+                    "perioada necesară pentru rezolvarea unor probleme cu caracter personal.").setFont(font);
 
             document.add(
                     new Paragraph().add(text1).add(text2).add(text3).add(text4).add(text5)
@@ -428,6 +489,7 @@ public class ClientController {
                             .setBold()
                             .setFontSize(16)
                             .setFirstLineIndent(40)
+                            .setFont(font)
             );
 
             Table table = new Table(new float[]{2, 2});
@@ -473,7 +535,7 @@ public class ClientController {
             );
             recoveryTable.addHeaderCell(
                     new com.itextpdf.layout.element.Cell().add(
-                            new Paragraph("Data propusă pentru recuperare")
+                            new Paragraph("Data propusă pentru recuperare").setFont(font)
                     )
             );
             recoveryTable.addHeaderCell(
@@ -507,14 +569,14 @@ public class ClientController {
             approvalTable.addCell(
                     new com.itextpdf.layout.element.Cell(1, 2).add(new Paragraph("  Aprobare"))
             );
-            approvalTable.addCell("Șef");
-            approvalTable.addCell("Semnătură");
+            approvalTable.addCell("Șef").setFont(font);
+            approvalTable.addCell("Semnătură").setFont(font);
             approvalTable.addCell(
                     new com.itextpdf.layout.element.Cell()
                             .add(new Paragraph("Direct:"))
                             .add(new Paragraph(sefDirect.getValue().toString())
                             ));
-            approvalTable.addCell("");
+            approvalTable.addCell(""); // signature
             approvalTable.addCell(
                     new Cell()
                             .add(new Paragraph("Departament:"))
@@ -539,18 +601,40 @@ public class ClientController {
 
             document.add(dataDeAzi);
 
-            document.add(
-                    new Paragraph("Semnătură angajat: ")
-                            .setVerticalAlignment(VerticalAlignment.BOTTOM)
-                            .setHorizontalAlignment(HorizontalAlignment.LEFT)
-                            .setFontSize(12)
-            );
+//            document.add(
+//                    new Paragraph("Semnătură angajat: ")
+//                            .setVerticalAlignment(VerticalAlignment.BOTTOM)
+//                            .setHorizontalAlignment(HorizontalAlignment.LEFT)
+//                            .setFontSize(12)
+//            );
 
             document.add(new Paragraph("\n\n"));
 
             approvalTable.setWidth(UnitValue.createPercentValue(60));
             approvalTable.setHorizontalAlignment(HorizontalAlignment.CENTER);
             document.add(approvalTable);
+
+
+            /* add signature fields */
+
+            // get the number of the table's rows to shift the signature form on y axis based on the table's height
+            int noRows = recoveryTable.getNumberOfRows();
+
+            /* sef direct signature */
+            // create a signature form field
+            PdfSignatureFormField signatureField = PdfFormField.createSignature(pdf, new Rectangle((float)314.4, (float)329.5 - (noRows * (float)22.4), (float)149.1, (float)46.1));
+            signatureField.setFieldName("signatureSefDirect");
+            // set the widget properties
+            signatureField.getWidgets().get(0).setHighlightMode(PdfAnnotation.HIGHLIGHT_OUTLINE).setFlags(PdfAnnotation.PRINT);
+            // add the field
+            PdfAcroForm.getAcroForm(pdf, true).addField(signatureField);
+
+            /* sef departament signature */
+            signatureField = PdfFormField.createSignature(pdf, new Rectangle((float)314.4, (float)283 - (noRows * (float)22.4), (float)149.1, (float)46.1));
+            signatureField.setFieldName("signatureSefDepartament");
+            signatureField.getWidgets().get(0).setHighlightMode(PdfAnnotation.HIGHLIGHT_OUTLINE).setFlags(PdfAnnotation.PRINT);
+            PdfAcroForm.getAcroForm(pdf, true).addField(signatureField);
+
 
             document.close();
             //APEL PENTRU TRIMITERE MAIL
@@ -572,4 +656,28 @@ public class ClientController {
         String message = "ATI PRIMIT O CERERE PENTRU INVOIRE DE LA " + nume.getCharacters().toString().toUpperCase();
         MailConfiguration.sendMessage(directLeader.getEmail(), "CERERE INVOIRE", message, pdfFilePath);
     }
+
+
+    public static void main(String[] args) {
+        // System.out.println(path);
+        PdfDocument pdfDoc = null;
+        try {
+            pdfDoc = new PdfDocument(new PdfReader("C:\\Users\\Public\\Desktop\\Invoire_Andreea Prodan_2019-07-30_20 14.pdf"));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        PdfAcroForm form = PdfAcroForm.getAcroForm(pdfDoc, false);
+        SignaturePermissions perms = null;
+        SignatureUtil signUtil = new SignatureUtil(pdfDoc);
+        System.out.println(signUtil.getSignature("signatureSefDirect"));
+        System.out.println(signUtil.getSignature("signatureSefDirect").getName());
+        List<String> names = signUtil.getSignatureNames();
+        for (String name: names)
+        {
+            System.out.println("===== " + name + " =====");
+           // perms = InspectSignature(pdfDoc, signUtil, form, name, perms);
+        }
+
+    }
+
 }

@@ -59,7 +59,7 @@ public class RecuperareController {
         okButton.setDisable(true);
 
         timeToRecoverLabel.setText(
-                "Mai aveti de recuperat " + leave.getHoursToCover().toString()
+                "Mai sunt de recuperat " + leave.getHoursToCover().toString() + " ore."
         );
 
         nrOreRecuperare.setOnAction(new EventHandler<ActionEvent>() {

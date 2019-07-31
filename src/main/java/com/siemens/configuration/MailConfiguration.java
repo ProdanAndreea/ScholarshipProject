@@ -1,8 +1,5 @@
 package com.siemens.configuration;
 
-
-import sun.misc.ClassLoaderUtil;
-
 import javax.activation.DataHandler;
 import javax.activation.DataSource;
 import javax.activation.FileDataSource;
@@ -13,6 +10,7 @@ import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
 
 import java.io.*;
+import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.Properties;
 
@@ -24,7 +22,7 @@ public class MailConfiguration {
             Properties prop = new Properties();
             String configFile = "mail.properties";
 
-            InputStream inputStream = MailConfiguration.class.getResourceAsStream(configFile);
+            InputStream inputStream = MailConfiguration.class.getClassLoader().getResourceAsStream(configFile);
 
             if (inputStream != null) {
                 prop.load(inputStream);

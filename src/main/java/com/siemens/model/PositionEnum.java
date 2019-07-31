@@ -9,10 +9,10 @@ import javax.xml.bind.annotation.*;
 @XmlEnum()
 public enum PositionEnum {
 
-    @XmlEnumValue("Sef Direct")
-    DIRECT("Sef Direct"),
-    @XmlEnumValue("Sef Departament")
-    DEPARTAMENT("Sef Departament");
+    @XmlEnumValue("Team Leader")
+    DIRECT("Team Leader"),
+    @XmlEnumValue("Department Leader")
+    DEPARTAMENT("Department Leader");
 
     private final String value;
 

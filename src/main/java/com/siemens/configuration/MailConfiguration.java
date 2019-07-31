@@ -63,14 +63,17 @@ public class MailConfiguration {
                 BodyPart messageBodyPart = new MimeBodyPart();
                 messageBodyPart.setText(text);
 
+
                 Multipart multipart = new MimeMultipart();
                 multipart.addBodyPart(messageBodyPart);
 
+               /* attachment
                 messageBodyPart = new MimeBodyPart();
                 DataSource source = new FileDataSource(path); // "/project/whatever/file.txt"
                 messageBodyPart.setDataHandler(new DataHandler(source));
                 messageBodyPart.setFileName(path);
-                multipart.addBodyPart(messageBodyPart);
+                multipart.addBodyPart(messageBodyPart); */
+
                 message.setContent(multipart);
 
                 Transport.send(message);

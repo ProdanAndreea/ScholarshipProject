@@ -9,23 +9,19 @@ public class TestXML {
 
     public static void main(String[] args)
     {
+
         /*
-         * Superiors Marshalling
+         *  Superiors Marshalling
          */
         Superiors superiors = new Superiors();
         superiors.setSuperiors(new ArrayList<>());
-        Superior superior_1 = Superior.builder().name("Mark").email("mark@gmail.com").PositionEnum(PositionEnum.DEPARTAMENT).build();
-        Superior superior_2 = Superior.builder().name("Anna").email("anna@gmail.com").PositionEnum(PositionEnum.DIRECT).build();
-        Superior superior_3 = Superior.builder().name("Red").email("red@gmail.com").PositionEnum(PositionEnum.DEPARTAMENT).build();
-        Superior superior_4 = Superior.builder().name("Vlad").email("vlad@gmail.com").PositionEnum(PositionEnum.DIRECT).build();
+        Superior superior_1 = Superior.builder().name("Adrian").email("adrian@gmail.com").PositionEnum(PositionEnum.DIRECT).available(false).build();
+        Superior superior_2 = Superior.builder().name("Mihai").email("mihai@gmail.com").PositionEnum(PositionEnum.DEPARTAMENT).available(true).build();
         superiors.getSuperiors().add(superior_1);
         superiors.getSuperiors().add(superior_2);
-        superiors.getSuperiors().add(superior_3);
-        superiors.getSuperiors().add(superior_4);
 
-        XMLMapper<Superiors> xmlMapperSuperiors = new XMLMapper<>();
         try {
-            xmlMapperSuperiors.jaxbObjectsToXML(superiors, Superiors.class, "superiors.xml");
+            XMLMapper.jaxbObjectsToXML(superiors, Superiors.class, "superiors.xml");
         } catch (JAXBException e) {
             e.printStackTrace();
         }
@@ -33,13 +29,13 @@ public class TestXML {
         /*
          *  Superiors Unmarshalling
          */
-        XMLMapper<Superiors> xmlMapperSuperior = new XMLMapper<>();
-        Superiors sups = xmlMapperSuperior.jaxbXMLToObjects( Superiors.class, "superiors.xml");
+        Superiors sups = XMLMapper.jaxbXMLToObjects( Superiors.class, "superiors.xml");
         for(Superior sup : sups.getSuperiors())
         {
             System.out.println(sup.getName());
             System.out.println(sup.getPositionEnum());
         }
+
     }
 
 }

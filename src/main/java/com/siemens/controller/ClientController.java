@@ -156,6 +156,8 @@ public class ClientController {
     private ComboBox sefDepartament;
     @FXML
     private Button btnTrimite;
+    @FXML
+    private Button btnDelete;
 
     private ClientController clientController;
 
@@ -287,7 +289,9 @@ public class ClientController {
                         );
                     recuperareController.initialize(desiredLeave, recoveryList, listOfRecoveries, datePickerInvoire);
 
-                    stage.setScene(new Scene(root));
+                    Scene scene = new Scene(root);
+                    scene.getStylesheets().add("style/add_recuperare.css");
+                    stage.setScene(scene);
                     stage.show();
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -306,7 +310,9 @@ public class ClientController {
                     stage.initModality(Modality.WINDOW_MODAL);
                     stage.initOwner(ClientStart.primaryStage.getScene().getWindow());
 
-                    stage.setScene(new Scene(root));
+                    Scene scene = new Scene(root);
+                    scene.getStylesheets().add("style/pagina_sef.css");
+                    stage.setScene(scene);
                     stage.show();
                 }catch (Exception e){
                     e.printStackTrace();
@@ -329,11 +335,31 @@ public class ClientController {
                     ConfirmareController confirmareController = fxmlLoader.getController();
                     confirmareController.initialize(clientController);
 
-                    stage.setScene(new Scene(root));
+                    Scene scene = new Scene(root);
+                    scene.getStylesheets().add("style/confirmare.css");
+                    stage.setScene(scene);
                     stage.show();
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
+            }
+        });
+
+        bossAvailability.selectedProperty().addListener(new ChangeListener<Boolean>() {
+            @Override
+            public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
+                XMLMapper xmlMapper = new XMLMapper();
+                xmlMapper.setAvailable(nume.getText(), bossAvailability.isSelected());
+            }
+        });
+
+        btnDelete.setOnAction(e -> {
+            Recovery selectedItem = recoveryTableView.getSelectionModel().getSelectedItem();
+            recoveryTableView.getItems().remove(selectedItem);
+
+            if (selectedItem != null) { // there is a selected rowl
+                desiredLeave.deleteFromCoveredHours(selectedItem.getNumberOfHours());
+                btnDelete.setDisable(true);
             }
         });
     }
@@ -352,6 +378,9 @@ public class ClientController {
                 if(userPosition.equals("Team Leader") || userPosition.equals("Department Leader")){
                     bossAvailability.setOpacity(100);
                     bossAvailability.setDisable(false);
+
+                    XMLMapper xmlMapper = new XMLMapper();
+                    bossAvailability.setSelected(xmlMapper.isAvailable(userName));
 
                     bossButton.setOpacity(100);
                     bossButton.setDisable(false);
@@ -378,6 +407,8 @@ public class ClientController {
 
         bossButton.setOpacity(0);
         bossButton.setDisable(true);
+
+        btnDelete.setDisable(true);
 
         loadUserData();
 
@@ -416,11 +447,31 @@ public class ClientController {
         setButtonEvents(listOfRecoveries);
 
         getSuperiors();
+
+/*
+        recoveryTableView.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                System.out.println("clicked");
+            }
+        });
+        */
+
+        recoveryTableView.setRowFactory(tv -> {
+            TableRow<Recovery> row = new TableRow<>();
+            row.setOnMouseClicked(event -> {
+                if (event.getClickCount() == 1 && (! row.isEmpty()) ) {
+                   // Recovery rowData = row.getItem();
+                    btnDelete.setDisable(false);
+                    System.out.println("click");
+                }
+            });
+            return row ;
+        });
     }
 
     void getSuperiors() {
-        XMLMapper<Superiors> xmlMapperClient = new XMLMapper<>();
-        List<Superior> sups = xmlMapperClient.jaxbXMLToObjects(Superiors.class, "superiors.xml").getSuperiors();
+        List<Superior> sups = XMLMapper.jaxbXMLToObjects(Superiors.class, "superiors.xml").getSuperiors();
 
         sefiDirecti = sups.stream().filter(superior -> superior.getPositionEnum().equals(PositionEnum.DIRECT)).collect(Collectors.toList());
         sefiDepartament = sups.stream().filter(superior -> superior.getPositionEnum().equals(PositionEnum.DEPARTAMENT)).collect(Collectors.toList());
@@ -717,6 +768,12 @@ public class ClientController {
                 .filter(departLeader ->  departLeader.getName().equals(sefDepartament.getValue().toString()))
                 .findFirst().get();
         String message = "ATI PRIMIT O CERERE PENTRU INVOIRE DE LA " + nume.getCharacters().toString().toUpperCase();
-        MailConfiguration.sendMessage(directLeader.getEmail(), "CERERE INVOIRE", message, pdfFilePath);
+
+        if (directLeader.getAvailable()) {
+            MailConfiguration.sendMessage(directLeader.getEmail(), "CERERE INVOIRE", message, pdfFilePath);
+        } else {
+            MailConfiguration.sendMessage(departmentLeader.getEmail(), "CERERE INVOIRE", message, pdfFilePath);
+        }
+
     }
 }

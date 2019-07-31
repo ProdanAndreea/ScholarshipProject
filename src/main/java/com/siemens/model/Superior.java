@@ -6,7 +6,7 @@ import javax.xml.bind.annotation.*;
 
 @XmlRootElement(name = "superior")
 @XmlAccessorType (XmlAccessType.FIELD)
-@XmlType (propOrder={"name","email", "PositionEnum"})
+@XmlType (propOrder={"name","email", "PositionEnum", "available"})
 @Getter
 @Setter
 @AllArgsConstructor
@@ -21,5 +21,7 @@ public class Superior {
     protected PositionEnum PositionEnum;
 
     private String email;
+
+    private Boolean available;
 
 }

@@ -1,0 +1,74 @@
+#btnTrimite {
+    -fx-background-color:
+            #e3e3e3,
+            linear-gradient(#ebebeb 50%, white 20%),
+            radial-gradient(center 50% -40%, radius 20%, #f0f0f0 25%, rgba(245, 245, 245, 1) 20%);
+    -fx-background-radius: 5,4,3,5;
+    -fx-background-insets: 0,1,2,0;
+    -fx-text-fill: black;
+    -fx-effect: dropshadow( three-pass-box , rgba(0,0,0,0.6) , 5, 0.0 , 0 , 1 );
+    -fx-font-family: "Arial";
+    -fx-font-size: 12px;
+    -fx-padding: 10 20 10 20;
+}
+#btnTrimite:hover {
+    -fx-effect: dropshadow( three-pass-box , rgba(0,0,0,0.5) , 3, 0.5 , 0.8 , 1 );
+}
+
+
+#bossButton {
+    -fx-background-color:
+            #e3e3e3,
+            linear-gradient(#ebebeb 50%, white 20%),
+            radial-gradient(center 50% -40%, radius 20%, #f0f0f0 25%, rgba(245, 245, 245, 1) 20%);
+    -fx-background-radius: 20;
+    -fx-background-insets: 0,1,1;
+    -fx-text-fill: black;
+    -fx-effect: dropshadow( three-pass-box , rgba(0,0,0,0.5) , 3, 0.0 , 0 , 1 );
+}
+#bossButton:hover {
+    -fx-background-color:
+            #e0e0e0,
+            linear-gradient(#ebebeb 50%, white 100%),
+            radial-gradient(center 50% -40%, radius 200%, #f0f0f0 45%, rgba(245, 245, 245, 1) 50%);
+    -fx-effect: dropshadow( three-pass-box , rgba(0,0,0,0.5) , 3, 0.5 , 0.8 , 1 );
+}
+
+
+#addRecuperare {
+    -fx-background-color:
+            #e3e3e3,
+            linear-gradient(#ebebeb 50%, white 100%),
+            radial-gradient(center 50% -40%, radius 200%, #f0f0f0 45%, rgba(245, 245, 245, 1) 50%);
+    -fx-background-radius: 30;
+    -fx-background-insets: 0,1,1;
+    -fx-effect: dropshadow( three-pass-box , rgba(0,0,0,0.5) , 3, 0.0 , 0 , 1 );
+}
+#addRecuperare:hover {
+    -fx-background-color:
+            #e0e0e0,
+            linear-gradient(#ebebeb 50%, white 100%),
+            radial-gradient(center 50% -40%, radius 200%, #f0f0f0 45%, rgba(245, 245, 245, 1) 50%);
+    -fx-effect: dropshadow( three-pass-box , rgba(0,0,0,0.5) , 3, 0.5 , 0.8 , 1 );
+}
+
+
+#btnDelete {
+    -fx-background-color:
+            #e3e3e3,
+            linear-gradient(#ebebeb 50%, white 100%),
+            radial-gradient(center 50% -40%, radius 200%, #f0f0f0 45%, rgba(245, 245, 245, 1) 50%);
+    -fx-background-radius: 30;
+    -fx-background-insets: 0,1,1;
+    -fx-text-fill: black;
+    -fx-effect: dropshadow( three-pass-box , rgba(0,0,0,0.5) , 3, 0.0 , 0 , 1 );
+}
+#btnDelete:hover {
+    -fx-background-color:
+            #b03030,
+            linear-gradient(#db5e5e 50%, white 100%),
+            radial-gradient(center 50% -40%, radius 200%, #db5e5e 45%, rgba(176, 48, 48, 1) 50%);
+    -fx-background-radius: 30;
+    -fx-background-insets: 0,1,1;
+    -fx-text-fill: white;
+}

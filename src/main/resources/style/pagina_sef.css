@@ -1,0 +1,17 @@
+#acceptButton, #denyButton {
+    -fx-background-color:
+            #e3e3e3,
+            linear-gradient(#ebebeb 50%, white 20%),
+            radial-gradient(center 50% -40%, radius 20%, #f0f0f0 25%, rgba(245, 245, 245, 1) 20%);
+    -fx-background-radius: 20;
+    -fx-background-insets: 0,1,1;
+    -fx-text-fill: black;
+    -fx-effect: dropshadow( three-pass-box , rgba(0,0,0,0.5) , 3, 0.0 , 0 , 1 );
+}
+
+#acceptButton:hover {
+    -fx-effect: dropshadow( three-pass-box , rgba(33, 130, 57, 1) , 3, 0.5 , 0.8 , 1 );
+}
+#denyButton:hover {
+    -fx-effect: dropshadow( three-pass-box , rgba(166, 41, 41, 1) , 3, 0.5 , 0.8 , 1 );
+}

@@ -8,7 +8,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane prefHeight="254.0" prefWidth="487.0" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.siemens.controller.RecuperareController">
+<AnchorPane prefHeight="254.0" prefWidth="487.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.siemens.controller.RecuperareController">
    <children>
       <AnchorPane fx:id="addAnchor" maxHeight="-1.0" maxWidth="-1.0" prefHeight="235.0" prefWidth="487.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
@@ -25,7 +25,7 @@
                </font>
             </Label>
             <ComboBox fx:id="nrOreRecuperare" layoutX="291.0" layoutY="113.0" prefHeight="25.0" prefWidth="94.0" />
-            <Label fx:id="timeToRecoverLabel" alignment="CENTER" layoutX="140.0" layoutY="47.0" prefHeight="36.0" prefWidth="209.0" textAlignment="CENTER" AnchorPane.bottomAnchor="171.0" AnchorPane.leftAnchor="140.0" AnchorPane.rightAnchor="138.0" AnchorPane.topAnchor="47.0" />
+            <Label fx:id="timeToRecoverLabel" alignment="CENTER" layoutX="107.0" layoutY="54.0" prefHeight="36.0" prefWidth="272.0" textAlignment="CENTER" AnchorPane.bottomAnchor="164.0" AnchorPane.leftAnchor="107.0" AnchorPane.rightAnchor="108.0" AnchorPane.topAnchor="54.0" />
             <Text fx:id="recoveryCompleteText" fill="#f82626" layoutX="113.0" layoutY="51.0" strokeType="OUTSIDE" strokeWidth="0.0" text="AȚI ACOPERIT TOATE ORELE DE RECUPERARE!" textAlignment="CENTER">
                <font>
                   <Font name="System Bold" size="12.0" />

@@ -66,8 +66,13 @@
             <Label layoutX="59.0" layoutY="590.0" text="Șef departament" />
             <ComboBox fx:id="sefDepartament" layoutX="159.0" layoutY="586.0" prefWidth="150.0" />
             <Button fx:id="btnTrimite" layoutX="158.0" layoutY="634.0" mnemonicParsing="false" text="Trimite" />
-            <Button fx:id="bossButton" layoutX="112.0" layoutY="182.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="149.0" text="Deschide Lista Invoiri" />
+            <Button fx:id="bossButton" layoutX="112.0" layoutY="182.0" mnemonicParsing="false" prefHeight="31.0" prefWidth="187.0" text="Deschide Lista Invoiri" />
             <CheckBox fx:id="bossAvailability" layoutX="98.0" layoutY="89.0" mnemonicParsing="false" prefHeight="17.0" prefWidth="206.0" text="Disponibilitate Sef" />
+            <Button fx:id="btnDelete" contentDisplay="CENTER" layoutX="310.0" layoutY="502.0" mnemonicParsing="false" text="Delete" textAlignment="CENTER" textFill="#b50000">
+               <font>
+                  <Font name="Arial Unicode MS" size="15.0" />
+               </font>
+            </Button>
             </children>
         </AnchorPane>
     </children>

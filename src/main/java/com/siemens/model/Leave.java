@@ -48,4 +48,19 @@ public class Leave {
         hoursToCover = hoursToCover.minusHours(coveredHours.getHour());
     }
 
+    public void deleteFromCoveredHours(LocalTime coveredHours) {
+        hoursToCover = hoursToCover.plusMinutes(coveredHours.getMinute());
+        hoursToCover = hoursToCover.plusHours(coveredHours.getHour());
+    }
+
+    @Override
+    public String toString() {
+        return "Leave{" +
+                "leaveDate=" + leaveDate +
+                ", numberOfHours=" + numberOfHours +
+                ", hoursToCover=" + hoursToCover +
+                ", startHour=" + startHour +
+                ", endHour=" + endHour +
+                '}';
+    }
 }

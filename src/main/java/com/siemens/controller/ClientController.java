@@ -121,6 +121,10 @@ public class ClientController {
     private String[] sefDepartamentChoises;
     private List<Superior> sefiDirecti;
     private List<Superior> sefiDepartament;
+    private String userName;
+    private String userPosition;
+    private String superiorName;
+    private String departmentSuperior;
 
     @FXML
     private CheckBox bossAvailability;
@@ -347,10 +351,10 @@ public class ClientController {
         try{
             if (inputStream != null) {
                 property.load(inputStream);
-                String userName = property.getProperty("appUser");
-                String userPosition = property.getProperty("userOccupiedPosition");
-                String superiorName = property.getProperty("superiorName");
-                String departmentSuperior = property.getProperty("departmentSuperiorName");
+                userName = property.getProperty("appUser");
+                userPosition = property.getProperty("userOccupiedPosition");
+                superiorName = property.getProperty("superiorName");
+                departmentSuperior = property.getProperty("departmentSuperiorName");
 
                 if(userPosition.equals("Team Leader") || userPosition.equals("Department Leader")){
                     bossAvailability.setOpacity(100);
@@ -660,7 +664,7 @@ public class ClientController {
             document.close();
             //APEL PENTRU TRIMITERE MAIL
 
-            generateMailData(pdfFilePath);
+            //generateMailData(pdfFilePath);
 
             System.exit(0);
 

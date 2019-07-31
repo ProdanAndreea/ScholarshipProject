@@ -1,4 +1,5 @@
 
+import com.itextpdf.forms.PdfAcroForm;
 import com.itextpdf.io.font.FontConstants;
 import com.itextpdf.kernel.colors.Color;
 import com.itextpdf.kernel.colors.ColorConstants;
@@ -9,6 +10,7 @@ import com.itextpdf.kernel.geom.PageSize;
 import com.itextpdf.kernel.geom.Rectangle;
 import com.itextpdf.kernel.pdf.PdfDocument;
 import com.itextpdf.kernel.pdf.PdfPage;
+import com.itextpdf.kernel.pdf.PdfReader;
 import com.itextpdf.kernel.pdf.PdfWriter;
 import com.itextpdf.kernel.pdf.canvas.PdfCanvas;
 import com.itextpdf.kernel.pdf.canvas.parser.listener.TextChunk;
@@ -22,12 +24,16 @@ import com.itextpdf.layout.property.HorizontalAlignment;
 import com.itextpdf.layout.property.TextAlignment;
 import com.itextpdf.layout.property.UnitValue;
 import com.itextpdf.layout.property.VerticalAlignment;
+import com.itextpdf.signatures.SignaturePermissions;
+import com.itextpdf.signatures.SignatureUtil;
 import com.itextpdf.styledxmlparser.jsoup.nodes.Element;
 import org.junit.Test;
 
 import java.awt.*;
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 
 
 public class pdfTester {
@@ -171,5 +177,30 @@ public class pdfTester {
 
 
 
+    }
+
+
+    @Test
+    public void testCheckSignature() {
+        PdfDocument pdfDoc = null;
+        try {
+            pdfDoc = new PdfDocument(new PdfReader("C:\\Users\\Public\\Desktop\\Bilete Invoire\\Invoire_Andreea Prodan_2019-07-31_09-43_Signed.pdf"));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        SignatureUtil signUtil = new SignatureUtil(pdfDoc);
+
+        if (signUtil.getSignatureNames().size() == 0) {
+            System.out.println("Not signed");
+        } else {
+            System.out.println(signUtil.getSignature("signatureSefDirect"));
+            System.out.println(signUtil.getSignature("signatureSefDirect").getName());
+            List<String> names = signUtil.getSignatureNames();
+            for (String name: names)
+            {
+                System.out.println("===== " + name + " =====");
+            }
+        }
     }
 }

@@ -1,13 +1,17 @@
 package com.siemens.controller;
 
-import com.itextpdf.io.font.FontConstants;
+import com.itextpdf.forms.PdfAcroForm;
+import com.itextpdf.forms.fields.PdfFormField;
+import com.itextpdf.forms.fields.PdfSignatureFormField;
+import com.itextpdf.io.font.PdfEncodings;
 import com.itextpdf.kernel.colors.DeviceRgb;
 import com.itextpdf.kernel.font.PdfFont;
 import com.itextpdf.kernel.font.PdfFontFactory;
 import com.itextpdf.kernel.geom.PageSize;
-import com.itextpdf.kernel.pdf.PdfDocument;
-import com.itextpdf.kernel.pdf.PdfWriter;
-import com.itextpdf.kernel.pdf.canvas.parser.listener.TextChunk;
+import com.itextpdf.kernel.geom.Rectangle;
+import com.itextpdf.kernel.pdf.*;
+import com.itextpdf.kernel.pdf.annot.PdfAnnotation;
+import com.itextpdf.kernel.pdf.annot.PdfWidgetAnnotation;
 import com.itextpdf.layout.Document;
 import com.itextpdf.layout.element.Cell;
 import com.itextpdf.layout.element.Paragraph;
@@ -17,7 +21,6 @@ import com.itextpdf.layout.property.HorizontalAlignment;
 import com.itextpdf.layout.property.TextAlignment;
 import com.itextpdf.layout.property.UnitValue;
 import com.itextpdf.layout.property.VerticalAlignment;
-import com.jfoenix.controls.JFXTimePicker;
 import com.siemens.configuration.MailConfiguration;
 import com.siemens.model.Leave;
 import com.siemens.model.Recovery;
@@ -43,23 +46,17 @@ import javafx.scene.input.MouseEvent;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.StringConverter;
-
-
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.time.Period;
 import java.time.format.DateTimeFormatter;
-import java.time.temporal.TemporalAccessor;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.List;
 import java.util.Properties;
+import java.util.Map;
 import java.util.stream.Collectors;
-
-import org.controlsfx.control.textfield.TextFields;
 
 /**
  * @Author: Siemens CT Cluj-Napoca, Romania
@@ -117,8 +114,8 @@ public class ClientController {
     @FXML
     private javafx.scene.control.TableView<Recovery> recoveryTableView;
 
-    private String[] sefDirectChoises;
-    private String[] sefDepartamentChoises;
+    private String[] sefDirectChoices;
+    private String[] sefDepartamentChoices;
     private List<Superior> sefiDirecti;
     private List<Superior> sefiDepartament;
     private String userName;
@@ -292,7 +289,7 @@ public class ClientController {
                                 datePickerInvoire.getValue(),
                                 LocalTime.parse(nrOreInvoire.getValue().toString(), hourFormatter)
                         );
-                    recuperareController.initialize(desiredLeave, recoveryList, listOfRecoveries);
+                    recuperareController.initialize(desiredLeave, recoveryList, listOfRecoveries, datePickerInvoire);
 
                     stage.setScene(new Scene(root));
                     stage.show();
@@ -432,17 +429,17 @@ public class ClientController {
         sefiDirecti = sups.stream().filter(superior -> superior.getPositionEnum().equals(PositionEnum.DIRECT)).collect(Collectors.toList());
         sefiDepartament = sups.stream().filter(superior -> superior.getPositionEnum().equals(PositionEnum.DEPARTAMENT)).collect(Collectors.toList());
 
-        sefDirectChoises = new String[sefiDirecti.size()];
+        sefDirectChoices = new String[sefiDirecti.size()];
         for (int i = 0; i < sefiDirecti.size(); i++) {
-            sefDirectChoises[i] = sefiDirecti.get(i).getName();
+            sefDirectChoices[i] = sefiDirecti.get(i).getName();
         }
-        sefDirect.getItems().addAll(sefDirectChoises);
+        sefDirect.getItems().addAll(sefDirectChoices);
 
-        sefDepartamentChoises = new String[sefiDepartament.size()];
+        sefDepartamentChoices = new String[sefiDepartament.size()];
         for (int i = 0; i < sefiDepartament.size(); i++) {
-            sefDirectChoises[i] = sefiDepartament.get(i).getName();
+            sefDirectChoices[i] = sefiDepartament.get(i).getName();
         }
-        sefDepartament.getItems().addAll(sefDirectChoises);
+        sefDepartament.getItems().addAll(sefDirectChoices);
     }
 
     public static void setDatePickerFormat(DatePicker datePicker) {
@@ -502,8 +499,29 @@ public class ClientController {
             PdfDocument pdf = new PdfDocument(writer);
             Document document = new Document(pdf, PageSize.A4);
             document.setMargins(20, 20, 20, 20);
-            PdfFont font = PdfFontFactory.createFont(FontConstants.TIMES_ROMAN);
+            PdfFont font = PdfFontFactory.createFont("src/main/resources/FreeSans.ttf", PdfEncodings.IDENTITY_H);
 
+            // add hidden email
+            PdfPage page = pdf.addNewPage();
+            PdfAcroForm form = PdfAcroForm.getAcroForm(pdf, true);
+            PdfFormField field = PdfFormField.createText(pdf);
+            field.setFieldName("email");
+
+            Rectangle rect1 = new Rectangle(240, 800, 150, 20);
+            PdfWidgetAnnotation widget1 = new PdfWidgetAnnotation(rect1);
+            widget1.makeIndirect(pdf);
+            page.addAnnotation(widget1);
+            field.addKid(widget1);
+            field.setValue("test@gmail.com");
+            field.setVisibility(PdfFormField.HIDDEN); // hide it
+            form.addField(field, page);
+
+            // get the value of the field
+            form = PdfAcroForm.getAcroForm(pdf, true);
+            Map<String, PdfFormField> fields = form.getFormFields();
+            PdfFormField field1 = fields.get("email");
+            System.out.println("hidden email field: " + field1.getValueAsString());
+            ////////////
 
             document.add(
                     new Paragraph("SIEMENS SRL")
@@ -517,15 +535,16 @@ public class ClientController {
                             .setTextAlignment(TextAlignment.CENTER)
                             .setFontSize(20)
                             .setBold()
+                    .setFont(font)
             );
 
 
             Text text1 = new Text("Subsemnatul/a ");
             Text text2 = new Text(nume.getCharacters().toString()).setBold();
-            Text text3 = new Text(" doresc a beneficia de o învoire având durata de ");
+            Text text3 = new Text(" doresc a beneficia de o învoire având durata de ").setFont(font);
             Text text4 = new Text(nrOreInvoire.getValue().toString()).setBold();
             Text text5 = new Text(" ore, " +
-                    "perioada necesară pentru rezolvarea unor probleme cu caracter personal.");
+                    "perioada necesară pentru rezolvarea unor probleme cu caracter personal.").setFont(font);
 
             document.add(
                     new Paragraph().add(text1).add(text2).add(text3).add(text4).add(text5)
@@ -537,6 +556,7 @@ public class ClientController {
                             .setBold()
                             .setFontSize(16)
                             .setFirstLineIndent(40)
+                            .setFont(font)
             );
 
             Table table = new Table(new float[]{2, 2});
@@ -582,7 +602,7 @@ public class ClientController {
             );
             recoveryTable.addHeaderCell(
                     new com.itextpdf.layout.element.Cell().add(
-                            new Paragraph("Data propusă pentru recuperare")
+                            new Paragraph("Data propusă pentru recuperare").setFont(font)
                     )
             );
             recoveryTable.addHeaderCell(
@@ -616,8 +636,8 @@ public class ClientController {
             approvalTable.addCell(
                     new com.itextpdf.layout.element.Cell(1, 2).add(new Paragraph("  Aprobare"))
             );
-            approvalTable.addCell("Șef");
-            approvalTable.addCell("Semnătură");
+            approvalTable.addCell("Șef").setFont(font);
+            approvalTable.addCell("Semnătură").setFont(font);
             approvalTable.addCell(
                     new com.itextpdf.layout.element.Cell()
                             .add(new Paragraph("Direct:"))
@@ -660,6 +680,28 @@ public class ClientController {
             approvalTable.setWidth(UnitValue.createPercentValue(60));
             approvalTable.setHorizontalAlignment(HorizontalAlignment.CENTER);
             document.add(approvalTable);
+
+
+            /* add signature fields */
+
+            // get the number of the table's rows to shift the signature form on y axis based on the table's height
+            int noRows = recoveryTable.getNumberOfRows();
+
+            /* sef direct signature */
+            // create a signature form field
+            PdfSignatureFormField signatureField = PdfFormField.createSignature(pdf, new Rectangle((float)314.4, (float)329.5 - (noRows * (float)22.4), (float)149.1, (float)46.1));
+            signatureField.setFieldName("signatureSefDirect");
+            // set the widget properties
+            signatureField.getWidgets().get(0).setHighlightMode(PdfAnnotation.HIGHLIGHT_OUTLINE).setFlags(PdfAnnotation.PRINT);
+            // add the field
+            PdfAcroForm.getAcroForm(pdf, true).addField(signatureField);
+
+            /* sef departament signature */
+            signatureField = PdfFormField.createSignature(pdf, new Rectangle((float)314.4, (float)283 - (noRows * (float)22.4), (float)149.1, (float)46.1));
+            signatureField.setFieldName("signatureSefDepartament");
+            signatureField.getWidgets().get(0).setHighlightMode(PdfAnnotation.HIGHLIGHT_OUTLINE).setFlags(PdfAnnotation.PRINT);
+            PdfAcroForm.getAcroForm(pdf, true).addField(signatureField);
+
 
             document.close();
             //APEL PENTRU TRIMITERE MAIL

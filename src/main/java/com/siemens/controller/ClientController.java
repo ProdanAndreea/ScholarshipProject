@@ -3,7 +3,6 @@ package com.siemens.controller;
 import com.itextpdf.forms.PdfAcroForm;
 import com.itextpdf.forms.fields.PdfFormField;
 import com.itextpdf.forms.fields.PdfSignatureFormField;
-import com.itextpdf.io.font.FontConstants;
 import com.itextpdf.io.font.PdfEncodings;
 import com.itextpdf.kernel.colors.DeviceRgb;
 import com.itextpdf.kernel.font.PdfFont;
@@ -13,7 +12,6 @@ import com.itextpdf.kernel.geom.Rectangle;
 import com.itextpdf.kernel.pdf.*;
 import com.itextpdf.kernel.pdf.annot.PdfAnnotation;
 import com.itextpdf.kernel.pdf.annot.PdfWidgetAnnotation;
-import com.itextpdf.kernel.pdf.canvas.parser.listener.TextChunk;
 import com.itextpdf.layout.Document;
 import com.itextpdf.layout.element.Cell;
 import com.itextpdf.layout.element.Paragraph;
@@ -23,9 +21,6 @@ import com.itextpdf.layout.property.HorizontalAlignment;
 import com.itextpdf.layout.property.TextAlignment;
 import com.itextpdf.layout.property.UnitValue;
 import com.itextpdf.layout.property.VerticalAlignment;
-import com.itextpdf.signatures.SignaturePermissions;
-import com.itextpdf.signatures.SignatureUtil;
-import com.jfoenix.controls.JFXTimePicker;
 import com.siemens.configuration.MailConfiguration;
 import com.siemens.model.Leave;
 import com.siemens.model.Recovery;
@@ -36,6 +31,7 @@ import com.siemens.view.ClientStart;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
+import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import com.siemens.xml.XMLMapper;
 import javafx.event.ActionEvent;
@@ -50,24 +46,17 @@ import javafx.scene.input.MouseEvent;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.StringConverter;
-
-
-import java.io.IOException;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.time.Period;
 import java.time.format.DateTimeFormatter;
-import java.time.temporal.TemporalAccessor;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.List;
+import java.util.Properties;
 import java.util.Map;
 import java.util.stream.Collectors;
-
-import org.controlsfx.control.textfield.TextFields;
-
-import static com.itextpdf.kernel.pdf.PdfName.BaseFont;
 
 /**
  * @Author: Siemens CT Cluj-Napoca, Romania
@@ -125,10 +114,16 @@ public class ClientController {
     @FXML
     private javafx.scene.control.TableView<Recovery> recoveryTableView;
 
-    private String[] sefDirectChoises;
-    private String[] sefDepartamentChoises;
+    private String[] sefDirectChoices;
+    private String[] sefDepartamentChoices;
     private List<Superior> sefiDirecti;
     private List<Superior> sefiDepartament;
+
+    @FXML
+    private CheckBox bossAvailability;
+
+    @FXML
+    private Button bossButton;
 
     @FXML
     private TableColumn<Recovery, LocalTime> numberOfHours;
@@ -299,6 +294,26 @@ public class ClientController {
                 }
             }
         });
+        bossButton.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                try{
+                    FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/pagina_sef.fxml"));
+                    Parent root = fxmlLoader.load();
+                    Stage stage = new Stage();
+                    stage.setTitle("Pagina Superior");
+
+                    stage.initModality(Modality.WINDOW_MODAL);
+                    stage.initOwner(ClientStart.primaryStage.getScene().getWindow());
+
+                    stage.setScene(new Scene(root));
+                    stage.show();
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+
+            }
+        });
         btnTrimite.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
@@ -322,9 +337,49 @@ public class ClientController {
             }
         });
     }
+    private void loadUserData(){
+        Properties property = new Properties();
+        String userProperties = "user.properties";
+        InputStream inputStream = getClass().getClassLoader().getResourceAsStream(userProperties);
+        try{
+            if (inputStream != null) {
+                property.load(inputStream);
+                String userName = property.getProperty("appUser");
+                String userPosition = property.getProperty("userOccupiedPosition");
+                String superiorName = property.getProperty("superiorName");
+                String departmentSuperior = property.getProperty("departmentSuperiorName");
+
+                if(userPosition.equals("Team Leader") || userPosition.equals("Department Leader")){
+                    bossAvailability.setOpacity(100);
+                    bossAvailability.setDisable(false);
+
+                    bossButton.setOpacity(100);
+                    bossButton.setDisable(false);
+                }
+
+                nume.setText(userName);
+                sefDirect.setValue(superiorName);
+                sefDepartament.setValue(departmentSuperior);
+            } else {
+                throw new FileNotFoundException("property file '" + userProperties + "' not found in the classpath");
+            }
+        }catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+
+
+    }
 
     // called by the FXML loader after the labels declared above are injected
     public void initialize() {
+        bossAvailability.setOpacity(0);
+        bossAvailability.setDisable(true);
+
+        bossButton.setOpacity(0);
+        bossButton.setDisable(true);
+
+        loadUserData();
 
         setDatePickerFormat(datePickerInvoire);
 
@@ -344,6 +399,14 @@ public class ClientController {
         nrOreInvoire.getItems().addAll(nrOre);
         //MAKE THE LIST OF RECOVERIES
         ObservableList<Recovery> listOfRecoveries = FXCollections.observableArrayList();
+
+        listOfRecoveries.addListener(new ListChangeListener<Recovery>() {
+            @Override
+            public void onChanged(Change<? extends Recovery> c) {
+                if(recoveryList.size() > 0)
+                    btnTrimite.setDisable(false);
+            }
+        });
         //SET CELL VALUES FOR THE TABLE
         leaveDate.setCellValueFactory(new PropertyValueFactory<Recovery, LocalDate>("recoveryDate"));
         numberOfHours.setCellValueFactory(new PropertyValueFactory<Recovery, LocalTime>("numberOfHours"));
@@ -362,17 +425,17 @@ public class ClientController {
         sefiDirecti = sups.stream().filter(superior -> superior.getPositionEnum().equals(PositionEnum.DIRECT)).collect(Collectors.toList());
         sefiDepartament = sups.stream().filter(superior -> superior.getPositionEnum().equals(PositionEnum.DEPARTAMENT)).collect(Collectors.toList());
 
-        sefDirectChoises = new String[sefiDirecti.size()];
+        sefDirectChoices = new String[sefiDirecti.size()];
         for (int i = 0; i < sefiDirecti.size(); i++) {
-            sefDirectChoises[i] = sefiDirecti.get(i).getName();
+            sefDirectChoices[i] = sefiDirecti.get(i).getName();
         }
-        sefDirect.getItems().addAll(sefDirectChoises);
+        sefDirect.getItems().addAll(sefDirectChoices);
 
-        sefDepartamentChoises = new String[sefiDepartament.size()];
+        sefDepartamentChoices = new String[sefiDepartament.size()];
         for (int i = 0; i < sefiDepartament.size(); i++) {
-            sefDirectChoises[i] = sefiDepartament.get(i).getName();
+            sefDirectChoices[i] = sefiDepartament.get(i).getName();
         }
-        sefDepartament.getItems().addAll(sefDirectChoises);
+        sefDepartament.getItems().addAll(sefDirectChoices);
     }
 
     public static void setDatePickerFormat(DatePicker datePicker) {
@@ -425,9 +488,9 @@ public class ClientController {
     public void generatePdf(){
         try{
             String pdfFilePath =
-                    "C:\\Users\\Public\\Desktop\\Invoire_"+nume.getCharacters().toString()+
+                    ClientStart.fileDirectoryPath +"\\Invoire_"+nume.getCharacters().toString()+
                     "_"+desiredLeave.getLeaveDate().toString()
-                            +"_"+LocalTime.now().format(DateTimeFormatter.ofPattern("HH mm")).toString()+".pdf";
+                            +"_"+LocalTime.now().format(DateTimeFormatter.ofPattern("HH-mm")).toString()+".pdf";
             PdfWriter writer = new PdfWriter(pdfFilePath);
             PdfDocument pdf = new PdfDocument(writer);
             Document document = new Document(pdf, PageSize.A4);
@@ -576,7 +639,7 @@ public class ClientController {
                             .add(new Paragraph("Direct:"))
                             .add(new Paragraph(sefDirect.getValue().toString())
                             ));
-            approvalTable.addCell(""); // signature
+            approvalTable.addCell("");
             approvalTable.addCell(
                     new Cell()
                             .add(new Paragraph("Departament:"))
@@ -656,28 +719,4 @@ public class ClientController {
         String message = "ATI PRIMIT O CERERE PENTRU INVOIRE DE LA " + nume.getCharacters().toString().toUpperCase();
         MailConfiguration.sendMessage(directLeader.getEmail(), "CERERE INVOIRE", message, pdfFilePath);
     }
-
-
-    public static void main(String[] args) {
-        // System.out.println(path);
-        PdfDocument pdfDoc = null;
-        try {
-            pdfDoc = new PdfDocument(new PdfReader("C:\\Users\\Public\\Desktop\\Invoire_Andreea Prodan_2019-07-30_20 14.pdf"));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        PdfAcroForm form = PdfAcroForm.getAcroForm(pdfDoc, false);
-        SignaturePermissions perms = null;
-        SignatureUtil signUtil = new SignatureUtil(pdfDoc);
-        System.out.println(signUtil.getSignature("signatureSefDirect"));
-        System.out.println(signUtil.getSignature("signatureSefDirect").getName());
-        List<String> names = signUtil.getSignatureNames();
-        for (String name: names)
-        {
-            System.out.println("===== " + name + " =====");
-           // perms = InspectSignature(pdfDoc, signUtil, form, name, perms);
-        }
-
-    }
-
 }

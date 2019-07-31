@@ -12,10 +12,11 @@ import javafx.stage.Stage;
  * @Description:
  *   Starting point for the Client application.
  */
+
 public class ClientStart extends Application {
 
     public static Stage primaryStage;
-
+    public static final String fileDirectoryPath = "C:\\Users\\Public\\Desktop\\Bilete Invoire";
     public ClientStart() {}
 
     @Override
@@ -30,6 +31,8 @@ public class ClientStart extends Application {
     }
 
     public static void main(String[] args) {
+
+
         launch(args);
     }
 }

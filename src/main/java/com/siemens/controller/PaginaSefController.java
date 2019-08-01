@@ -1,5 +1,21 @@
 package com.siemens.controller;
 
+import com.itextpdf.forms.PdfAcroForm;
+import com.itextpdf.forms.fields.PdfFormField;
+import com.itextpdf.kernel.colors.Color;
+import com.itextpdf.kernel.colors.ColorConstants;
+import com.itextpdf.kernel.geom.PageSize;
+import com.itextpdf.kernel.geom.Rectangle;
+import com.itextpdf.kernel.pdf.PdfDocument;
+import com.itextpdf.kernel.pdf.PdfReader;
+import com.itextpdf.kernel.pdf.PdfWriter;
+import com.itextpdf.kernel.pdf.annot.PdfAnnotation;
+import com.itextpdf.kernel.pdf.annot.PdfWidgetAnnotation;
+import com.itextpdf.layout.Document;
+import com.itextpdf.layout.element.Paragraph;
+import com.itextpdf.layout.property.TextAlignment;
+import com.itextpdf.signatures.SignatureUtil;
+import com.siemens.configuration.MailConfiguration;
 import com.itextpdf.kernel.pdf.PdfDocument;
 import com.itextpdf.kernel.pdf.PdfReader;
 import com.itextpdf.signatures.SignatureUtil;
@@ -22,9 +38,13 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.nio.file.*;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 public class PaginaSefController {
     private ObservableList<Request> requestObservableList = FXCollections.observableArrayList();
@@ -49,24 +69,30 @@ public class PaginaSefController {
         ArrayList<Request> array = new ArrayList<>();
         for(File file : folder.listFiles()){
             String[] parts = file.getName().split("_");
-
-            try {
-                pdfDoc = new PdfDocument(new PdfReader(ClientStart.fileDirectoryPath + "\\" + file.getName()));
-                SignatureUtil signUtil = new SignatureUtil(pdfDoc);
-                isSigned = (signUtil.getSignatureNames().size() == 0 ? false : true);
-
+            try{
+                PdfDocument pdf = new PdfDocument(new PdfReader(ClientStart.fileDirectoryPath + "\\" +file.getName()));
+                PdfAcroForm form  = PdfAcroForm.getAcroForm(pdf, true);
+                SignatureUtil signUtil = new SignatureUtil(pdf);
+                isSigned = true;
+                if(signUtil.getSignatureNames().size() == 0)
+                    isSigned = false;
+                Map<String, PdfFormField> fields = form.getFormFields();
+                PdfFormField field1 = fields.get("email");
+                PdfFormField sentField = fields.get("hasBeenSent");
+                boolean isSent = false;
+                if(sentField != null)
+                    isSent = true;
+                String senderMail = field1.getValueAsString();
+                pdf.close();
                 requestObservableList.add(
-                        new Request(file.getName(), "", file, isSigned, LocalDate.parse(parts[2], formatter), parser.parse(parts[3]))
+                        new Request(file.getName(), senderMail, file, isSigned, isSent, LocalDate.parse(parts[2], formatter), parser.parse(parts[3]))
                 );
-
-                array.add(new Request(file.getName(), "", file, isSigned, LocalDate.parse(parts[2], formatter), parser.parse(parts[3])));
-
-
-            } catch (ParseException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
+                array.add(new Request(file.getName(), senderMail, file, isSigned, isSent, LocalDate.parse(parts[2], formatter), parser.parse(parts[3]))
+                );
+            }catch (Exception e){
                 e.printStackTrace();
             }
+
         }
 
         ArrayList<Request> sorted = mergeSort(array);
@@ -74,10 +100,37 @@ public class PaginaSefController {
             requestObservableList.set(i, sorted.get(i));
         }
     }
-
     private void refreshItems(){
         requestListView.setItems(null);
         requestListView.setItems(requestObservableList);
+    }
+    private void handleDocument(Request selectedRequest, String source, String temp, String acceptance, Color color){
+        try{
+            PdfDocument pdf = new PdfDocument(
+                    new PdfReader(source),
+                    new PdfWriter(temp)
+            );
+            Document document = new Document(pdf);
+            PdfAcroForm form = PdfAcroForm.getAcroForm(pdf, true);
+            Rectangle rectangle = new Rectangle(0,800,250,50);
+            PdfWidgetAnnotation widget = new PdfWidgetAnnotation(rectangle);
+            widget.makeIndirect(pdf);
+            pdf.getFirstPage().addAnnotation(widget);
+            PdfFormField field = PdfFormField.createText(pdf);
+            field.addKid(widget);
+            field.setFieldName("hasBeenSent");
+            field.setValue(acceptance)
+                    .setFontSize(22)
+                    .setColor(color);
+            field.setFieldFlag(PdfFormField.FF_READ_ONLY);
+            form.addField(field, pdf.getFirstPage());
+            document.close();
+            File newDocument = new File(temp);
+            selectedRequest.getFile().delete();
+            newDocument.renameTo(selectedRequest.getFile());
+        }catch (Exception e){
+            e.printStackTrace();
+        }
     }
 
     private void setHandlers(){
@@ -90,33 +143,109 @@ public class PaginaSefController {
                         if(request.equals(selectedRequest)){
                             try{
                                 Desktop.getDesktop().open(request.getFile());
+                                Thread.sleep(2000);
+                                File file = new File(request.getFile().getAbsolutePath());
+                                while(!file.renameTo(file)){
+                                    Thread.sleep(100);
+                                }
+
+                                PdfDocument pdf = new PdfDocument(
+                                        new PdfReader(ClientStart.fileDirectoryPath + "\\" +selectedRequest.getFile().getName())
+                                );
+                                SignatureUtil signUtil = new SignatureUtil(pdf);
+                                if(signUtil.getSignatureNames().size() != 0)
+                                    request.setSigned(true);
+                                pdf.close();
                             }catch (Exception e){
                                 e.printStackTrace();
                             }
 
-                            request.setSigned(true);
+
                         }
 
                     });
                     refreshItems();
                 }
-            }
-        });
-        acceptButton.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
+                if(event.getClickCount() == 1){
+                    Request selectedRequest = (Request) requestListView.getSelectionModel().getSelectedItem();
+                    String source = ClientStart.fileDirectoryPath + "\\"+selectedRequest.getFile().getName();
+                    String temp = ClientStart.fileDirectoryPath + "\\temp"+selectedRequest.getFile().getName();
+                    if(selectedRequest.isSigned() && !selectedRequest.isSent()){
+                        acceptButton.setDisable(false);
+                        denyButton.setDisable(false);
+                        acceptButton.setOnAction(new EventHandler<ActionEvent>() {
+                            @Override
+                            public void handle(ActionEvent event) {
+                                handleDocument(
+                                        selectedRequest,
+                                        source,
+                                        temp,
+                                        "CERERE ACCEPTATA",
+                                        ColorConstants.GREEN
+                                );
+                                requestObservableList.forEach(
+                                        (r)->{
+                                            if(r.equals(selectedRequest))
+                                                r.setSent(true);
+                                        }
+                                );
+                                denyButton.setDisable(true);
+                                acceptButton.setDisable(true);
+                                refreshItems();
+                                MailConfiguration.sendMessage(
+                                        selectedRequest.getEmailSender(),
+                                        "CONFIRMARE CERERE",
+                                        "CONFIRMED",
+                                        ClientStart.fileDirectoryPath+"\\"+selectedRequest.getFileName()
+                                );
 
-            }
-        });
-        denyButton.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
+                            }
+                        });
+                        denyButton.setOnAction(new EventHandler<ActionEvent>() {
+                            @Override
+                            public void handle(ActionEvent event) {
+                                handleDocument(
+                                        selectedRequest,
+                                        source,
+                                        temp,
+                                        "CERERE RESPINSA!",
+                                        ColorConstants.RED
+                                );
+                                denyButton.setDisable(true);
+                                acceptButton.setDisable(true);
+                                requestObservableList.forEach(
+                                        (r)->{
+                                            if(r.equals(selectedRequest))
+                                                r.setSent(true);
+                                        }
+                                );
+                                refreshItems();
 
+                                MailConfiguration.sendMessage(
+                                        selectedRequest.getEmailSender(),
+                                        "RESPINGERE CERERE",
+                                        "REJECTED",
+                                        ClientStart.fileDirectoryPath+"\\"+selectedRequest.getFile().getName()
+                                );
+
+
+                            }
+                        });
+
+                    }
+                    else{
+                        acceptButton.setDisable(true);
+                        denyButton.setDisable(true);
+                    }
+                }
             }
         });
+
     }
 
     public void initialize(){
+        acceptButton.setDisable(true);
+        denyButton.setDisable(true);
         requestListView.setItems(requestObservableList);
         populateRequests();
         setHandlers();

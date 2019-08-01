@@ -16,11 +16,13 @@ public class Request implements Comparable<Request> {
     private String emailSender;
     private File file;
     private boolean isSigned;
+    private boolean isSent;
     private LocalDate sendDate;
     private Date sentTime;
     @Override
     public String toString(){
-        return (isSigned) ? this.fileName + " - SEMNAT" : this.fileName;
+        String toString = (isSigned) ? this.fileName + " - SEMNAT" : this.fileName;
+        return (isSent) ? toString + " - RASPUNS TRIMIS" : toString;
     }
 
     @Override

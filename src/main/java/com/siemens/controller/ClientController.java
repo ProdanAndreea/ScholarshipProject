@@ -118,6 +118,10 @@ public class ClientController {
     private String[] sefDepartamentChoices;
     private List<Superior> sefiDirecti;
     private List<Superior> sefiDepartament;
+    private String userName;
+    private String userPosition;
+    private String superiorName;
+    private String departmentSuperior;
 
     @FXML
     private CheckBox bossAvailability;
@@ -373,10 +377,10 @@ public class ClientController {
         try{
             if (inputStream != null) {
                 property.load(inputStream);
-                String userName = property.getProperty("appUser");
-                String userPosition = property.getProperty("userOccupiedPosition");
-                String superiorName = property.getProperty("superiorName");
-                String departmentSuperior = property.getProperty("departmentSuperiorName");
+                userName = property.getProperty("appUser");
+                userPosition = property.getProperty("userOccupiedPosition");
+                superiorName = property.getProperty("superiorName");
+                departmentSuperior = property.getProperty("departmentSuperiorName");
 
                 if(userPosition.equals("Team Leader") || userPosition.equals("Department Leader")){
                     bossAvailability.setOpacity(100);
@@ -569,10 +573,10 @@ public class ClientController {
             form.addField(field, page);
 
             // get the value of the field
-            form = PdfAcroForm.getAcroForm(pdf, true);
-            Map<String, PdfFormField> fields = form.getFormFields();
-            PdfFormField field1 = fields.get("email");
-            System.out.println("hidden email field: " + field1.getValueAsString());
+//            form = PdfAcroForm.getAcroForm(pdf, true);
+//            Map<String, PdfFormField> fields = form.getFormFields();
+//            PdfFormField field1 = fields.get("email");
+//            System.out.println("hidden email field: " + field1.getValueAsString());
             ////////////
 
             document.add(
@@ -747,7 +751,6 @@ public class ClientController {
             signatureField.getWidgets().get(0).setHighlightMode(PdfAnnotation.HIGHLIGHT_OUTLINE).setFlags(PdfAnnotation.PRINT);
             // add the field
             PdfAcroForm.getAcroForm(pdf, true).addField(signatureField);
-
             /* sef departament signature */
             signatureField = PdfFormField.createSignature(pdf, new Rectangle((float)314.4, (float)283 - (noRows * (float)22.4), (float)149.1, (float)46.1));
             signatureField.setFieldName("signatureSefDepartament");
@@ -758,7 +761,7 @@ public class ClientController {
             document.close();
             //APEL PENTRU TRIMITERE MAIL
 
-            generateMailData(pdfFilePath);
+            //generateMailData(pdfFilePath);
 
             System.exit(0);
 

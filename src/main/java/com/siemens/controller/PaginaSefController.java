@@ -188,13 +188,13 @@ public class PaginaSefController {
                                 );
                                 denyButton.setDisable(true);
                                 acceptButton.setDisable(true);
-                                refreshItems();
                                 requestObservableList.forEach(
                                         (r)->{
                                             if(r.equals(selectedRequest))
                                                 r.setSent(true);
                                         }
                                 );
+                                refreshItems();
 
                                 MailConfiguration.sendMessage(
                                         selectedRequest.getEmailSender(),

@@ -541,10 +541,12 @@ public class ClientController {
 
     public void generatePdf(){
         try{
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+
             String pdfFilePath =
-                    ClientStart.fileDirectoryPath +"\\Invoire_"+nume.getCharacters().toString()+
-                    "_"+desiredLeave.getLeaveDate().toString()
-                            +"_"+LocalTime.now().format(DateTimeFormatter.ofPattern("HH-mm")).toString()+".pdf";
+                    ClientStart.fileDirectoryPath +"\\Invoire_" + nume.getCharacters().toString()+
+                    "_" + LocalDate.now().format(formatter)  +// desiredLeave.getLeaveDate().toString()
+                    "_" + LocalTime.now().format(DateTimeFormatter.ofPattern("HH-mm")).toString()+".pdf";
             PdfWriter writer = new PdfWriter(pdfFilePath);
             PdfDocument pdf = new PdfDocument(writer);
             Document document = new Document(pdf, PageSize.A4);

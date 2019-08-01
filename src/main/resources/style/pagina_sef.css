@@ -1,3 +1,12 @@
+/* BACKGROUND */
+#pane{
+    -fx-background-color: #ffffff;
+    -fx-background-repeat: stretch;
+    -fx-background-size: 900 506;
+    -fx-background-position: center center;
+    -fx-effect: dropshadow(three-pass-box, black, 30, 0.5, 0, 0);
+}
+
 #acceptButton, #denyButton {
     -fx-background-color:
             #e3e3e3,
@@ -14,4 +23,29 @@
 }
 #denyButton:hover {
     -fx-effect: dropshadow( three-pass-box , rgba(166, 41, 41, 1) , 3, 0.5 , 0.8 , 1 );
+}
+
+
+.scroll-pane > .corner {
+    -fx-background-color: black;
+}
+.list-view .scroll-bar:vertical {
+    -fx-background-color: #D6DBDF, white, white;
+}
+
+.scroll-bar > .thumb,
+.scroll-bar > .increment-button,
+.scroll-bar > .decrement-button {
+    -fx-color: white;
+}
+
+.scroll-bar > .thumb:hover,
+.scroll-bar > .increment-button:hover,
+.scroll-bar > .decrement-button:hover {
+    -fx-color: #EAF2F8;
+}
+.scroll-bar > .thumb:pressed,
+.scroll-bar > .increment-button:pressed,
+.scroll-bar > .decrement-button:pressed {
+    -fx-color: #D4E6F1;
 }

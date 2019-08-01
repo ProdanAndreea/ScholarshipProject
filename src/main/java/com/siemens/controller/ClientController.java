@@ -274,6 +274,7 @@ public class ClientController {
                 try {
                     FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/add_recuperare.fxml"));
                     Parent root = fxmlLoader.load();
+                    root.setId("pane");
                     Stage stage = new Stage();
                     stage.setTitle("Ore Recuperare");
 
@@ -304,6 +305,7 @@ public class ClientController {
                 try{
                     FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/pagina_sef.fxml"));
                     Parent root = fxmlLoader.load();
+                    root.setId("pane");
                     Stage stage = new Stage();
                     stage.setTitle("Pagina Superior");
 
@@ -326,6 +328,7 @@ public class ClientController {
                 try {
                     FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/confirmare.fxml"));
                     Parent root = fxmlLoader.load();
+                    root.setId("pane");
                     Stage stage = new Stage();
                     stage.setTitle("Confirmare");
 

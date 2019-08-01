@@ -27,6 +27,7 @@ public class ClientStart extends Application {
     @Override
     public void start(Stage stage) throws Exception {
         Parent root = FXMLLoader.load(getClass().getResource("/client_view.fxml"));
+        root.setId("pane");
         Scene scene = new Scene(root);
 
         scene.getStylesheets().add("style/client_view.css");

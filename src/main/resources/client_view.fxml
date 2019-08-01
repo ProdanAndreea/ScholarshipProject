@@ -6,6 +6,7 @@
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Separator?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
@@ -16,37 +17,32 @@
 <AnchorPane prefHeight="620.0" prefWidth="362.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.siemens.controller.ClientController">
 
     <children>
-        <AnchorPane layoutX="1.0" maxHeight="-1.0" maxWidth="-1.0" prefHeight="673.0" prefWidth="388.0" VBox.vgrow="ALWAYS">
+        <AnchorPane layoutX="1.0" maxHeight="-1.0" maxWidth="-1.0" prefHeight="673.0" prefWidth="398.0" VBox.vgrow="ALWAYS">
             <children>
-                <DatePicker fx:id="datePickerInvoire" editable="false" layoutX="55.0" layoutY="283.0" prefHeight="25.0" prefWidth="131.0" />
-            <Label layoutX="64.0" layoutY="147.0" text="Nume Prenume" />
-            <TextField fx:id="nume" layoutX="171.0" layoutY="143.0" />
-            <Label layoutX="22.0" layoutY="219.0" text="Ore Învoire" textFill="#4173a3">
+                <DatePicker fx:id="datePickerInvoire" editable="false" layoutX="55.0" layoutY="243.0" prefHeight="25.0" prefWidth="131.0" />
+            <Label layoutX="24.0" layoutY="31.0" text="Nume Prenume" />
+            <TextField fx:id="nume" layoutX="131.0" layoutY="26.0" />
+            <Label layoutX="20.0" layoutY="180.0" text="Ore Învoire" textFill="#34acbc">
                <font>
                   <Font name="System Bold" size="21.0" />
                </font>
             </Label>
-            <Label layoutX="75.0" layoutY="260.0" text="Ziua învoirii, data">
+            <Label layoutX="75.0" layoutY="220.0" text="Ziua învoirii, data">
                <font>
                   <Font name="System Italic" size="12.0" />
                </font></Label>
-            <ComboBox fx:id="nrOreInvoire" layoutX="236.0" layoutY="283.0" prefHeight="25.0" prefWidth="94.0" />
-            <Label layoutX="246.0" layoutY="260.0" text="Nr. ore învoite">
+            <ComboBox fx:id="nrOreInvoire" layoutX="236.0" layoutY="243.0" prefHeight="25.0" prefWidth="94.0" />
+            <Label layoutX="246.0" layoutY="220.0" text="Nr. ore învoite">
                <font>
                   <Font name="System Italic" size="12.0" />
                </font>
             </Label>
-            <Label layoutX="97.0" layoutY="36.0" prefHeight="53.0" prefWidth="219.0" text="Bilet Învoire" textAlignment="CENTER" textFill="#009999">
-               <font>
-                  <Font name="System Bold" size="36.0" />
-               </font>
-            </Label>
-            <Label layoutX="22.0" layoutY="347.0" prefHeight="31.0" prefWidth="154.0" text="Ore Recuperare" textFill="#bc1c2c">
+            <Label layoutX="22.0" layoutY="307.0" prefHeight="31.0" prefWidth="154.0" text="Ore Recuperare" textFill="#523363">
                <font>
                   <Font name="System Bold" size="21.0" />
                </font>
             </Label>
-            <Button fx:id="addRecuperare" layoutX="63.0" layoutY="502.0" mnemonicParsing="false" prefHeight="31.0" prefWidth="243.0" text="Adaugă dată nouă" textFill="#099417">
+            <Button fx:id="addRecuperare" layoutX="63.0" layoutY="462.0" mnemonicParsing="false" prefHeight="31.0" prefWidth="243.0" text="Adaugă dată nouă" textFill="#65397d">
                <opaqueInsets>
                   <Insets />
                </opaqueInsets>
@@ -54,25 +50,29 @@
                   <Font name="System Bold" size="13.0" />
                </font>
             </Button>
-            <Label layoutX="97.0" layoutY="558.0" text="Șef direct" />
-            <ComboBox fx:id="sefDirect" layoutX="159.0" layoutY="554.0" prefHeight="25.0" prefWidth="150.0" />
-            <Label layoutX="193.0" layoutY="354.0" prefHeight="21.0" prefWidth="149.0" text="(Maxim 4 recuperări)" textFill="#683d3d" />
-            <TableView fx:id="recoveryTableView" layoutX="-3.0" layoutY="376.0" prefHeight="119.0" prefWidth="390.0">
+            <Label layoutX="100.0" layoutY="531.0" text="Șef direct" />
+            <ComboBox fx:id="sefDirect" layoutX="174.0" layoutY="526.0" prefHeight="25.0" prefWidth="150.0" />
+            <Label layoutX="193.0" layoutY="314.0" prefHeight="21.0" prefWidth="149.0" text="(Maxim 4 recuperări)" textFill="#683d3d" />
+            <TableView fx:id="recoveryTableView" layoutX="20.0" layoutY="335.0" prefHeight="119.0" prefWidth="388.0">
               <columns>
                 <TableColumn fx:id="leaveDate" prefWidth="176.0" text="Recuperare în data de" />
                 <TableColumn fx:id="numberOfHours" minWidth="0.0" prefWidth="210.0" text="Durata recuperării (HH:mm)" />
               </columns>
             </TableView>
-            <Label layoutX="59.0" layoutY="590.0" text="Șef departament" />
-            <ComboBox fx:id="sefDepartament" layoutX="159.0" layoutY="586.0" prefWidth="150.0" />
-            <Button fx:id="btnTrimite" layoutX="158.0" layoutY="634.0" mnemonicParsing="false" text="Trimite" />
-            <Button fx:id="bossButton" layoutX="112.0" layoutY="182.0" mnemonicParsing="false" prefHeight="31.0" prefWidth="187.0" text="Deschide Lista Invoiri" />
-            <CheckBox fx:id="bossAvailability" layoutX="98.0" layoutY="89.0" mnemonicParsing="false" prefHeight="17.0" prefWidth="206.0" text="Disponibilitate Sef" />
-            <Button fx:id="btnDelete" contentDisplay="CENTER" layoutX="310.0" layoutY="502.0" mnemonicParsing="false" text="Delete" textAlignment="CENTER" textFill="#b50000">
+            <Label layoutX="62.0" layoutY="563.0" text="Șef departament" />
+            <ComboBox fx:id="sefDepartament" layoutX="174.0" layoutY="558.0" prefWidth="150.0" />
+            <Button fx:id="btnTrimite" layoutX="182.0" layoutY="628.0" mnemonicParsing="false" text="Trimite" />
+            <Button fx:id="bossButton" layoutX="72.0" layoutY="87.0" mnemonicParsing="false" prefHeight="58.0" prefWidth="50.0" />
+            <CheckBox fx:id="bossAvailability" layoutX="200.0" layoutY="105.0" mnemonicParsing="false" prefHeight="21.0" prefWidth="167.0" text="Disponibilitate Sef" />
+            <Button fx:id="btnDelete" contentDisplay="CENTER" layoutX="310.0" layoutY="462.0" mnemonicParsing="false" text="Delete" textAlignment="CENTER" textFill="#b50000">
                <font>
                   <Font name="Arial Unicode MS" size="15.0" />
                </font>
             </Button>
+            <Separator layoutX="41.0" layoutY="160.0" opacity="0.5" prefHeight="3.0" prefWidth="343.0" />
+            <Separator disable="true" layoutX="41.0" layoutY="77.0" opacity="0.5" prefHeight="3.0" prefWidth="343.0" />
+            <Separator layoutX="-1.0" layoutY="-5.0" prefHeight="17.0" prefWidth="434.0" />
+            <Label layoutX="128.0" layoutY="105.0" text="Învoiri" />
             </children>
         </AnchorPane>
     </children>

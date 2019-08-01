@@ -517,10 +517,10 @@ public class ClientController {
             form.addField(field, page);
 
             // get the value of the field
-            form = PdfAcroForm.getAcroForm(pdf, true);
-            Map<String, PdfFormField> fields = form.getFormFields();
-            PdfFormField field1 = fields.get("email");
-            System.out.println("hidden email field: " + field1.getValueAsString());
+//            form = PdfAcroForm.getAcroForm(pdf, true);
+//            Map<String, PdfFormField> fields = form.getFormFields();
+//            PdfFormField field1 = fields.get("email");
+//            System.out.println("hidden email field: " + field1.getValueAsString());
             ////////////
 
             document.add(
@@ -695,7 +695,6 @@ public class ClientController {
             signatureField.getWidgets().get(0).setHighlightMode(PdfAnnotation.HIGHLIGHT_OUTLINE).setFlags(PdfAnnotation.PRINT);
             // add the field
             PdfAcroForm.getAcroForm(pdf, true).addField(signatureField);
-
             /* sef departament signature */
             signatureField = PdfFormField.createSignature(pdf, new Rectangle((float)314.4, (float)283 - (noRows * (float)22.4), (float)149.1, (float)46.1));
             signatureField.setFieldName("signatureSefDepartament");

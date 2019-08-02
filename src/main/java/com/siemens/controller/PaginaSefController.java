@@ -143,9 +143,10 @@ public class PaginaSefController {
                         if(request.equals(selectedRequest)){
                             try{
                                 Desktop.getDesktop().open(request.getFile());
-                                Thread.sleep(2000);
+                                Thread.sleep(500);
                                 File file = new File(request.getFile().getAbsolutePath());
                                 while(!file.renameTo(file)){
+                                    System.out.println("BLOCKED APP");
                                     Thread.sleep(100);
                                 }
 

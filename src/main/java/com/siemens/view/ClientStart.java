@@ -1,5 +1,6 @@
 package com.siemens.view;
 
+import com.siemens.configuration.MailConfiguration;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
@@ -11,6 +12,10 @@ import javafx.scene.control.Button;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 
+import java.io.FileNotFoundException;
+import java.io.InputStream;
+import java.util.Properties;
+
 /**
  * @Author: Siemens CT Cluj-Napoca, Romania
  * @Since: Jul 25, 2019
@@ -21,7 +26,8 @@ import javafx.stage.Stage;
 public class ClientStart extends Application {
 
     public static Stage primaryStage;
-    public static final String fileDirectoryPath = "C:\\Users\\Public\\Desktop\\Bilete Invoire";
+    public static final String fileDirectoryPath = loadPath();
+    public static final String senderMail = loadMail();
     public ClientStart() {}
 
     @Override
@@ -38,10 +44,43 @@ public class ClientStart extends Application {
 
         primaryStage = stage;
     }
+    private static String loadPath(){
+        Properties property = new Properties();
+        String userProperties = "user.properties";
+        InputStream inputStream = ClientStart.class.getClassLoader().getResourceAsStream(userProperties);
+        try{
+            if (inputStream != null) {
+                property.load(inputStream);
+                return property.getProperty("pathToDocuments");
+            }
+            else{
+                throw new FileNotFoundException("property file '" + userProperties + "' not found in the classpath");
+            }
+
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return "ERROR LOADING PATH";
+    }
+    private static String loadMail(){
+        try {
+            Properties prop = new Properties();
+            String configFile = "mail.properties";
+
+            InputStream inputStream = MailConfiguration.class.getClassLoader().getResourceAsStream(configFile);
+
+            if (inputStream != null) {
+                prop.load(inputStream);
+                return prop.getProperty("username");
+            }
+        }catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+        return "ERROR LOADING MAIL";
+    }
 
     public static void main(String[] args) {
-
-
         launch(args);
     }
 

@@ -2,13 +2,13 @@
 <superiors>
     <superior>
         <name>Adrian</name>
-        <email>adrian@gmail.com</email>
+        <email>eucata896@gmail.com</email>
         <PositionEnum>Team Leader</PositionEnum>
         <available>true</available>
     </superior>
     <superior>
         <name>Mihai</name>
-        <email>prodan.a.andreea@gmail.com</email>
+        <email>eucata896@gmail.com</email>
         <PositionEnum>Department Leader</PositionEnum>
         <available>true</available>
     </superior>

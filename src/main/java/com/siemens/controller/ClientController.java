@@ -162,7 +162,8 @@ public class ClientController {
     private Button btnTrimite;
     @FXML
     private Button btnDelete;
-
+    @FXML
+    private Label labelInvoire;
     private ClientController clientController;
 
     public ClientController() {
@@ -383,6 +384,8 @@ public class ClientController {
                 departmentSuperior = property.getProperty("departmentSuperiorName");
 
                 if(userPosition.equals("Team Leader") || userPosition.equals("Department Leader")){
+                    labelInvoire.setOpacity(100);
+
                     bossAvailability.setOpacity(100);
                     bossAvailability.setDisable(false);
 
@@ -409,6 +412,8 @@ public class ClientController {
 
     // called by the FXML loader after the labels declared above are injected
     public void initialize() {
+        labelInvoire.setOpacity(0);
+
         bossAvailability.setOpacity(0);
         bossAvailability.setDisable(true);
 
@@ -568,7 +573,7 @@ public class ClientController {
             widget1.makeIndirect(pdf);
             page.addAnnotation(widget1);
             field.addKid(widget1);
-            field.setValue("test@gmail.com");
+            field.setValue(ClientStart.senderMail);
             field.setVisibility(PdfFormField.HIDDEN); // hide it
             form.addField(field, page);
 
@@ -724,13 +729,6 @@ public class ClientController {
 
             document.add(dataDeAzi);
 
-//            document.add(
-//                    new Paragraph("Semnătură angajat: ")
-//                            .setVerticalAlignment(VerticalAlignment.BOTTOM)
-//                            .setHorizontalAlignment(HorizontalAlignment.LEFT)
-//                            .setFontSize(12)
-//            );
-
             document.add(new Paragraph("\n\n"));
 
             approvalTable.setWidth(UnitValue.createPercentValue(60));
@@ -761,7 +759,7 @@ public class ClientController {
             document.close();
             //APEL PENTRU TRIMITERE MAIL
 
-            //generateMailData(pdfFilePath);
+            generateMailData();
 
             System.exit(0);
 
@@ -769,7 +767,7 @@ public class ClientController {
             System.out.println(e.getMessage());
         }
     }
-    private void generateMailData(String pdfFilePath){
+    private void generateMailData(){
         Superior directLeader = sefiDirecti.stream()
                 .filter(boss -> boss.getName().equals(sefDirect.getValue().toString())).findFirst().get();
         Superior departmentLeader = sefiDepartament.stream()
@@ -778,9 +776,9 @@ public class ClientController {
         String message = "ATI PRIMIT O CERERE PENTRU INVOIRE DE LA " + nume.getCharacters().toString().toUpperCase();
 
         if (directLeader.getAvailable()) {
-            MailConfiguration.sendMessage(directLeader.getEmail(), "CERERE INVOIRE", message, pdfFilePath);
+            MailConfiguration.sendMessage(directLeader.getEmail(), "CERERE INVOIRE", message);
         } else {
-            MailConfiguration.sendMessage(departmentLeader.getEmail(), "CERERE INVOIRE", message, pdfFilePath);
+            MailConfiguration.sendMessage(departmentLeader.getEmail(), "CERERE INVOIRE", message);
         }
 
     }

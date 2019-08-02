@@ -41,10 +41,9 @@ import java.time.format.DateTimeFormatter;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.nio.file.*;
-import java.util.ArrayList;
-import java.util.Date;
+import java.util.*;
 import java.util.List;
-import java.util.Map;
+import java.util.stream.Collectors;
 
 public class PaginaSefController {
     private ObservableList<Request> requestObservableList = FXCollections.observableArrayList();
@@ -146,7 +145,6 @@ public class PaginaSefController {
                                 Thread.sleep(500);
                                 File file = new File(request.getFile().getAbsolutePath());
                                 while(!file.renameTo(file)){
-                                    System.out.println("BLOCKED APP");
                                     Thread.sleep(100);
                                 }
 
@@ -154,8 +152,18 @@ public class PaginaSefController {
                                         new PdfReader(ClientStart.fileDirectoryPath + "\\" +selectedRequest.getFile().getName())
                                 );
                                 SignatureUtil signUtil = new SignatureUtil(pdf);
-                                if(signUtil.getSignatureNames().size() != 0)
+                                if(signUtil.getSignatureNames().size() != 0){
                                     request.setSigned(true);
+                                    ArrayList<Request> listToSort = requestObservableList
+                                            .stream()
+                                            .collect(Collectors.toCollection(ArrayList::new));
+                                    requestObservableList = mergeSort(listToSort).stream()
+                                            .collect(
+                                                    Collectors.collectingAndThen(Collectors.toList(),
+                                                            l -> FXCollections.observableArrayList(l))
+                                            );
+                                }
+
                                 pdf.close();
                             }catch (Exception e){
                                 e.printStackTrace();

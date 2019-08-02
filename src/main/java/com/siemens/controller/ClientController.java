@@ -64,7 +64,7 @@ import java.util.stream.Collectors;
  * @Description: Controller for the interface elements of the view client_view.
  */
 public class ClientController {
-    private List<Recovery> recoveryList;
+    private ObservableList<Recovery> listOfRecoveries;
     private Leave desiredLeave = null;
     private final String pattern = "dd-MM-yyyy";
     static DateTimeFormatter format = DateTimeFormatter.ofPattern("dd-MM-yyyy");
@@ -167,30 +167,30 @@ public class ClientController {
     private ClientController clientController;
 
     public ClientController() {
-        recoveryList = new ArrayList<>();
+        listOfRecoveries = FXCollections.observableArrayList();
     }
 
     private void setFieldsListeners() {
         //Enable add recovery button only if all necessary fields have been completed
         setDatePickerFormat(datePickerInvoire);
-        nume.textProperty().addListener(
-                new ChangeListener<String>() {
-                    @Override
-                    public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
-                        if (
-                                datePickerInvoire.getValue() != null &&
-                                        nrOreInvoire.getValue() != null
-                        )
-                            addRecuperare.setDisable(false);
-                        if (nume.getCharacters().length() == 0) {
-                            addRecuperare.setDisable(true);
-                            btnTrimite.setDisable(true);
-                        }
-                        else if(nume.getCharacters().length() != 0 && recoveryList.size()!= 0)
-                            btnTrimite.setDisable(false);
-                    }
-                }
-        );
+//        nume.textProperty().addListener(
+//                new ChangeListener<String>() {
+//                    @Override
+//                    public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+//                        if (
+//                                datePickerInvoire.getValue() != null &&
+//                                        nrOreInvoire.getValue() != null
+//                        )
+//                            addRecuperare.setDisable(false);
+//                        if (nume.getCharacters().length() == 0) {
+//                            addRecuperare.setDisable(true);
+//                            btnTrimite.setDisable(true);
+//                        }
+//                        else if(nume.getCharacters().length() != 0 && recoveryList.size()!= 0)
+//                            btnTrimite.setDisable(false);
+//                    }
+//                }
+//        );
 //        pozitieAngajat.textProperty().addListener(
 //                new ChangeListener<String>() {
 //                    @Override
@@ -211,6 +211,24 @@ public class ClientController {
 //                    }
 //                }
 //        );
+        listOfRecoveries.addListener(new ListChangeListener<Recovery>() {
+            @Override
+            public void onChanged(Change<? extends Recovery> c) {
+                if(listOfRecoveries.size() > 0){
+                    btnTrimite.setDisable(false);
+                    datePickerInvoire.setDisable(true);
+                    nrOreInvoire.setDisable(true);
+                }
+                else {
+                    desiredLeave = null;
+                    btnTrimite.setDisable(true);
+                    datePickerInvoire.setDisable(false);
+                    nrOreInvoire.setDisable(false);
+                }
+
+
+            }
+        });
         nrOreInvoire.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
@@ -241,7 +259,7 @@ public class ClientController {
             public void handle(ActionEvent event) {
                 if(
                         nume.getCharacters().length() != 0 &&
-                                recoveryList.size() != 0 &&
+                                listOfRecoveries.size() != 0 &&
                                 sefDirect.getValue() != null
                         )
                     btnTrimite.setDisable(false);
@@ -252,7 +270,7 @@ public class ClientController {
             public void handle(ActionEvent event) {
                 if(
                         nume.getCharacters().length() != 0 &&
-                                recoveryList.size() != 0 &&
+                                listOfRecoveries.size() != 0 &&
                                 sefDepartament.getValue() != null
                         )
                     btnTrimite.setDisable(false);
@@ -261,12 +279,13 @@ public class ClientController {
     }
 
     private void setButtonEvents(ObservableList<Recovery> listOfRecoveries) {
+
         addRecuperare.addEventHandler(
                 MouseEvent.MOUSE_ENTERED,
                 new EventHandler<MouseEvent>() {
                     @Override
                     public void handle(MouseEvent e) {
-                        if (recoveryList.size() >= 4)
+                        if (listOfRecoveries.size() >= 4)
                             addRecuperare.setDisable(true);
                     }
                 }
@@ -293,7 +312,7 @@ public class ClientController {
                                 datePickerInvoire.getValue(),
                                 LocalTime.parse(nrOreInvoire.getValue().toString(), hourFormatter)
                         );
-                    recuperareController.initialize(desiredLeave, recoveryList, listOfRecoveries, datePickerInvoire);
+                    recuperareController.initialize(desiredLeave, listOfRecoveries, datePickerInvoire);
 
                     Scene scene = new Scene(root);
                     scene.getStylesheets().add("style/add_recuperare.css");
@@ -312,7 +331,7 @@ public class ClientController {
                     Parent root = fxmlLoader.load();
                     root.setId("pane");
                     Stage stage = new Stage();
-                    stage.setTitle("Pagina Superior");
+                    stage.setTitle("Cereri de invoire");
 
                     stage.initModality(Modality.WINDOW_MODAL);
                     stage.initOwner(ClientStart.primaryStage.getScene().getWindow());
@@ -363,10 +382,14 @@ public class ClientController {
 
         btnDelete.setOnAction(e -> {
             Recovery selectedItem = recoveryTableView.getSelectionModel().getSelectedItem();
-            recoveryTableView.getItems().remove(selectedItem);
+            listOfRecoveries.remove(selectedItem);
 
-            if (selectedItem != null) { // there is a selected rowl
+
+            if (selectedItem != null && listOfRecoveries.size() != 0) { // there is a selected rowl
                 desiredLeave.deleteFromCoveredHours(selectedItem.getNumberOfHours());
+                btnDelete.setDisable(true);
+            }
+            else{
                 btnDelete.setDisable(true);
             }
         });
@@ -397,8 +420,7 @@ public class ClientController {
                 }
 
                 nume.setText(userName);
-                sefDirect.setValue(superiorName);
-                sefDepartament.setValue(departmentSuperior);
+
             } else {
                 throw new FileNotFoundException("property file '" + userProperties + "' not found in the classpath");
             }
@@ -412,6 +434,14 @@ public class ClientController {
 
     // called by the FXML loader after the labels declared above are injected
     public void initialize() {
+        //Parse the user prop file
+        loadUserData();
+
+        sefDirect.setValue(superiorName);
+        sefDepartament.setValue(departmentSuperior);
+
+        nume.setEditable(false);
+
         labelInvoire.setOpacity(0);
 
         bossAvailability.setOpacity(0);
@@ -422,7 +452,7 @@ public class ClientController {
 
         btnDelete.setDisable(true);
 
-        loadUserData();
+
 
         setDatePickerFormat(datePickerInvoire);
 
@@ -440,16 +470,8 @@ public class ClientController {
 
 
         nrOreInvoire.getItems().addAll(nrOre);
-        //MAKE THE LIST OF RECOVERIES
-        ObservableList<Recovery> listOfRecoveries = FXCollections.observableArrayList();
 
-        listOfRecoveries.addListener(new ListChangeListener<Recovery>() {
-            @Override
-            public void onChanged(Change<? extends Recovery> c) {
-                if(recoveryList.size() > 0)
-                    btnTrimite.setDisable(false);
-            }
-        });
+
         //SET CELL VALUES FOR THE TABLE
         leaveDate.setCellValueFactory(new PropertyValueFactory<Recovery, LocalDate>("recoveryDate"));
         numberOfHours.setCellValueFactory(new PropertyValueFactory<Recovery, LocalTime>("numberOfHours"));
@@ -496,9 +518,9 @@ public class ClientController {
 
         sefDepartamentChoices = new String[sefiDepartament.size()];
         for (int i = 0; i < sefiDepartament.size(); i++) {
-            sefDirectChoices[i] = sefiDepartament.get(i).getName();
+            sefDepartamentChoices[i] = sefiDepartament.get(i).getName();
         }
-        sefDepartament.getItems().addAll(sefDirectChoices);
+        sefDepartament.getItems().addAll(sefDepartamentChoices);
     }
 
     public static void setDatePickerFormat(DatePicker datePicker) {
@@ -671,7 +693,7 @@ public class ClientController {
                             new Paragraph("Nr. ore recuperate")
                     )
             );
-            for (Recovery recovery : recoveryList) {
+            for (Recovery recovery : listOfRecoveries) {
                 recoveryTable.addCell(
                         new Paragraph(
                                 recovery.getLeaveDate().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")).toString()

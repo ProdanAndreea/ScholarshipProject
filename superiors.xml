@@ -7,7 +7,25 @@
         <available>true</available>
     </superior>
     <superior>
+        <name>Gigel</name>
+        <email>eucata896@gmail.com</email>
+        <PositionEnum>Team Leader</PositionEnum>
+        <available>true</available>
+    </superior>
+    <superior>
         <name>Mihai</name>
+        <email>eucata896@gmail.com</email>
+        <PositionEnum>Department Leader</PositionEnum>
+        <available>true</available>
+    </superior>
+    <superior>
+        <name>Mihai1</name>
+        <email>eucata896@gmail.com</email>
+        <PositionEnum>Department Leader</PositionEnum>
+        <available>true</available>
+    </superior>
+    <superior>
+        <name>Mihai12</name>
         <email>eucata896@gmail.com</email>
         <PositionEnum>Department Leader</PositionEnum>
         <available>true</available>

@@ -36,7 +36,7 @@ public class RecuperareController {
 
     public RecuperareController() {}
 
-    public void initialize(Leave leave, List<Recovery> recoveryList, ObservableList<Recovery> recoveryView, DatePicker datePickerInvoire) {
+    public void initialize(Leave leave, ObservableList<Recovery> recoveryView, DatePicker datePickerInvoire) {
 
         recoveryCompleteText.setOpacity(0);
 
@@ -92,7 +92,6 @@ public class RecuperareController {
                 leave.setCoveredHours(
                         LocalTime.parse(nrOreRecuperare.getValue().toString(), ClientController.hourFormatter)
                 );
-                recoveryList.add(recovery);
                 recoveryView.add(recovery);
                 stage.close();
             }

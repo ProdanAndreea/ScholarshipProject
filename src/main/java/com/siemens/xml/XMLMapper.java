@@ -15,7 +15,7 @@ import java.util.Optional;
 @XmlSeeAlso({Superior.class, PositionEnum.class})
 public class XMLMapper {
 
-    private final String superiorsFileName = "superiors.xml";
+    private final String superiorsFileName = "C:\\Users\\andri\\Desktop\\superiors.xml"; //"src/main/resources/superiors.xml";
 
     public static <T> void jaxbObjectsToXML(T list, Class<T> concreteClass, String filename) throws JAXBException{
         JAXBContext jaxbContext = JAXBContext.newInstance(concreteClass);
@@ -47,6 +47,9 @@ public class XMLMapper {
             JAXBContext jaxbContext = JAXBContext.newInstance(Superiors.class);
             Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
 
+//            ClassLoader cl = this.getClass().getClassLoader();
+//            java.io.InputStream in = cl.getResourceAsStream("superiors.xml");
+
             Superiors sup = (Superiors) jaxbUnmarshaller.unmarshal(new File(superiorsFileName));
             Optional optional = sup.getSuperiors().stream().filter(superior -> superior.getName().equals(name)).findFirst();
             if (optional.isPresent()) {
@@ -70,6 +73,9 @@ public class XMLMapper {
         try {
             JAXBContext jaxbContext = JAXBContext.newInstance(Superiors.class);
             Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
+
+//            ClassLoader cl = this.getClass().getClassLoader();
+//            java.io.InputStream in = cl.getResourceAsStream("superiors.xml");
 
             List<Superior> superiorsList = ((Superiors) jaxbUnmarshaller.unmarshal(new File(superiorsFileName))).getSuperiors();
             for (Superior superior: superiorsList) {

@@ -47,6 +47,10 @@ dependencies {
 // https://mvnrepository.com/artifact/de.jensd/fontawesomefx
     compile group: 'de.jensd', name: 'fontawesomefx', version: '8.9'
 
+    // https://mvnrepository.com/artifact/com.google.guava/guava
+    compile group: 'com.google.guava', name: 'guava', version: '27.0.1-jre'
+
+
 
     //dependencies ca sa mearga la Dragos :) vv
 //    // https://mvnrepository.com/artifact/javax.xml.bind/jaxb-api
@@ -60,3 +64,43 @@ dependencies {
 
 
 }
+
+
+jar {
+    manifest {
+        attributes("Manifest-Version": "1.0",
+                'Main-Class': 'com.siemens.view.ClientStart'
+        )
+    }
+}
+
+task fatJar(type: Jar) {
+    manifest.from jar.manifest
+    classifier = 'all'
+    from {
+        configurations.runtime.collect { it.isDirectory() ? it : zipTree(it) }
+    } {
+        exclude "META-INF/*.SF"
+        exclude "META-INF/*.DSA"
+        exclude "META-INF/*.RSA"
+    }
+
+/*
+     from("src/main/resources") {
+            include 'pictures/**'
+            include 'style/**'
+            include 'add_recuperare.fxml'
+            include 'client_view.fxml'
+            include 'consfirmare.fxml'
+            include 'TreeSans.ttf'
+            include 'mail.properties'
+            include 'pagina_sef.fxml'
+            include 'superiors.xml'
+            include 'user.properties'
+     }
+*/
+    // sourceSets.main.resources.srcDirs = [ "src/main/resources/" ]
+
+    with jar
+}
+

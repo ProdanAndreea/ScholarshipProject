@@ -189,7 +189,7 @@ public class PaginaSefController {
                                         selectedRequest,
                                         source,
                                         temp,
-                                        "CERERE ACCEPTATA",
+                                        "CERERE ACCEPTATA!",
                                         ColorConstants.GREEN
                                 );
                                 requestObservableList.forEach(

@@ -1,6 +1,5 @@
-package com.siemens.xml;
-
 import com.siemens.model.*;
+import com.siemens.xml.XMLMapper;
 
 import javax.xml.bind.JAXBException;
 import java.util.ArrayList;
@@ -29,7 +28,7 @@ public class TestXML {
         /*
          *  Superiors Unmarshalling
          */
-        Superiors sups = XMLMapper.jaxbXMLToObjects( Superiors.class, "superiors.xml");
+        Superiors sups = XMLMapper.jaxbXMLToObjects( Superiors.class, "/superiors.xml");
         for(Superior sup : sups.getSuperiors())
         {
             System.out.println(sup.getName());

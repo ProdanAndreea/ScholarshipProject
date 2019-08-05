@@ -438,12 +438,6 @@ public class ClientController {
 
     // called by the FXML loader after the labels declared above are injected
     public void initialize() {
-        //Parse the user prop file
-        loadUserData();
-
-        sefDirect.setValue(superiorName);
-        sefDepartament.setValue(departmentSuperior);
-
         nume.setEditable(false);
 
         labelInvoire.setOpacity(0);
@@ -456,7 +450,11 @@ public class ClientController {
 
         btnDelete.setDisable(true);
 
+        //Parse the user prop file
+        loadUserData();
 
+        sefDirect.setValue(superiorName);
+        sefDepartament.setValue(departmentSuperior);
 
         setDatePickerFormat(datePickerInvoire);
 
@@ -963,7 +961,7 @@ public class ClientController {
                             new Paragraph("Nr. ore recuperate")
                     )
             );
-            for (Recovery recovery : recoveryList) {
+            for (Recovery recovery : listOfRecoveries) {
                 recoveryTable.addCell(
                         new Paragraph(
                                 recovery.getLeaveDate().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")).toString()

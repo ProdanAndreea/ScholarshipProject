@@ -92,7 +92,6 @@ task fatJar(type: Jar) {
             include 'add_recuperare.fxml'
             include 'client_view.fxml'
             include 'consfirmare.fxml'
-            include 'TreeSans.ttf'
             include 'mail.properties'
             include 'pagina_sef.fxml'
             include 'superiors.xml'

@@ -54,10 +54,8 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
@@ -124,6 +122,7 @@ public class ClientController {
     private String userPosition;
     private String superiorName;
     private String departmentSuperior;
+    private String superiorsFilePath;
 
     @FXML
     private CheckBox bossAvailability;
@@ -378,7 +377,7 @@ public class ClientController {
             @Override
             public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
                 XMLMapper xmlMapper = new XMLMapper();
-                xmlMapper.setAvailable(nume.getText(), bossAvailability.isSelected());
+                xmlMapper.setAvailable(nume.getText(), bossAvailability.isSelected(), superiorsFilePath);
             }
         });
 
@@ -429,6 +428,8 @@ public class ClientController {
                 userPosition = property.getProperty("userOccupiedPosition");
                 superiorName = property.getProperty("superiorName");
                 departmentSuperior = property.getProperty("departmentSuperiorName");
+                superiorsFilePath = property.getProperty("pathToXML");
+
 
 
                 if(userPosition.equals("Team Leader") || userPosition.equals("Department Leader")){
@@ -438,7 +439,7 @@ public class ClientController {
                     bossAvailability.setDisable(false);
 
                     XMLMapper xmlMapper = new XMLMapper();
-                    bossAvailability.setSelected(xmlMapper.isAvailable(userName));
+                    bossAvailability.setSelected(xmlMapper.isAvailable(userName, superiorsFilePath));
 
                     bossButton.setOpacity(100);
                     bossButton.setDisable(false);
@@ -503,6 +504,7 @@ public class ClientController {
 
         setButtonEvents(listOfRecoveries);
 
+        System.out.println("-------------   " + superiorsFilePath);
         getSuperiors();
 
 /*
@@ -528,7 +530,7 @@ public class ClientController {
     }
 
     void getSuperiors() {
-        List<Superior> sups = XMLMapper.jaxbXMLToObjects(Superiors.class, "C:\\Siemens\\scholarship_project\\src\\main\\resources\\superiors.xml").getSuperiors();
+        List<Superior> sups = XMLMapper.jaxbXMLToObjects(Superiors.class, superiorsFilePath).getSuperiors();
 
         sefiDirecti = sups.stream().filter(superior -> superior.getPositionEnum().equals(PositionEnum.DIRECT)).collect(Collectors.toList());
         sefiDepartament = sups.stream().filter(superior -> superior.getPositionEnum().equals(PositionEnum.DEPARTAMENT)).collect(Collectors.toList());

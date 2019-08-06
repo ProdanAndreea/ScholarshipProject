@@ -15,8 +15,6 @@ import java.util.Optional;
 @XmlSeeAlso({Superior.class, PositionEnum.class})
 public class XMLMapper {
 
-    private final String superiorsFileName = "C:\\Users\\andri\\Desktop\\superiors.xml"; //"src/main/resources/superiors.xml";
-
     public static <T> void jaxbObjectsToXML(T list, Class<T> concreteClass, String filename) throws JAXBException{
         JAXBContext jaxbContext = JAXBContext.newInstance(concreteClass);
         Marshaller jaxbMarshaller = jaxbContext.createMarshaller();
@@ -42,7 +40,7 @@ public class XMLMapper {
         return null;
     }
 
-    public Superior getSuperior(String name) {
+    public Superior getSuperior(String name, String fileName) {
         try {
             JAXBContext jaxbContext = JAXBContext.newInstance(Superiors.class);
             Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
@@ -50,7 +48,7 @@ public class XMLMapper {
 //            ClassLoader cl = this.getClass().getClassLoader();
 //            java.io.InputStream in = cl.getResourceAsStream("superiors.xml");
 
-            Superiors sup = (Superiors) jaxbUnmarshaller.unmarshal(new File(superiorsFileName));
+            Superiors sup = (Superiors) jaxbUnmarshaller.unmarshal(new File(fileName));
             Optional optional = sup.getSuperiors().stream().filter(superior -> superior.getName().equals(name)).findFirst();
             if (optional.isPresent()) {
                 return (Superior) optional.get();
@@ -64,12 +62,12 @@ public class XMLMapper {
     /*
      *  check if the boss is available
      */
-    public Boolean isAvailable(String bossName) {
-        return this.getSuperior(bossName).getAvailable();
+    public Boolean isAvailable(String bossName, String fileName) {
+        return this.getSuperior(bossName, fileName).getAvailable();
     }
 
 
-    public void setAvailable(String bossName, Boolean available) {
+    public void setAvailable(String bossName, Boolean available, String fileName) {
         try {
             JAXBContext jaxbContext = JAXBContext.newInstance(Superiors.class);
             Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
@@ -77,7 +75,7 @@ public class XMLMapper {
 //            ClassLoader cl = this.getClass().getClassLoader();
 //            java.io.InputStream in = cl.getResourceAsStream("superiors.xml");
 
-            List<Superior> superiorsList = ((Superiors) jaxbUnmarshaller.unmarshal(new File(superiorsFileName))).getSuperiors();
+            List<Superior> superiorsList = ((Superiors) jaxbUnmarshaller.unmarshal(new File(fileName))).getSuperiors();
             for (Superior superior: superiorsList) {
                 if (superior.getName().equals(bossName)) {
                     superior.setAvailable(available);
@@ -87,7 +85,7 @@ public class XMLMapper {
             Superiors superiors = new Superiors();
             superiors.setSuperiors(superiorsList);
 
-            XMLMapper.<Superiors>jaxbObjectsToXML(superiors, Superiors.class, superiorsFileName);
+            XMLMapper.<Superiors>jaxbObjectsToXML(superiors, Superiors.class, fileName);
 
         } catch (JAXBException e) {
             e.printStackTrace();

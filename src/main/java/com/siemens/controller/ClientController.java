@@ -397,10 +397,10 @@ public class ClientController {
     }
     private void loadUserData(){
         Properties property = new Properties();
-        String userProperties = "user.properties";
-        InputStream inputStream = getClass().getClassLoader().getResourceAsStream(userProperties);
+       // String userProperties = "user.properties";
+        // InputStream inputStream = getClass().getClassLoader().getResourceAsStream(userProperties);
         try{
-            if (inputStream != null) {
+           // if (inputStream != null) {
                 /*
                 property.load(inputStream);
                 userName = property.getProperty("appUser");
@@ -447,9 +447,9 @@ public class ClientController {
 
                 nume.setText(userName);
 
-            } else {
-                throw new FileNotFoundException("property file '" + userProperties + "' not found in the classpath");
-            }
+           // } else {
+           //     throw new FileNotFoundException("property file '" + userProperties + "' not found in the classpath");
+          //  }
         }catch (Exception e)
         {
             e.printStackTrace();

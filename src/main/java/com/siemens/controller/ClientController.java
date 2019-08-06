@@ -48,10 +48,8 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.StringConverter;
 
-import java.io.ByteArrayOutputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
+import java.security.CodeSource;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -404,11 +402,34 @@ public class ClientController {
         InputStream inputStream = getClass().getClassLoader().getResourceAsStream(userProperties);
         try{
             if (inputStream != null) {
+                /*
                 property.load(inputStream);
                 userName = property.getProperty("appUser");
                 userPosition = property.getProperty("userOccupiedPosition");
                 superiorName = property.getProperty("superiorName");
                 departmentSuperior = property.getProperty("departmentSuperiorName");
+                */
+
+                // get the path of the Jar
+                CodeSource codeSource = ClientController.class.getProtectionDomain().getCodeSource();
+                File jarFile = new File(codeSource.getLocation().toURI().getPath());
+                String jarDir = jarFile.getParentFile().getPath();
+                System.out.println("-------------------");
+                System.out.println(jarDir);
+
+                //load the file handle for main.properties
+                FileInputStream file = new FileInputStream(jarDir + "\\user.properties");
+                //load all the properties from this file
+                property.load(file);
+                //we have loaded the properties, so close the file handle
+                file.close();
+
+                //retrieve the properties
+                userName = property.getProperty("appUser");
+                userPosition = property.getProperty("userOccupiedPosition");
+                superiorName = property.getProperty("superiorName");
+                departmentSuperior = property.getProperty("departmentSuperiorName");
+
 
                 if(userPosition.equals("Team Leader") || userPosition.equals("Department Leader")){
                     labelInvoire.setOpacity(100);

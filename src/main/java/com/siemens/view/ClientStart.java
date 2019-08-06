@@ -1,6 +1,7 @@
 package com.siemens.view;
 
 import com.siemens.configuration.MailConfiguration;
+import com.siemens.controller.ClientController;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
@@ -12,8 +13,12 @@ import javafx.scene.control.Button;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
+import java.net.URISyntaxException;
+import java.security.CodeSource;
 import java.util.Properties;
 
 /**
@@ -46,6 +51,7 @@ public class ClientStart extends Application {
     }
     private static String loadPath(){
         Properties property = new Properties();
+        /*
         String userProperties = "user.properties";
         InputStream inputStream = ClientStart.class.getClassLoader().getResourceAsStream(userProperties);
         try{
@@ -56,8 +62,24 @@ public class ClientStart extends Application {
             else{
                 throw new FileNotFoundException("property file '" + userProperties + "' not found in the classpath");
             }
-
         }catch (Exception e){
+            e.printStackTrace();
+        }
+        */
+        // get the path of the Jar
+        CodeSource codeSource = ClientStart.class.getProtectionDomain().getCodeSource();
+        File jarFile = null;
+        try {
+            jarFile = new File(codeSource.getLocation().toURI().getPath());
+            String jarDir = jarFile.getParentFile().getPath();
+            //load the file handle for main.properties
+            FileInputStream file = new FileInputStream(jarDir + "\\user.properties");
+            //load all the properties from this file
+            property.load(file);
+            //we have loaded the properties, so close the file handle
+            file.close();
+            return property.getProperty("pathToDocuments");
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return "ERROR LOADING PATH";

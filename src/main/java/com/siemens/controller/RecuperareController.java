@@ -97,7 +97,7 @@ public class RecuperareController {
             }
         });
 
-        disablePastDates(datePickerRecuperare, LocalDate.parse(datePickerInvoire.getValue().toString()));
+       //  disablePastDates(datePickerRecuperare, LocalDate.parse(datePickerInvoire.getValue().toString()));
     }
 
     private void disablePastDates(DatePicker datePicker, LocalDate selectedDate) {

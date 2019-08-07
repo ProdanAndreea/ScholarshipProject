@@ -11,20 +11,20 @@
 <AnchorPane prefHeight="301.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.siemens.controller.PaginaSefController">
    <children>
       <ListView fx:id="requestListView" layoutY="30.0" prefHeight="200.0" prefWidth="600.0" />
-      <Label layoutX="59.0" layoutY="3.0" prefHeight="27.0" prefWidth="149.0" text="Lista cereri invoiri">
+      <Label layoutX="59.0" layoutY="3.0" prefHeight="27.0" prefWidth="149.0" text="Listă cereri învoiri">
          <font>
             <Font size="18.0" />
          </font>
       </Label>
-      <Button fx:id="acceptButton" layoutX="77.0" layoutY="262.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="149.0" text="Acceptare Cerere">
+      <Button fx:id="acceptButton" layoutX="77.0" layoutY="262.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="149.0" text="Acceptă Cerere">
          <cursor>
             <Cursor fx:constant="HAND" />
          </cursor></Button>
-      <Button fx:id="denyButton" layoutX="375.0" layoutY="262.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="149.0" text="Respingere Cerere">
+      <Button fx:id="denyButton" layoutX="375.0" layoutY="262.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="149.0" text="Respinge Cerere">
          <cursor>
             <Cursor fx:constant="HAND" />
          </cursor></Button>
-      <Label layoutX="214.0" layoutY="6.0" prefHeight="21.0" prefWidth="348.0" text="(dublu click pe cerere pentru a o deschide si semna)" textFill="#754747" />
+      <Label layoutX="214.0" layoutY="6.0" prefHeight="21.0" prefWidth="348.0" text="(dublu click pe cerere pentru a o deschide și semna)" textFill="#754747" />
       <Separator layoutY="0.5" prefHeight="0.0" prefWidth="600.0" />
    </children>
 </AnchorPane>

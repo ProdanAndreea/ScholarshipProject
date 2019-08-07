@@ -33,6 +33,16 @@ public class MailConfiguration {
             String username = prop.getProperty("username");
             String password = prop.getProperty("password");
 
+            StringBuilder decryptedPassword = new StringBuilder();
+
+            for (int i = 0; i < password.length(); i++) {
+                if (i % 2 == 0) {
+                    decryptedPassword.append(password.charAt(i) - 4);
+                } else {
+                    decryptedPassword.append(password.charAt(i) - 3);
+                }
+            }
+
 
             Properties props = new Properties();
             props.put("mail.smtp.host", "smtp.gmail.com");
@@ -47,7 +57,7 @@ public class MailConfiguration {
             Session session = Session.getInstance(props,
                     new javax.mail.Authenticator() {
                         protected PasswordAuthentication getPasswordAuthentication() {
-                            return new PasswordAuthentication(username, password);
+                            return new PasswordAuthentication(username, decryptedPassword.toString());
                         }
                     });
 

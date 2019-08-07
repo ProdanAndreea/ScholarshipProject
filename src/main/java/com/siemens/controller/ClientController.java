@@ -332,7 +332,7 @@ public class ClientController {
                     Parent root = fxmlLoader.load();
                     root.setId("pane");
                     Stage stage = new Stage();
-                    stage.setTitle("Cereri de invoire");
+                    stage.setTitle("Cereri de învoire");
 
                     stage.initModality(Modality.WINDOW_MODAL);
                     stage.initOwner(ClientStart.primaryStage.getScene().getWindow());
@@ -384,6 +384,8 @@ public class ClientController {
         btnDelete.setOnAction(e -> {
             Recovery selectedItem = recoveryTableView.getSelectionModel().getSelectedItem();
             listOfRecoveries.remove(selectedItem);
+            if (this.listOfRecoveries.size() < 4)
+                addRecuperare.setDisable(false);
 
 
             if (selectedItem != null && listOfRecoveries.size() != 0) { // there is a selected rowl

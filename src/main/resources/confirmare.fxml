@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.Cursor?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Separator?>
 <?import javafx.scene.image.Image?>
@@ -8,10 +9,16 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane prefHeight="155.0" prefWidth="424.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.siemens.controller.ConfirmareController">
+<AnchorPane prefHeight="155.0" prefWidth="424.0" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.siemens.controller.ConfirmareController">
    <children>
-      <Button fx:id="btnOk" layoutX="94.0" layoutY="111.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="77.0" text="Ok" />
-      <Button fx:id="btnCancel" layoutX="260.0" layoutY="111.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="77.0" text="Cancel" />
+      <Button fx:id="btnOk" layoutX="94.0" layoutY="111.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="77.0" text="Ok">
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor></Button>
+      <Button fx:id="btnCancel" layoutX="260.0" layoutY="111.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="77.0" text="Cancel">
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor></Button>
       <Text layoutX="88.0" layoutY="47.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Un e-mail de notificare va fi trimis șefilor." textAlignment="CENTER" wrappingWidth="248.62890625" />
       <Text fill="#0a0a0a" layoutX="54.0" layoutY="27.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Biletul de învoire, format PDF, va fi salvat pe desktop." textAlignment="CENTER" />
       <Text fill="#0a0a0a" layoutX="155.0" layoutY="93.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Doriți să continuați?" textAlignment="CENTER">

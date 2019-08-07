@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.Cursor?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.CheckBox?>
 <?import javafx.scene.control.ComboBox?>
@@ -14,12 +15,15 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="620.0" prefWidth="362.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.siemens.controller.ClientController">
+<AnchorPane prefHeight="620.0" prefWidth="362.0" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.siemens.controller.ClientController">
 
     <children>
         <AnchorPane layoutX="1.0" maxHeight="-1.0" maxWidth="-1.0" prefHeight="673.0" prefWidth="398.0" VBox.vgrow="ALWAYS">
             <children>
-                <DatePicker fx:id="datePickerInvoire" editable="false" layoutX="55.0" layoutY="243.0" prefHeight="25.0" prefWidth="131.0" />
+                <DatePicker fx:id="datePickerInvoire" editable="false" layoutX="55.0" layoutY="243.0" prefHeight="25.0" prefWidth="131.0">
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor></DatePicker>
             <Label layoutX="24.0" layoutY="31.0" text="Nume Prenume" />
             <TextField fx:id="nume" layoutX="131.0" layoutY="26.0" />
             <Label layoutX="20.0" layoutY="180.0" text="Ore Învoire" textFill="#34acbc">
@@ -37,22 +41,25 @@
                   <Font name="System Italic" size="12.0" />
                </font>
             </Label>
-            <Label layoutX="22.0" layoutY="307.0" prefHeight="31.0" prefWidth="154.0" text="Ore Recuperare" textFill="#523363">
+            <Label layoutX="23.0" layoutY="299.0" prefHeight="31.0" prefWidth="154.0" text="Ore Recuperare" textFill="#523363">
                <font>
                   <Font name="System Bold" size="21.0" />
                </font>
             </Label>
-            <Button fx:id="addRecuperare" layoutX="63.0" layoutY="462.0" mnemonicParsing="false" prefHeight="31.0" prefWidth="243.0" text="Adaugă dată nouă" textFill="#65397d">
+            <Button fx:id="addRecuperare" layoutX="62.0" layoutY="462.0" mnemonicParsing="false" prefHeight="31.0" prefWidth="243.0" text="Adaugă dată nouă" textFill="#65397d">
                <opaqueInsets>
                   <Insets />
                </opaqueInsets>
                <font>
                   <Font name="System Bold" size="13.0" />
                </font>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
             </Button>
             <Label layoutX="100.0" layoutY="531.0" text="Șef direct" />
             <ComboBox fx:id="sefDirect" layoutX="174.0" layoutY="526.0" prefHeight="25.0" prefWidth="150.0" />
-            <Label layoutX="193.0" layoutY="314.0" prefHeight="21.0" prefWidth="149.0" text="(Maxim 4 recuperări)" textFill="#683d3d" />
+            <Label layoutX="297.0" layoutY="315.0" prefHeight="21.0" prefWidth="111.0" text="(Maxim 4 recuperări)" textFill="#683d3d" />
             <TableView fx:id="recoveryTableView" layoutX="20.0" layoutY="335.0" prefHeight="119.0" prefWidth="388.0">
               <columns>
                 <TableColumn fx:id="leaveDate" prefWidth="176.0" text="Recuperare în data de" />
@@ -61,13 +68,22 @@
             </TableView>
             <Label layoutX="62.0" layoutY="563.0" text="Șef departament" />
             <ComboBox fx:id="sefDepartament" layoutX="174.0" layoutY="558.0" prefWidth="150.0" />
-            <Button fx:id="btnTrimite" layoutX="182.0" layoutY="628.0" mnemonicParsing="false" text="Trimite" />
-            <Button fx:id="bossButton" layoutX="72.0" layoutY="87.0" mnemonicParsing="false" prefHeight="58.0" prefWidth="50.0" />
+            <Button fx:id="btnTrimite" layoutX="182.0" layoutY="628.0" mnemonicParsing="false" text="Trimite">
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor></Button>
+            <Button fx:id="bossButton" layoutX="72.0" layoutY="87.0" mnemonicParsing="false" prefHeight="58.0" prefWidth="50.0">
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor></Button>
             <CheckBox fx:id="bossAvailability" layoutX="200.0" layoutY="105.0" mnemonicParsing="false" prefHeight="21.0" prefWidth="167.0" text="Disponibilitate Sef" />
-            <Button fx:id="btnDelete" contentDisplay="CENTER" layoutX="310.0" layoutY="462.0" mnemonicParsing="false" text="Delete" textAlignment="CENTER" textFill="#b50000">
+            <Button fx:id="btnDelete" contentDisplay="CENTER" layoutX="310.0" layoutY="462.0" mnemonicParsing="false" prefHeight="31.0" prefWidth="62.0" text="Delete" textAlignment="CENTER" textFill="#c90000">
                <font>
-                  <Font name="Arial Unicode MS" size="15.0" />
+                  <Font name="System Bold Italic" size="13.0" />
                </font>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
             </Button>
             <Separator layoutX="41.0" layoutY="160.0" opacity="0.5" prefHeight="3.0" prefWidth="343.0" />
             <Separator disable="true" layoutX="41.0" layoutY="77.0" opacity="0.5" prefHeight="3.0" prefWidth="343.0" />

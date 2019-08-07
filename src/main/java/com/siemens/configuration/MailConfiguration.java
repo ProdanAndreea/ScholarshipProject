@@ -37,9 +37,9 @@ public class MailConfiguration {
 
             for (int i = 0; i < password.length(); i++) {
                 if (i % 2 == 0) {
-                    decryptedPassword.append(password.charAt(i) - 4);
+                    decryptedPassword.append((char)(password.charAt(i) - 4));
                 } else {
-                    decryptedPassword.append(password.charAt(i) - 3);
+                    decryptedPassword.append((char)(password.charAt(i) - 3));
                 }
             }
 

@@ -432,8 +432,10 @@ public class ClientController {
                 departmentSuperior = property.getProperty("departmentSuperiorName");
                 superiorsFilePath = property.getProperty("pathToXML");
 
-
-
+                System.out.println(superiorName);
+                System.out.println(departmentSuperior);
+                System.out.println(superiorsFilePath);
+                
                 if(userPosition.equals("Team Leader") || userPosition.equals("Department Leader")){
                     labelInvoire.setOpacity(100);
 
@@ -1073,7 +1075,7 @@ public class ClientController {
             document.close();
             //APEL PENTRU TRIMITERE MAIL
 
-            //generateMailData(pdfFilePath);
+            generateMailData();
 
             System.exit(0);
 

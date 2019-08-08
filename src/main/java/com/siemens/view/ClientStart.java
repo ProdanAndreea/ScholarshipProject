@@ -87,14 +87,16 @@ public class ClientStart extends Application {
     private static String loadMail(){
         try {
             Properties prop = new Properties();
-            String configFile = "mail.properties";
+            CodeSource codeSource = ClientStart.class.getProtectionDomain().getCodeSource();
+            File jarFile = new File(codeSource.getLocation().toURI().getPath());
+            String jarDir = jarFile.getParentFile().getPath();
+            FileInputStream file = new FileInputStream(jarDir + "\\mail.properties");
+            //load all the properties from this file
+            prop.load(file);
+            //we have loaded the properties, so close the file handle
+            file.close();
+            return prop.getProperty("username");
 
-            InputStream inputStream = MailConfiguration.class.getClassLoader().getResourceAsStream(configFile);
-
-            if (inputStream != null) {
-                prop.load(inputStream);
-                return prop.getProperty("username");
-            }
         }catch (Exception e)
         {
             e.printStackTrace();

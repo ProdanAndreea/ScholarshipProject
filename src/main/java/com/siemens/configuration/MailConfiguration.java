@@ -1,5 +1,7 @@
 package com.siemens.configuration;
 
+import com.siemens.view.ClientStart;
+
 import javax.activation.DataHandler;
 import javax.activation.DataSource;
 import javax.activation.FileDataSource;
@@ -12,6 +14,7 @@ import javax.mail.internet.MimeMultipart;
 import java.io.*;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
+import java.security.CodeSource;
 import java.util.Properties;
 
 public class MailConfiguration {
@@ -20,15 +23,16 @@ public class MailConfiguration {
 
         try {
             Properties prop = new Properties();
-            String configFile = "mail.properties";
 
-            InputStream inputStream = MailConfiguration.class.getClassLoader().getResourceAsStream(configFile);
 
-            if (inputStream != null) {
-                prop.load(inputStream);
-            } else {
-                throw new FileNotFoundException("property file '" + configFile + "' not found in the classpath");
-            }
+            CodeSource codeSource = ClientStart.class.getProtectionDomain().getCodeSource();
+            File jarFile = new File(codeSource.getLocation().toURI().getPath());
+            String jarDir = jarFile.getParentFile().getPath();
+            FileInputStream file = new FileInputStream(jarDir + "\\mail.properties");
+            //load all the properties from this file
+            prop.load(file);
+            //we have loaded the properties, so close the file handle
+            file.close();
 
             String username = prop.getProperty("username");
             String password = prop.getProperty("password");
@@ -37,9 +41,9 @@ public class MailConfiguration {
 
             for (int i = 0; i < password.length(); i++) {
                 if (i % 2 == 0) {
-                    decryptedPassword.append((char)(password.charAt(i) - 4));
-                } else {
                     decryptedPassword.append((char)(password.charAt(i) - 3));
+                } else {
+                    decryptedPassword.append((char)(password.charAt(i) - 4));
                 }
             }
 
@@ -50,7 +54,7 @@ public class MailConfiguration {
             props.put("mail.smtp.starttls.enable", "true");
             props.put("mail.smtp.port", "587");
             props.put("mail.smtp.user", username);
-            props.put("mail.smtp.password", password);
+            props.put("mail.smtp.password", decryptedPassword.toString());
             props.put("mail.smtp.auth", "true");
 
 
@@ -94,39 +98,52 @@ public class MailConfiguration {
         } catch (IOException e) {
             System.out.println("Error reading credentials");
         }
+        catch (Exception e){
+            e.printStackTrace();
+        }
     }
     public static void sendMessage(String to, String subject, String text) {
 
         try {
             Properties prop = new Properties();
-            String configFile = "mail.properties";
 
-            InputStream inputStream = MailConfiguration.class.getClassLoader().getResourceAsStream(configFile);
 
-            if (inputStream != null) {
-                prop.load(inputStream);
-            } else {
-                throw new FileNotFoundException("property file '" + configFile + "' not found in the classpath");
-            }
-
+            CodeSource codeSource = ClientStart.class.getProtectionDomain().getCodeSource();
+            File jarFile = new File(codeSource.getLocation().toURI().getPath());
+            String jarDir = jarFile.getParentFile().getPath();
+            FileInputStream file = new FileInputStream(jarDir + "\\mail.properties");
+            //load all the properties from this file
+            prop.load(file);
+            //we have loaded the properties, so close the file handle
+            file.close();
             String username = prop.getProperty("username");
             String password = prop.getProperty("password");
+            StringBuilder decryptedPassword = new StringBuilder();
 
-
+            for (int i = 0; i < password.length(); i++) {
+                if (i % 2 == 0) {
+                    decryptedPassword.append((char)(password.charAt(i) - 3));
+                } else {
+                    decryptedPassword.append((char)(password.charAt(i) - 4));
+                }
+            }
+            System.out.println(username);
+            System.out.println(password);
+            System.out.println(decryptedPassword.toString());
             Properties props = new Properties();
             props.put("mail.smtp.host", "smtp.gmail.com");
             props.put("mail.transport.protocol", "smtp");
             props.put("mail.smtp.starttls.enable", "true");
             props.put("mail.smtp.port", "587");
             props.put("mail.smtp.user", username);
-            props.put("mail.smtp.password", password);
+            props.put("mail.smtp.password", decryptedPassword.toString());
             props.put("mail.smtp.auth", "true");
 
 
             Session session = Session.getInstance(props,
                     new javax.mail.Authenticator() {
                         protected PasswordAuthentication getPasswordAuthentication() {
-                            return new PasswordAuthentication(username, password);
+                            return new PasswordAuthentication(username, decryptedPassword.toString());
                         }
                     });
 
@@ -155,6 +172,9 @@ public class MailConfiguration {
             }
         } catch (IOException e) {
             System.out.println("Error reading credentials");
+        }
+        catch (Exception e){
+            e.printStackTrace();
         }
     }
 

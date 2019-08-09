@@ -37,67 +37,6 @@ public class ClientStart extends Application {
     public static String fileDirectoryPath ;
     public ClientStart() {}
 
-    @Override
-    public void start(Stage stage) throws Exception {
-        try{
-            loadUserProperties();
-            loadMailProperties();
-            Parent root = FXMLLoader.load(getClass().getResource("/client_view.fxml"));
-            root.setId("pane");
-            Scene scene = new Scene(root);
-
-            scene.getStylesheets().add("style/client_view.css");
-
-            stage.setTitle("Invoire");
-            stage.setScene(scene);
-            stage.show();
-
-            primaryStage = stage;
-        }catch (IOException e) {
-            try{
-                Parent root = FXMLLoader.load(ClientStart.class.getResource("/configuratii.fxml"));
-                root.setId("pane");
-                Scene scene = new Scene(root);
-                stage.setTitle("Form Proprietati");
-                stage.setScene(scene);
-                stage.show();
-                primaryStage = stage;
-
-            }catch (Exception e1){
-                e1.printStackTrace();
-            }
-
-        }catch (Exception e){
-            e.printStackTrace();
-        }
-
-    }
-
-    private static String decodeMessage(String input){
-        StringBuilder decryptedMessage = new StringBuilder();
-
-        for (int i = 0; i < input.length(); i++) {
-            if (i % 2 == 0) {
-                decryptedMessage.append((char)(input.charAt(i) - 4));
-            } else {
-                decryptedMessage.append((char)(input.charAt(i) - 3));
-            }
-        }
-        return  decryptedMessage.toString();
-    }
-    public static String encodeMessage(String input){
-        StringBuilder encryptedMessage = new StringBuilder();
-
-        for (int i = 0; i < input.length(); i++) {
-            if (i % 2 == 0) {
-                encryptedMessage.append((char)(input.charAt(i) + 4));
-            } else {
-                encryptedMessage.append((char)(input.charAt(i) + 3));
-            }
-        }
-        return  encryptedMessage.toString();
-    }
-
     private void loadUserProperties()throws Exception{
 
         Properties property = new Properties();
@@ -119,7 +58,7 @@ public class ClientStart extends Application {
             superiorName = decodeMessage(property.getProperty(encodeMessage("superiorName")));
             departmentSuperior = decodeMessage(property.getProperty(encodeMessage("departmentSuperiorName")));
             superiorsFilePath = decodeMessage(property.getProperty(encodeMessage("pathToXML")));
-            fileDirectoryPath = decodeMessage(property.getProperty(encodeMessage("pathToDocuments ")));
+            fileDirectoryPath = decodeMessage(property.getProperty(encodeMessage("pathToDocuments")));
 
         }
         catch (Exception e){
@@ -149,10 +88,85 @@ public class ClientStart extends Application {
 
     }
 
-    public static void main(String[] args) {
+    @Override
+    public void start(Stage stage) throws Exception {
+        try{
+            loadUserProperties();
+            loadMailProperties();
+            //The department leader should not have access to the user code.
+            if(userPosition.equals("Department Leader")){
+                Parent root = FXMLLoader.load(getClass().getResource("/pagina_sef.fxml"));
+                root.setId("pane");
+                Scene scene = new Scene(root);
 
+                scene.getStylesheets().add("style/pagina_sefcss");
 
-        launch(args);
+                stage.setTitle("Invoire");
+                stage.setScene(scene);
+                stage.show();
+                primaryStage = stage;
+
+            }
+            else{
+                Parent root = FXMLLoader.load(getClass().getResource("/client_view.fxml"));
+                root.setId("pane");
+                Scene scene = new Scene(root);
+
+                scene.getStylesheets().add("style/client_view.css");
+
+                stage.setTitle("Invoire");
+                stage.setScene(scene);
+                stage.show();
+                primaryStage = stage;
+            }
+
+        }catch (IOException e) {
+            try{
+                Parent root = FXMLLoader.load(ClientStart.class.getResource("/configuratii.fxml"));
+                root.setId("pane");
+                Scene scene = new Scene(root);
+                stage.setTitle("Form Proprietati");
+                stage.setScene(scene);
+                stage.show();
+                primaryStage = stage;
+
+            }catch (Exception e1){
+                e1.printStackTrace();
+            }
+
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
     }
+
+    public static String decodeMessage(String input){
+        StringBuilder decryptedMessage = new StringBuilder();
+
+        for (int i = 0; i < input.length(); i++) {
+            if (i % 2 == 0) {
+                decryptedMessage.append((char)(input.charAt(i) - 4));
+            } else {
+                decryptedMessage.append((char)(input.charAt(i) - 3));
+            }
+        }
+        return  decryptedMessage.toString();
+    }
+
+    public static String encodeMessage(String input){
+        StringBuilder encryptedMessage = new StringBuilder();
+
+        for (int i = 0; i < input.length(); i++) {
+            if (i % 2 == 0) {
+                encryptedMessage.append((char)(input.charAt(i) + 4));
+            } else {
+                encryptedMessage.append((char)(input.charAt(i) + 3));
+            }
+        }
+        return  encryptedMessage.toString();
+    }
+
+
+    public static void main(String[] args) {launch(args);}
 
 }

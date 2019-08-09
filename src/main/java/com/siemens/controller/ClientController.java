@@ -114,8 +114,7 @@ public class ClientController {
     @FXML
     private javafx.scene.control.TableView<Recovery> recoveryTableView;
 
-    private String[] sefDirectChoices;
-    private String[] sefDepartamentChoices;
+
     private List<Superior> sefiDirecti;
     private List<Superior> sefiDepartament;
 
@@ -480,12 +479,7 @@ public class ClientController {
         btnTrimite.setDisable(true);
         setFieldsListeners();
 
-        // autocomplete
-//        TextFields.bindAutoCompletion(pozitieAngajat, possibleChoises);
-
-
         nrOreInvoire.getItems().addAll(nrOre);
-
 
         //SET CELL VALUES FOR THE TABLE
         leaveDate.setCellValueFactory(new PropertyValueFactory<Recovery, LocalDate>("recoveryDate"));
@@ -496,15 +490,6 @@ public class ClientController {
         setButtonEvents(listOfRecoveries);
 
         getSuperiors();
-
-/*
-        recoveryTableView.setOnMouseClicked(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent event) {
-                System.out.println("clicked");
-            }
-        });
-        */
 
         recoveryTableView.setRowFactory(tv -> {
             TableRow<Recovery> row = new TableRow<>();
@@ -525,17 +510,6 @@ public class ClientController {
         sefiDirecti = sups.stream().filter(superior -> superior.getPositionEnum().equals(PositionEnum.DIRECT)).collect(Collectors.toList());
         sefiDepartament = sups.stream().filter(superior -> superior.getPositionEnum().equals(PositionEnum.DEPARTAMENT)).collect(Collectors.toList());
 
-        sefDirectChoices = new String[sefiDirecti.size()];
-        for (int i = 0; i < sefiDirecti.size(); i++) {
-            sefDirectChoices[i] = sefiDirecti.get(i).getName();
-        }
-        sefDirect.getItems().addAll(sefDirectChoices);
-
-        sefDepartamentChoices = new String[sefiDepartament.size()];
-        for (int i = 0; i < sefiDepartament.size(); i++) {
-            sefDepartamentChoices[i] = sefiDepartament.get(i).getName();
-        }
-        sefDepartament.getItems().addAll(sefDepartamentChoices);
     }
 
     public static void setDatePickerFormat(DatePicker datePicker) {

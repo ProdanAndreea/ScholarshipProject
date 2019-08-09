@@ -116,39 +116,26 @@ public class MailConfiguration {
             prop.load(file);
             //we have loaded the properties, so close the file handle
             file.close();
-            String username = prop.getProperty("username");
-            String password = prop.getProperty("password");
-            StringBuilder decryptedPassword = new StringBuilder();
 
-            for (int i = 0; i < password.length(); i++) {
-                if (i % 2 == 0) {
-                    decryptedPassword.append((char)(password.charAt(i) - 3));
-                } else {
-                    decryptedPassword.append((char)(password.charAt(i) - 4));
-                }
-            }
-            System.out.println(username);
-            System.out.println(password);
-            System.out.println(decryptedPassword.toString());
+            String password = ClientStart.decodeMessage(prop.getProperty(ClientStart.encodeMessage("password")));
+
             Properties props = new Properties();
-            props.put("mail.smtp.host", "smtp.gmail.com");
-            props.put("mail.transport.protocol", "smtp");
+            props.put("mail.smtp.host", "mail.siemens.de");
             props.put("mail.smtp.starttls.enable", "true");
-            props.put("mail.smtp.port", "587");
-            props.put("mail.smtp.user", username);
-            props.put("mail.smtp.password", decryptedPassword.toString());
+            props.put("mail.smtp.user", ClientStart.senderMail);
+            props.put("mail.smtp.password",password);
             props.put("mail.smtp.auth", "true");
 
 
             Session session = Session.getInstance(props,
                     new javax.mail.Authenticator() {
                         protected PasswordAuthentication getPasswordAuthentication() {
-                            return new PasswordAuthentication(username, decryptedPassword.toString());
+                            return new PasswordAuthentication(ClientStart.senderMail, password);
                         }
                     });
 
             try {
-                InternetAddress fromAddress = new InternetAddress(username);
+                InternetAddress fromAddress = new InternetAddress(ClientStart.senderMail);
                 InternetAddress toAddress = new InternetAddress(to);
 
                 Message message = new MimeMessage(session);

@@ -118,11 +118,7 @@ public class ClientController {
     private String[] sefDepartamentChoices;
     private List<Superior> sefiDirecti;
     private List<Superior> sefiDepartament;
-    private String userName;
-    private String userPosition;
-    private String superiorName;
-    private String departmentSuperior;
-    private String superiorsFilePath;
+
 
     @FXML
     private CheckBox bossAvailability;
@@ -377,7 +373,7 @@ public class ClientController {
             @Override
             public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
                 XMLMapper xmlMapper = new XMLMapper();
-                xmlMapper.setAvailable(nume.getText(), bossAvailability.isSelected(), superiorsFilePath);
+                xmlMapper.setAvailable(nume.getText(), bossAvailability.isSelected(), ClientStart.superiorsFilePath);
             }
         });
 
@@ -415,8 +411,7 @@ public class ClientController {
                 CodeSource codeSource = ClientController.class.getProtectionDomain().getCodeSource();
                 File jarFile = new File(codeSource.getLocation().toURI().getPath());
                 String jarDir = jarFile.getParentFile().getPath();
-                System.out.println("-------------------");
-                System.out.println(jarDir);
+
 
                 //load the file handle for main.properties
                 FileInputStream file = new FileInputStream(jarDir + "\\user.properties");
@@ -426,30 +421,22 @@ public class ClientController {
                 file.close();
 
                 //retrieve the properties
-                userName = property.getProperty("appUser");
-                userPosition = property.getProperty("userOccupiedPosition");
-                superiorName = property.getProperty("superiorName");
-                departmentSuperior = property.getProperty("departmentSuperiorName");
-                superiorsFilePath = property.getProperty("pathToXML");
 
-                System.out.println(superiorName);
-                System.out.println(departmentSuperior);
-                System.out.println(superiorsFilePath);
                 
-                if(userPosition.equals("Team Leader") || userPosition.equals("Department Leader")){
+                if(ClientStart.userPosition.equals("Team Leader") || ClientStart.userPosition.equals("Department Leader")){
                     labelInvoire.setOpacity(100);
 
                     bossAvailability.setOpacity(100);
                     bossAvailability.setDisable(false);
 
                     XMLMapper xmlMapper = new XMLMapper();
-                    bossAvailability.setSelected(xmlMapper.isAvailable(userName, superiorsFilePath));
+                    bossAvailability.setSelected(xmlMapper.isAvailable(ClientStart.userName, ClientStart.superiorsFilePath));
 
                     bossButton.setOpacity(100);
                     bossButton.setDisable(false);
                 }
 
-                nume.setText(userName);
+                nume.setText(ClientStart.userName);
 
            // } else {
            //     throw new FileNotFoundException("property file '" + userProperties + "' not found in the classpath");
@@ -479,8 +466,8 @@ public class ClientController {
         //Parse the user prop file
         loadUserData();
 
-        sefDirect.setValue(superiorName);
-        sefDepartament.setValue(departmentSuperior);
+        sefDirect.setValue(ClientStart.superiorName);
+        sefDepartament.setValue(ClientStart.departmentSuperior);
 
         setDatePickerFormat(datePickerInvoire);
 
@@ -508,7 +495,6 @@ public class ClientController {
 
         setButtonEvents(listOfRecoveries);
 
-        System.out.println("-------------   " + superiorsFilePath);
         getSuperiors();
 
 /*
@@ -534,7 +520,7 @@ public class ClientController {
     }
 
     void getSuperiors() {
-        List<Superior> sups = XMLMapper.jaxbXMLToObjects(Superiors.class, superiorsFilePath).getSuperiors();
+        List<Superior> sups = XMLMapper.jaxbXMLToObjects(Superiors.class, ClientStart.superiorsFilePath).getSuperiors();
 
         sefiDirecti = sups.stream().filter(superior -> superior.getPositionEnum().equals(PositionEnum.DIRECT)).collect(Collectors.toList());
         sefiDepartament = sups.stream().filter(superior -> superior.getPositionEnum().equals(PositionEnum.DEPARTAMENT)).collect(Collectors.toList());

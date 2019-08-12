@@ -22,15 +22,18 @@ import com.itextpdf.signatures.SignatureUtil;
 import com.siemens.model.Client;
 import com.siemens.model.Request;
 import com.siemens.view.ClientStart;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.scene.control.*;
 import javafx.scene.control.Button;
-import javafx.scene.control.ListView;
 import javafx.scene.input.MouseEvent;
 
+import javax.swing.*;
 import java.awt.*;
 import java.io.File;
 import java.io.IOException;
@@ -45,6 +48,8 @@ import java.util.*;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static java.util.stream.Collectors.toList;
+
 public class PaginaSefController {
     private ObservableList<Request> requestObservableList = FXCollections.observableArrayList();
 
@@ -57,6 +62,15 @@ public class PaginaSefController {
 
     @FXML
     private ListView requestListView;
+
+    @FXML
+    private ToggleButton resolvedToggleButton;
+
+    @FXML
+    private ToggleButton waitingToggleButton;
+
+    @FXML
+    private ToggleButton signedToggleButton;
 
     private void populateRequests(){
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
@@ -159,7 +173,7 @@ public class PaginaSefController {
                                             .collect(Collectors.toCollection(ArrayList::new));
                                     requestObservableList = mergeSort(listToSort).stream()
                                             .collect(
-                                                    Collectors.collectingAndThen(Collectors.toList(),
+                                                    Collectors.collectingAndThen(toList(),
                                                             l -> FXCollections.observableArrayList(l))
                                             );
                                 }
@@ -244,6 +258,57 @@ public class PaginaSefController {
                         acceptButton.setDisable(true);
                         denyButton.setDisable(true);
                     }
+                }
+            }
+        });
+
+        ToggleGroup toggleGroup = new ToggleGroup();
+        resolvedToggleButton.setToggleGroup(toggleGroup);
+        signedToggleButton.setToggleGroup(toggleGroup);
+        waitingToggleButton.setToggleGroup(toggleGroup);
+
+        toggleGroup.selectedToggleProperty().addListener(new ChangeListener<Toggle>() {
+            @Override
+            public void changed(ObservableValue<? extends Toggle> observable, Toggle oldValue, Toggle newValue) {
+                if (newValue != null) {
+
+                    waitingToggleButton.setOnAction(new EventHandler<ActionEvent>() {
+                        @Override
+                        public void handle(ActionEvent event) {
+                            if (!waitingToggleButton.isSelected()) {
+                                requestListView.setItems(requestObservableList);
+                            } else {
+                                ObservableList<Request> filteredList = requestObservableList.filtered(request -> !request.isSigned() && !request.isSent());
+                                requestListView.setItems(filteredList);
+                            }
+                        }
+                    });
+
+
+                    signedToggleButton.setOnAction(new EventHandler<ActionEvent>() {
+                        @Override
+                        public void handle(ActionEvent event) {
+                            if (!signedToggleButton.isSelected()) {
+                                requestListView.setItems(requestObservableList);
+                            } else {
+                                ObservableList<Request> filteredList = requestObservableList.filtered(request -> request.isSigned() && !request.isSent());
+                                requestListView.setItems(filteredList);
+                            }
+                        }
+                    });
+
+                    resolvedToggleButton.setOnAction(new EventHandler<ActionEvent>() {
+                        @Override
+                        public void handle(ActionEvent event) {
+                            if (!resolvedToggleButton.isSelected()) {
+                                requestListView.setItems(requestObservableList);
+                            } else {
+                                ObservableList<Request> filteredList = requestObservableList.filtered(Request::isSent)
+                                        .sorted(Comparator.reverseOrder());
+                                requestListView.setItems(filteredList);
+                            }
+                        }
+                    });
                 }
             }
         });

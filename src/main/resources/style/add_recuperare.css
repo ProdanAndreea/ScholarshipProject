@@ -14,7 +14,7 @@
             radial-gradient(center 50% -40%, radius 20%, #f0f0f0 25%, rgba(245, 245, 245, 1) 20%);
     -fx-background-radius: 20;
     -fx-background-insets: 0,1,1;
-    -fx-text-fill: black;
+    -fx-text-fill: #0d8026;
     -fx-effect: dropshadow( three-pass-box , rgba(0,0,0,0.5) , 3, 0.0 , 0 , 1 );
 }
 #okButton:hover {

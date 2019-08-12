@@ -42,15 +42,17 @@
             radial-gradient(center 50% -40%, radius 20%, #f0f0f0 25%, rgba(245, 245, 245, 1) 20%);
 }
 
-#signedToggleButton:pressed {
-    -fx-background-color: #AAAFB4;
-}
+
 
 #signedToggleButton:selected {
     -fx-background-color:
             #058348,
             linear-gradient(#ebebeb 50%, white 20%),
             radial-gradient(center 50% -40%, radius 20%, #f0f0f0 25%, rgba(245, 245, 245, 1) 20%);
+}
+
+#signedToggleButton:pressed {
+    -fx-background-color: #AAAFB4;
 }
 
 #waitingToggleButton:hover {
@@ -60,15 +62,17 @@
             radial-gradient(center 50% -40%, radius 20%, #f0f0f0 25%, rgba(245, 245, 245, 1) 20%);
 }
 
-#waitingToggleButton:pressed {
-    -fx-background-color: #AAAFB4;
-}
 
 #waitingToggleButton:selected {
     -fx-background-color:
             #c67d00,
             linear-gradient(#ebebeb 50%, white 20%),
             radial-gradient(center 50% -40%, radius 20%, #f0f0f0 25%, rgba(245, 245, 245, 1) 20%);
+}
+
+
+#waitingToggleButton:pressed {
+    -fx-background-color: #AAAFB4;
 }
 
 #acceptButton:hover {

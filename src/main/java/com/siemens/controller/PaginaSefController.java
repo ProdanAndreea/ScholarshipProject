@@ -21,6 +21,7 @@ import com.itextpdf.kernel.pdf.PdfReader;
 import com.itextpdf.signatures.SignatureUtil;
 import com.siemens.model.Client;
 import com.siemens.model.Request;
+import com.siemens.model.Superior;
 import com.siemens.view.ClientStart;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -72,11 +73,30 @@ public class PaginaSefController {
     @FXML
     private ToggleButton signedToggleButton;
 
+    private List<Superior> sefiDepartment;
+
     private void populateRequests(){
 
-        String pathToFiles = ClientStart.fileDirectoryPath + "\\prodan.a.andreea\\adrian";
-        File newFolder = new File(pathToFiles);
+        String pathToFiles = ClientStart.fileDirectoryPath;
+        if (ClientStart.userPosition.equals("Department Leader")) {
+            pathToFiles = pathToFiles + "\\" + ClientStart.senderMail.split("@")[0];
+        }
 
+        else {
+            String sefDepartmentFolder = this.sefiDepartment.stream()
+                    .filter(sup -> sup.getName().equals(ClientStart.departmentSuperior))
+                    .findFirst()
+                    .get()
+                    .getEmail()
+                    .split("@")[0];
+
+            pathToFiles = pathToFiles + "\\" + sefDepartmentFolder;
+            new File(pathToFiles).mkdir();
+            pathToFiles = pathToFiles + "\\" + ClientStart.senderMail.split("@")[0];
+        }
+
+        File newFolder = new File(pathToFiles);
+        newFolder.mkdir();
 
         ArrayList<Request> array = new ArrayList<>();
         if (newFolder.listFiles().length == 0) {
@@ -178,7 +198,7 @@ public class PaginaSefController {
                                 }
 
                                 PdfDocument pdf = new PdfDocument(
-                                        new PdfReader(ClientStart.fileDirectoryPath + "\\" +selectedRequest.getFile().getName())
+                                        new PdfReader(file)
                                 );
                                 SignatureUtil signUtil = new SignatureUtil(pdf);
                                 if(signUtil.getSignatureNames().size() != 0){
@@ -334,8 +354,14 @@ public class PaginaSefController {
         acceptButton.setDisable(true);
         denyButton.setDisable(true);
         requestListView.setItems(requestObservableList);
-        populateRequests();
         setHandlers();
+    }
+
+    public void populateDepartment(List<Superior> sefiDepartment) {
+
+        this.sefiDepartment = sefiDepartment;
+        populateRequests();
+
     }
 
 

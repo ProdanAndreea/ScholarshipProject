@@ -15,6 +15,19 @@
     -fx-effect: dropshadow( three-pass-box , rgba(0,0,0,0.5) , 3, 0.5 , 0.8 , 1 );
 }
 
+#changeConfigsButton {
+    -fx-background-color:
+            #e3e3e3,
+            linear-gradient(#ebebeb 50%, white 100%),
+            radial-gradient(center 50% -40%, radius 200%, #f0f0f0 45%, rgba(245, 245, 245, 1) 50%);
+    -fx-background-radius: 30;
+    -fx-background-insets: 0,1,1;
+    -fx-effect: dropshadow( three-pass-box , rgba(0,0,0,0.5) , 3, 0.0 , 0 , 1 );
+}
+
+#changeConfigsButton:hover {
+    -fx-effect: dropshadow( three-pass-box , rgba(0,0,0,0.5) , 3, 0.5 , 0.8 , 1 );
+}
 
 #bossButton {
     -fx-background-color: white;
@@ -42,6 +55,7 @@
     -fx-background-insets: 0,1,1;
     -fx-effect: dropshadow( three-pass-box , rgba(0,0,0,0.5) , 3, 0.0 , 0 , 1 );
 }
+
 #addRecuperare:hover {
     -fx-background-color:
             #e0e0e0,

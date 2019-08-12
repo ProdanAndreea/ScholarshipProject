@@ -151,10 +151,6 @@ public class ClientController {
     //@FXML
     //private Label remainedHours;
     @FXML
-    private ComboBox sefDirect;
-    @FXML
-    private ComboBox sefDepartament;
-    @FXML
     private Button btnTrimite;
     @FXML
     private Button btnDelete;
@@ -162,6 +158,10 @@ public class ClientController {
     private Label labelInvoire;
     @FXML
     private Button changeConfigsButton;
+    @FXML
+    private Label sefDirectLabel;
+    @FXML
+    private Label sefDepartamentLabel;
 
     private ClientController clientController;
 
@@ -253,28 +253,7 @@ public class ClientController {
                     addRecuperare.setDisable(true);
             }
         });
-        sefDepartament.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                if(
-                        nume.getCharacters().length() != 0 &&
-                                listOfRecoveries.size() != 0 &&
-                                sefDirect.getValue() != null
-                        )
-                    btnTrimite.setDisable(false);
-            }
-        });
-        sefDirect.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                if(
-                        nume.getCharacters().length() != 0 &&
-                                listOfRecoveries.size() != 0 &&
-                                sefDepartament.getValue() != null
-                        )
-                    btnTrimite.setDisable(false);
-            }
-        });
+
     }
 
     private void setButtonEvents(ObservableList<Recovery> listOfRecoveries) {
@@ -474,6 +453,10 @@ public class ClientController {
 
     // called by the FXML loader after the labels declared above are injected
     public void initialize() {
+        if(ClientStart.userPosition.equals("Department Leader")){
+            datePickerInvoire.setDisable(true);
+            nrOreInvoire.setDisable(true);
+        }
         nume.setEditable(false);
 
         labelInvoire.setOpacity(0);
@@ -489,9 +472,10 @@ public class ClientController {
         //Parse the user prop file
         loadUserData();
 
-        sefDirect.setValue(ClientStart.superiorName);
-        sefDepartament.setValue(ClientStart.departmentSuperior);
-
+        sefDirectLabel.setText(ClientStart.superiorName);
+        sefDepartamentLabel.setText(ClientStart.departmentSuperior);
+        sefDepartamentLabel.setStyle("-fx-font-weight: bold");
+        sefDirectLabel.setStyle("-fx-font-weight: bold");
         setDatePickerFormat(datePickerInvoire);
 
         clientController = this;
@@ -729,13 +713,13 @@ public class ClientController {
             approvalTable.addCell(
                     new com.itextpdf.layout.element.Cell()
                             .add(new Paragraph("Direct:"))
-                            .add(new Paragraph(sefDirect.getValue().toString())
+                            .add(new Paragraph(sefDirectLabel.getText())
                             ));
             approvalTable.addCell("");
             approvalTable.addCell(
                     new Cell()
                             .add(new Paragraph("Departament:"))
-                            .add(new Paragraph(sefDepartament.getValue().toString()))
+                            .add(new Paragraph(sefDirectLabel.getText()))
             );
             approvalTable.addCell("");
 
@@ -796,11 +780,16 @@ public class ClientController {
     }
     private void generateMailData(){
         Superior directLeader = sefiDirecti.stream()
-                .filter(boss -> boss.getName().equals(sefDirect.getValue().toString())).findFirst().get();
+                .filter(boss -> boss.getName().equals(sefDirectLabel.getText())).findFirst().get();
         Superior departmentLeader = sefiDepartament.stream()
-                .filter(departLeader ->  departLeader.getName().equals(sefDepartament.getValue().toString()))
+                .filter(departLeader ->  departLeader.getName().equals(sefDepartamentLabel.getText()))
                 .findFirst().get();
         String message = "ATI PRIMIT O CERERE PENTRU INVOIRE DE LA " + nume.getCharacters().toString().toUpperCase();
+
+        if(ClientStart.userPosition.equals("Department Leader")){
+            MailConfiguration.sendMessage(departmentLeader.getEmail(), "CERERE INVOIRE", message);
+            return;
+        }
 
         if (directLeader.getAvailable()) {
             MailConfiguration.sendMessage(directLeader.getEmail(), "CERERE INVOIRE", message);
@@ -835,10 +824,6 @@ public class ClientController {
             Document document = new Document(pdf, PageSize.A4);
             document.setMargins(20, 20, 20, 20);
 
-
-            System.out.println();
-            System.out.println();
-            System.out.println();
 
             InputStream is = this.getClass().getClassLoader().getResourceAsStream("FreeSans.ttf");
 
@@ -995,13 +980,13 @@ public class ClientController {
             approvalTable.addCell(
                     new com.itextpdf.layout.element.Cell()
                             .add(new Paragraph("Direct:"))
-                            .add(new Paragraph(sefDirect.getValue().toString())
+                            .add(new Paragraph(sefDirectLabel.getText())
                             ));
             approvalTable.addCell("");
             approvalTable.addCell(
                     new Cell()
                             .add(new Paragraph("Departament:"))
-                            .add(new Paragraph(sefDepartament.getValue().toString()))
+                            .add(new Paragraph(sefDepartamentLabel.getText()))
             );
             approvalTable.addCell("");
 

@@ -5,6 +5,8 @@ import com.siemens.model.Superior;
 import com.siemens.model.Superiors;
 import com.siemens.view.ClientStart;
 import com.siemens.xml.XMLMapper;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -54,6 +56,8 @@ public class FormsController {
 
     private String[] sefDepartamentChoices;
 
+    private String position;
+
     public FormsController(){}
 
     private void getSuperiors(){
@@ -77,6 +81,15 @@ public class FormsController {
 
     private void setHandlers(){
         //BROWSE FOR THE XML FILE AND LOAD OPTIONS INTO DROPDOWNS
+        nameText.textProperty().addListener(new ChangeListener<String>() {
+            @Override
+            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+                if(nameText.getCharacters().length() > 0)
+                    browseXML.setDisable(false);
+                else
+                    browseXML.setDisable(true);
+            }
+        });
         browseXML.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
@@ -89,9 +102,29 @@ public class FormsController {
                 if(xmlFile != null){
                     xmlLabel.setText(xmlFile.getAbsolutePath().replace("\\", "/"));
                     xmlLabel.setOpacity(100);
-                    departmentLeader.setDisable(false);
-                    directLeader.setDisable(false);
                     getSuperiors();
+                    //automatically determine the position of the person who installs the app
+                    if(
+                            Arrays.stream(sefDirectChoices)
+                                    .filter(superior -> superior.equals(nameText.getCharacters().toString()))
+                                    .findFirst().isPresent()
+                            ){
+                        position = "Team Leader";
+                        departmentLeader.setDisable(false);
+                    }
+
+                    else if(
+                            Arrays.stream(sefDepartamentChoices)
+                                    .filter(superior ->  superior.equals(nameText.getCharacters().toString()))
+                                    .findFirst().isPresent()
+                            )
+                        position = "Department Leader";
+                    else{
+                        position = "User";
+                        departmentLeader.setDisable(false);
+                        directLeader.setDisable(false);
+                    }
+
                 }
             }
         });
@@ -111,10 +144,11 @@ public class FormsController {
         finishButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
+
                 if (
-                        directLeader.getValue() == null ||
-                                departmentLeader.getValue() == null ||
-                                nameText.getCharacters().toString().isEmpty() ||
+                        (directLeader.getValue() == null && !(position.equals("Team Leader") || position.equals("Department Leader"))) ||
+                                (departmentLeader.getValue() == null && !position.equals("Department Leader")) ||
+                                nameText.getCharacters().toString().isEmpty()  ||
                                 mailText.getCharacters().toString().isEmpty() ||
                                 passwordText.getCharacters().toString().isEmpty()
                         ){
@@ -122,22 +156,21 @@ public class FormsController {
                 }
                 else {
                     try{
-                        //automatically determine the position of the person who installs the app
-                        String position;
-                        if(
-                                Arrays.stream(sefDirectChoices)
-                                        .filter(superior -> superior.equals(nameText.getCharacters().toString()))
-                                        .findFirst().isPresent()
-                                )
-                            position = "Team Leader";
-                        else if(
-                                Arrays.stream(sefDepartamentChoices)
-                                        .filter(superior ->  superior.equals(nameText.getCharacters().toString()))
-                                        .findFirst().isPresent()
-                                )
-                            position = "Department Leader";
-                        else
-                            position = "User";
+
+                        String directLeaderName, departmentLeaderName;
+                        if(position.equals("Team Leader")){
+                            directLeaderName = "";
+                            departmentLeaderName = departmentLeader.getValue().toString();
+                        }
+                        else if(position.equals("Department Leader")){
+                            directLeaderName = "";
+                            departmentLeaderName = "";
+                        }
+                        else {
+                            directLeaderName = directLeader.getValue().toString();
+                            departmentLeaderName = departmentLeader.getValue().toString();
+                        }
+
 
                         CodeSource codeSource = ClientStart.class.getProtectionDomain().getCodeSource();
                         File jarFile = new File(codeSource.getLocation().toURI().getPath());
@@ -155,8 +188,8 @@ public class FormsController {
                             //store the properties encoded with the established alg.
                             properties.setProperty(encodeMessage("appUser"), encodeMessage(nameText.getCharacters().toString()));
                             properties.setProperty(encodeMessage("userOccupiedPosition"), encodeMessage(position));
-                            properties.setProperty(encodeMessage("superiorName"), encodeMessage(directLeader.getValue().toString()));
-                            properties.setProperty(encodeMessage("departmentSuperiorName"), encodeMessage(departmentLeader.getValue().toString()));
+                            properties.setProperty(encodeMessage("superiorName"), encodeMessage(directLeaderName));
+                            properties.setProperty(encodeMessage("departmentSuperiorName"), encodeMessage(departmentLeaderName));
                             properties.setProperty(encodeMessage("pathToXML"), encodeMessage(xmlLabel.getText()));
                             //WARNING! THIS IS ONLY A TEMPORARY SOLUTION UNTIL WE DECIDE WHAT THE ACTUAL PATH SHOULD BE !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
                             properties.setProperty(encodeMessage("pathToDocuments"), encodeMessage(defaultRootDirectory.getText()));
@@ -194,6 +227,7 @@ public class FormsController {
             e.printStackTrace();
         }
 
+        browseXML.setDisable(true);
         xmlLabel.setOpacity(0);
         warningLabel.setOpacity(0);
         departmentLeader.setDisable(true);

@@ -120,20 +120,7 @@ public class ClientStart extends Application {
             loadUserProperties();
             loadMailProperties();
             //The department leader should not have access to the user code.
-            if(userPosition.equals("Department Leader")){
-                Parent root = FXMLLoader.load(getClass().getResource("/pagina_sef.fxml"));
-                root.setId("pane");
-                Scene scene = new Scene(root);
 
-                scene.getStylesheets().add("style/pagina_sef.css");
-
-                stage.setTitle("Invoire");
-                stage.setScene(scene);
-                stage.show();
-                primaryStage = stage;
-
-            }
-            else{
                 Parent root = FXMLLoader.load(getClass().getResource("/client_view.fxml"));
                 root.setId("pane");
                 Scene scene = new Scene(root);
@@ -144,8 +131,6 @@ public class ClientStart extends Application {
                 stage.setScene(scene);
                 stage.show();
                 primaryStage = stage;
-            }
-
         }catch (IOException e) {
             try{
                 Parent root = FXMLLoader.load(ClientStart.class.getResource("/configuratii.fxml"));

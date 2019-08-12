@@ -30,6 +30,7 @@ import java.util.Properties;
 
 public class ClientStart extends Application {
 
+    public static String userName = "Adrian";
     public static Stage primaryStage;
     public static final String fileDirectoryPath = loadPath();
     public static final String senderMail = loadMail();

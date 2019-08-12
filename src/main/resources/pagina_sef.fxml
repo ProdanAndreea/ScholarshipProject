@@ -27,17 +27,26 @@
          </cursor></Button>
       <Label layoutX="233.0" layoutY="4.0" prefHeight="21.0" prefWidth="348.0" text="(dublu click pe cerere pentru a o deschide și semna)" textFill="#754747" />
       <Separator layoutY="0.5" prefHeight="0.0" prefWidth="600.0" />
-      <ToggleButton fx:id="signedToggleButton" layoutX="267.0" layoutY="46.0" mnemonicParsing="false" text="Semnate" textFill="#058348">
+      <ToggleButton fx:id="signedToggleButton" layoutX="274.0" layoutY="46.0" mnemonicParsing="false" text="Semnate" textFill="#058348">
          <font>
             <Font name="System Bold" size="12.0" />
-         </font></ToggleButton>
+         </font>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor></ToggleButton>
       <ToggleButton fx:id="waitingToggleButton" layoutX="109.0" layoutY="46.0" mnemonicParsing="false" text="În Așteptare" textFill="#c67d00">
          <font>
             <Font name="System Bold" size="12.0" />
-         </font></ToggleButton>
+         </font>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor></ToggleButton>
       <ToggleButton fx:id="resolvedToggleButton" layoutX="414.0" layoutY="46.0" mnemonicParsing="false" text="Rezolvate" textFill="#15009c">
          <font>
             <Font name="System Bold" size="12.0" />
-         </font></ToggleButton>
+         </font>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor></ToggleButton>
    </children>
 </AnchorPane>

@@ -550,6 +550,18 @@ public class ClientController {
         sefDepartament.getItems().addAll(sefDepartamentChoices);
     }
 
+    private String getFolderForSefDirect(String sefDirect) {
+        List<Superior> sups = XMLMapper.jaxbXMLToObjects(Superiors.class, superiorsFilePath).getSuperiors();
+
+        String sefDirectMail = sups.stream()
+                .filter(superior -> superior.getName().equals(sefDirect))
+                .findFirst()
+                .get()
+                .getEmail();
+
+        return sefDirectMail.split("@")[0];
+    }
+
     public static void setDatePickerFormat(DatePicker datePicker) {
         datePicker.setConverter(new StringConverter<LocalDate>() {
             String pattern = "dd-MM-yyyy";
@@ -593,8 +605,16 @@ public class ClientController {
         try{
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
 
+            String folderNameForDepartment = getFolderForSefDirect(sefDepartament.getValue().toString());
+            String directoryForSefDirect = ClientStart.fileDirectoryPath.concat("\\").concat(folderNameForDepartment);
+            new File(directoryForSefDirect).mkdir();
+            String folderNameForSefDirect = getFolderForSefDirect(sefDirect.getValue().toString());
+            String fullDirectory = directoryForSefDirect.concat("\\").concat(folderNameForSefDirect);
+            File directory = new File(fullDirectory);
+            directory.mkdir();
+
             String pdfFilePath =
-                    ClientStart.fileDirectoryPath +"\\Invoire_" + nume.getCharacters().toString()+
+                    fullDirectory +"\\Invoire_" + nume.getCharacters().toString()+
                     "_" + LocalDate.now().format(formatter)  +// desiredLeave.getLeaveDate().toString()
                     "_" + LocalTime.now().format(DateTimeFormatter.ofPattern("HH-mm")).toString()+".pdf";
             PdfWriter writer = new PdfWriter(pdfFilePath);

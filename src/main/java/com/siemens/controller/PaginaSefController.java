@@ -73,44 +73,59 @@ public class PaginaSefController {
     private ToggleButton signedToggleButton;
 
     private void populateRequests(){
+
+        String pathToFiles = ClientStart.fileDirectoryPath + "\\prodan.a.andreea\\adrian";
+        File newFolder = new File(pathToFiles);
+
+
+        ArrayList<Request> array = new ArrayList<>();
+        if (newFolder.listFiles().length == 0) {
+            requestObservableList.clear();
+        } else {
+            for (File file : newFolder.listFiles()) {
+                if (file.isDirectory()) {
+                    String newPath = file.getPath();
+                    for (File fileDirect : file.listFiles()) {
+                        array.add(readRequestFromFile(fileDirect, newPath));
+                    }
+                } else {
+                    array.add(readRequestFromFile(file, pathToFiles));
+                }
+            }
+
+            ArrayList<Request> sorted = mergeSort(array);
+            requestObservableList.setAll(sorted);
+        }
+
+
+
+    }
+
+    private Request readRequestFromFile(File file, String pathToFiles) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
         SimpleDateFormat parser = new SimpleDateFormat("HH-mm");
 
-        PdfDocument pdfDoc;
+        String[] parts = file.getName().split("_");
         boolean isSigned;
-
-        ArrayList<Request> array = new ArrayList<>();
-        for(File file : folder.listFiles()){
-            String[] parts = file.getName().split("_");
-            try{
-                PdfDocument pdf = new PdfDocument(new PdfReader(ClientStart.fileDirectoryPath + "\\" +file.getName()));
-                PdfAcroForm form  = PdfAcroForm.getAcroForm(pdf, true);
-                SignatureUtil signUtil = new SignatureUtil(pdf);
-                isSigned = true;
-                if(signUtil.getSignatureNames().size() == 0)
-                    isSigned = false;
-                Map<String, PdfFormField> fields = form.getFormFields();
-                PdfFormField field1 = fields.get("email");
-                PdfFormField sentField = fields.get("hasBeenSent");
-                boolean isSent = false;
-                if(sentField != null)
-                    isSent = true;
-                String senderMail = field1.getValueAsString();
-                pdf.close();
-                requestObservableList.add(
-                        new Request(file.getName(), senderMail, file, isSigned, isSent, LocalDate.parse(parts[2], formatter), parser.parse(parts[3]))
-                );
-                array.add(new Request(file.getName(), senderMail, file, isSigned, isSent, LocalDate.parse(parts[2], formatter), parser.parse(parts[3]))
-                );
-            }catch (Exception e){
-                e.printStackTrace();
-            }
-
-        }
-
-        ArrayList<Request> sorted = mergeSort(array);
-        for (int i=0; i<array.size(); i++) {
-            requestObservableList.set(i, sorted.get(i));
+        try{
+            PdfDocument pdf = new PdfDocument(new PdfReader(pathToFiles + "\\" +file.getName()));
+            PdfAcroForm form  = PdfAcroForm.getAcroForm(pdf, true);
+            SignatureUtil signUtil = new SignatureUtil(pdf);
+            isSigned = true;
+            if (signUtil.getSignatureNames().size() == 0)
+                isSigned = false;
+            Map<String, PdfFormField> fields = form.getFormFields();
+            PdfFormField field1 = fields.get("email");
+            PdfFormField sentField = fields.get("hasBeenSent");
+            boolean isSent = false;
+            if(sentField != null)
+                isSent = true;
+            String senderMail = field1.getValueAsString();
+            pdf.close();
+            return new Request(file.getName(), senderMail, file, isSigned, isSent, LocalDate.parse(parts[2], formatter), parser.parse(parts[3]));
+        }catch (Exception e){
+            e.printStackTrace();
+            return new Request();
         }
     }
     private void refreshItems(){

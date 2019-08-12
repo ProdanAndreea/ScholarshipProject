@@ -114,15 +114,10 @@ public class ClientController {
     @FXML
     private javafx.scene.control.TableView<Recovery> recoveryTableView;
 
-    private String[] sefDirectChoices;
-    private String[] sefDepartamentChoices;
+
     private List<Superior> sefiDirecti;
     private List<Superior> sefiDepartament;
-    private String userName;
-    private String userPosition;
-    private String superiorName;
-    private String departmentSuperior;
-    private String superiorsFilePath;
+
 
     @FXML
     private CheckBox bossAvailability;
@@ -165,6 +160,9 @@ public class ClientController {
     private Button btnDelete;
     @FXML
     private Label labelInvoire;
+    @FXML
+    private Button changeConfigsButton;
+
     private ClientController clientController;
 
     public ClientController() {
@@ -377,7 +375,7 @@ public class ClientController {
             @Override
             public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
                 XMLMapper xmlMapper = new XMLMapper();
-                xmlMapper.setAvailable(nume.getText(), bossAvailability.isSelected(), superiorsFilePath);
+                xmlMapper.setAvailable(nume.getText(), bossAvailability.isSelected(), ClientStart.superiorsFilePath);
             }
         });
 
@@ -394,6 +392,27 @@ public class ClientController {
             }
             else{
                 btnDelete.setDisable(true);
+            }
+        });
+
+        changeConfigsButton.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                try {
+                    FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/modify_config_prompt.fxml"));
+                    Parent root = fxmlLoader.load();
+                    Stage stage = new Stage();
+                    stage.setTitle("Confirmare");
+
+                    stage.initModality(Modality.WINDOW_MODAL);
+                    stage.initOwner(ClientStart.primaryStage.getScene().getWindow());
+
+                    Scene scene = new Scene(root);
+                    stage.setScene(scene);
+                    stage.show();
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
             }
         });
     }
@@ -415,8 +434,7 @@ public class ClientController {
                 CodeSource codeSource = ClientController.class.getProtectionDomain().getCodeSource();
                 File jarFile = new File(codeSource.getLocation().toURI().getPath());
                 String jarDir = jarFile.getParentFile().getPath();
-                System.out.println("-------------------");
-                System.out.println(jarDir);
+
 
                 //load the file handle for main.properties
                 FileInputStream file = new FileInputStream(jarDir + "\\user.properties");
@@ -426,28 +444,22 @@ public class ClientController {
                 file.close();
 
                 //retrieve the properties
-                userName = property.getProperty("appUser");
-                userPosition = property.getProperty("userOccupiedPosition");
-                superiorName = property.getProperty("superiorName");
-                departmentSuperior = property.getProperty("departmentSuperiorName");
-                superiorsFilePath = property.getProperty("pathToXML");
 
-
-
-                if(userPosition.equals("Team Leader") || userPosition.equals("Department Leader")){
+                
+                if(ClientStart.userPosition.equals("Team Leader") || ClientStart.userPosition.equals("Department Leader")){
                     labelInvoire.setOpacity(100);
 
                     bossAvailability.setOpacity(100);
                     bossAvailability.setDisable(false);
 
                     XMLMapper xmlMapper = new XMLMapper();
-                    bossAvailability.setSelected(xmlMapper.isAvailable(userName, superiorsFilePath));
+                    bossAvailability.setSelected(xmlMapper.isAvailable(ClientStart.userName, ClientStart.superiorsFilePath));
 
                     bossButton.setOpacity(100);
                     bossButton.setDisable(false);
                 }
 
-                nume.setText(userName);
+                nume.setText(ClientStart.userName);
 
            // } else {
            //     throw new FileNotFoundException("property file '" + userProperties + "' not found in the classpath");
@@ -477,8 +489,8 @@ public class ClientController {
         //Parse the user prop file
         loadUserData();
 
-        sefDirect.setValue(superiorName);
-        sefDepartament.setValue(departmentSuperior);
+        sefDirect.setValue(ClientStart.superiorName);
+        sefDepartament.setValue(ClientStart.departmentSuperior);
 
         setDatePickerFormat(datePickerInvoire);
 
@@ -491,12 +503,7 @@ public class ClientController {
         btnTrimite.setDisable(true);
         setFieldsListeners();
 
-        // autocomplete
-//        TextFields.bindAutoCompletion(pozitieAngajat, possibleChoises);
-
-
         nrOreInvoire.getItems().addAll(nrOre);
-
 
         //SET CELL VALUES FOR THE TABLE
         leaveDate.setCellValueFactory(new PropertyValueFactory<Recovery, LocalDate>("recoveryDate"));
@@ -506,17 +513,7 @@ public class ClientController {
 
         setButtonEvents(listOfRecoveries);
 
-        System.out.println("-------------   " + superiorsFilePath);
         getSuperiors();
-
-/*
-        recoveryTableView.setOnMouseClicked(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent event) {
-                System.out.println("clicked");
-            }
-        });
-        */
 
         recoveryTableView.setRowFactory(tv -> {
             TableRow<Recovery> row = new TableRow<>();
@@ -532,22 +529,11 @@ public class ClientController {
     }
 
     void getSuperiors() {
-        List<Superior> sups = XMLMapper.jaxbXMLToObjects(Superiors.class, superiorsFilePath).getSuperiors();
+        List<Superior> sups = XMLMapper.jaxbXMLToObjects(Superiors.class, ClientStart.superiorsFilePath).getSuperiors();
 
         sefiDirecti = sups.stream().filter(superior -> superior.getPositionEnum().equals(PositionEnum.DIRECT)).collect(Collectors.toList());
         sefiDepartament = sups.stream().filter(superior -> superior.getPositionEnum().equals(PositionEnum.DEPARTAMENT)).collect(Collectors.toList());
 
-        sefDirectChoices = new String[sefiDirecti.size()];
-        for (int i = 0; i < sefiDirecti.size(); i++) {
-            sefDirectChoices[i] = sefiDirecti.get(i).getName();
-        }
-        sefDirect.getItems().addAll(sefDirectChoices);
-
-        sefDepartamentChoices = new String[sefiDepartament.size()];
-        for (int i = 0; i < sefiDepartament.size(); i++) {
-            sefDepartamentChoices[i] = sefiDepartament.get(i).getName();
-        }
-        sefDepartament.getItems().addAll(sefDepartamentChoices);
     }
 
     private String getFolderForSefDirect(String sefDirect) {
@@ -1093,7 +1079,7 @@ public class ClientController {
             document.close();
             //APEL PENTRU TRIMITERE MAIL
 
-            //generateMailData(pdfFilePath);
+            generateMailData();
 
             System.exit(0);
 

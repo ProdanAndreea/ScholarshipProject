@@ -233,8 +233,7 @@ public class PaginaSefController {
                                 MailConfiguration.sendMessage(
                                         selectedRequest.getEmailSender(),
                                         "CONFIRMARE CERERE",
-                                        "CONFIRMED",
-                                        ClientStart.fileDirectoryPath+"\\"+selectedRequest.getFileName()
+                                        "Cererea " + selectedRequest.getFile().getName() + " a fost aprobata!"
                                 );
 
                             }
@@ -262,8 +261,7 @@ public class PaginaSefController {
                                 MailConfiguration.sendMessage(
                                         selectedRequest.getEmailSender(),
                                         "RESPINGERE CERERE",
-                                        "REJECTED",
-                                        ClientStart.fileDirectoryPath+"\\"+selectedRequest.getFile().getName()
+                                        "Cererea "+ selectedRequest.getFile().getName() + " a fost respinsa!"
                                 );
 
 

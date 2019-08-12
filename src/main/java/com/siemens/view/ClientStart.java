@@ -13,12 +13,10 @@ import javafx.scene.control.Button;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.InputStream;
+import java.io.*;
 import java.net.URISyntaxException;
 import java.security.CodeSource;
+import java.util.ArrayList;
 import java.util.Properties;
 
 /**
@@ -32,42 +30,44 @@ public class ClientStart extends Application {
 
     public static String userName = "Adrian";
     public static Stage primaryStage;
-    public static final String fileDirectoryPath = loadPath();
-    public static final String senderMail = loadMail();
+    public static String senderMail;
+    public static String userName;
+    public static String userPosition;
+    public static String superiorName;
+    public static String departmentSuperior;
+    public static String superiorsFilePath;
+    public static String fileDirectoryPath ;
     public ClientStart() {}
 
-    @Override
-    public void start(Stage stage) throws Exception {
-        Parent root = FXMLLoader.load(getClass().getResource("/client_view.fxml"));
-        root.setId("pane");
-        Scene scene = new Scene(root);
-
-        scene.getStylesheets().add("style/client_view.css");
-
-        stage.setTitle("Invoire");
-        stage.setScene(scene);
-        stage.show();
-
-        primaryStage = stage;
-    }
-    private static String loadPath(){
-        Properties property = new Properties();
-        /*
-        String userProperties = "user.properties";
-        InputStream inputStream = ClientStart.class.getClassLoader().getResourceAsStream(userProperties);
+    public static void  restartApplication()
+    {
         try{
-            if (inputStream != null) {
-                property.load(inputStream);
-                return property.getProperty("pathToDocuments");
-            }
-            else{
-                throw new FileNotFoundException("property file '" + userProperties + "' not found in the classpath");
-            }
+            final String javaBin = System.getProperty("java.home") + File.separator + "bin" + File.separator + "java";
+            final File currentJar = new File(ClientStart.class.getProtectionDomain().getCodeSource().getLocation().toURI());
+
+            /* is it a jar file? */
+            if(!currentJar.getName().endsWith(".jar"))
+                return;
+
+            /* Build command: java -jar application.jar */
+            final ArrayList<String> command = new ArrayList<String>();
+            command.add(javaBin);
+            command.add("-jar");
+            command.add(currentJar.getPath());
+
+            final ProcessBuilder builder = new ProcessBuilder(command);
+            builder.start();
+            System.exit(0);
         }catch (Exception e){
             e.printStackTrace();
         }
-        */
-        // get the path of the Jar
+
+    }
+
+    private void loadUserProperties()throws Exception{
+
+        Properties property = new Properties();
+        // get the path of the Jar; parse the file line by line and decode it
         CodeSource codeSource = ClientStart.class.getProtectionDomain().getCodeSource();
         File jarFile = null;
         try {
@@ -79,48 +79,121 @@ public class ClientStart extends Application {
             property.load(file);
             //we have loaded the properties, so close the file handle
             file.close();
-            return property.getProperty("pathToDocuments");
-        } catch (Exception e) {
-            e.printStackTrace();
+            //load the data for the user
+            userName = decodeMessage(property.getProperty(encodeMessage("appUser")));
+            userPosition = decodeMessage(property.getProperty(encodeMessage("userOccupiedPosition")));
+            superiorName = decodeMessage(property.getProperty(encodeMessage("superiorName")));
+            departmentSuperior = decodeMessage(property.getProperty(encodeMessage("departmentSuperiorName")));
+            superiorsFilePath = decodeMessage(property.getProperty(encodeMessage("pathToXML")));
+            fileDirectoryPath = decodeMessage(property.getProperty(encodeMessage("pathToDocuments")));
+
         }
-        return "ERROR LOADING PATH";
+        catch (Exception e){
+            throw e;
+        }
+
     }
-    private static String loadMail(){
+
+    private void loadMailProperties(){
+        //file should be parsed line by line and decoded line by line.
         try {
             Properties prop = new Properties();
-            String configFile = "mail.properties";
+            CodeSource codeSource = ClientStart.class.getProtectionDomain().getCodeSource();
+            File jarFile = new File(codeSource.getLocation().toURI().getPath());
+            String jarDir = jarFile.getParentFile().getPath();
+            FileInputStream file = new FileInputStream(jarDir + "\\mail.properties");
+            //load all the properties from this file
+            prop.load(file);
+            //we have loaded the properties, so close the file handle
+            file.close();
+            senderMail = decodeMessage(prop.getProperty(encodeMessage("username")));
 
-            InputStream inputStream = MailConfiguration.class.getClassLoader().getResourceAsStream(configFile);
-
-            if (inputStream != null) {
-                prop.load(inputStream);
-                return prop.getProperty("username");
-            }
         }catch (Exception e)
         {
             e.printStackTrace();
         }
-        return "ERROR LOADING MAIL";
+
     }
 
-    public static void main(String[] args) {
-        launch(args);
-    }
+    @Override
+    public void start(Stage stage) throws Exception {
+        try{
+            loadUserProperties();
+            loadMailProperties();
+            //The department leader should not have access to the user code.
+            if(userPosition.equals("Department Leader")){
+                Parent root = FXMLLoader.load(getClass().getResource("/pagina_sef.fxml"));
+                root.setId("pane");
+                Scene scene = new Scene(root);
 
-    class WindowButtons extends HBox {
+                scene.getStylesheets().add("style/pagina_sef.css");
 
-        public WindowButtons() {
-            Button closeBtn = new Button("X");
+                stage.setTitle("Invoire");
+                stage.setScene(scene);
+                stage.show();
+                primaryStage = stage;
 
-            closeBtn.setOnAction(new EventHandler<ActionEvent>() {
+            }
+            else{
+                Parent root = FXMLLoader.load(getClass().getResource("/client_view.fxml"));
+                root.setId("pane");
+                Scene scene = new Scene(root);
 
-                @Override
-                public void handle(ActionEvent actionEvent) {
-                    Platform.exit();
-                }
-            });
+                scene.getStylesheets().add("style/client_view.css");
 
-            this.getChildren().add(closeBtn);
+                stage.setTitle("Invoire");
+                stage.setScene(scene);
+                stage.show();
+                primaryStage = stage;
+            }
+
+        }catch (IOException e) {
+            try{
+                Parent root = FXMLLoader.load(ClientStart.class.getResource("/configuratii.fxml"));
+                root.setId("pane");
+                Scene scene = new Scene(root);
+                stage.setTitle("Form Proprietati");
+                stage.setScene(scene);
+                stage.show();
+                primaryStage = stage;
+
+            }catch (Exception e1){
+                e1.printStackTrace();
+            }
+
+        }catch (Exception e){
+            e.printStackTrace();
         }
+
     }
+
+    public static String decodeMessage(String input){
+        StringBuilder decryptedMessage = new StringBuilder();
+
+        for (int i = 0; i < input.length(); i++) {
+            if (i % 2 == 0) {
+                decryptedMessage.append((char)(input.charAt(i) - 4));
+            } else {
+                decryptedMessage.append((char)(input.charAt(i) - 3));
+            }
+        }
+        return  decryptedMessage.toString();
+    }
+
+    public static String encodeMessage(String input){
+        StringBuilder encryptedMessage = new StringBuilder();
+
+        for (int i = 0; i < input.length(); i++) {
+            if (i % 2 == 0) {
+                encryptedMessage.append((char)(input.charAt(i) + 4));
+            } else {
+                encryptedMessage.append((char)(input.charAt(i) + 3));
+            }
+        }
+        return  encryptedMessage.toString();
+    }
+
+
+    public static void main(String[] args) {launch(args);}
+
 }

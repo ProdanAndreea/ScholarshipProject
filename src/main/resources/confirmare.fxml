@@ -20,7 +20,7 @@
             <Cursor fx:constant="HAND" />
          </cursor></Button>
       <Text layoutX="88.0" layoutY="47.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Un e-mail de notificare va fi trimis șefilor." textAlignment="CENTER" wrappingWidth="248.62890625" />
-      <Text fill="#0a0a0a" layoutX="54.0" layoutY="27.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Biletul de învoire, format PDF, va fi salvat pe desktop." textAlignment="CENTER" />
+      <Text fill="#0a0a0a" layoutX="54.0" layoutY="27.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Biletul de învoire, format PDF, se va crea pe T." textAlignment="CENTER" />
       <Text fill="#0a0a0a" layoutX="155.0" layoutY="93.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Doriți să continuați?" textAlignment="CENTER">
          <font>
             <Font name="System Bold" size="12.0" />

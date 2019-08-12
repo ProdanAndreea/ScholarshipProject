@@ -160,6 +160,9 @@ public class ClientController {
     private Button btnDelete;
     @FXML
     private Label labelInvoire;
+    @FXML
+    private Button changeConfigsButton;
+
     private ClientController clientController;
 
     public ClientController() {
@@ -389,6 +392,27 @@ public class ClientController {
             }
             else{
                 btnDelete.setDisable(true);
+            }
+        });
+
+        changeConfigsButton.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                try {
+                    FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/modify_config_prompt.fxml"));
+                    Parent root = fxmlLoader.load();
+                    Stage stage = new Stage();
+                    stage.setTitle("Confirmare");
+
+                    stage.initModality(Modality.WINDOW_MODAL);
+                    stage.initOwner(ClientStart.primaryStage.getScene().getWindow());
+
+                    Scene scene = new Scene(root);
+                    stage.setScene(scene);
+                    stage.show();
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
             }
         });
     }

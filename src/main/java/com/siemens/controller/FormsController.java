@@ -17,6 +17,7 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.Writer;
 import java.security.CodeSource;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Properties;
 import java.util.stream.Collectors;
@@ -44,7 +45,14 @@ public class FormsController {
     private Label xmlLabel;
     @FXML
     private Label warningLabel;
+    @FXML
+    private Button changeRootButton;
+    @FXML
+    private Label defaultRootDirectory;
 
+    private String[] sefDirectChoices;
+
+    private String[] sefDepartamentChoices;
 
     public FormsController(){}
 
@@ -54,8 +62,6 @@ public class FormsController {
         List <Superior> directLeaders = sups.stream().filter(superior -> superior.getPositionEnum().equals(PositionEnum.DIRECT)).collect(Collectors.toList());
         List<Superior> departmentLeaders = sups.stream().filter(superior -> superior.getPositionEnum().equals(PositionEnum.DEPARTAMENT)).collect(Collectors.toList());
 
-        String[] sefDirectChoices;
-        String[] sefDepartamentChoices;
         sefDirectChoices = new String[directLeaders.size()];
         for (int i = 0; i < directLeaders.size(); i++) {
             sefDirectChoices[i] = directLeaders.get(i).getName();
@@ -89,6 +95,18 @@ public class FormsController {
                 }
             }
         });
+        //BROWSE FOR FILE
+        changeRootButton.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                DirectoryChooser directoryChooser = new DirectoryChooser();
+                directoryChooser.setTitle("Choose where the root folder is");
+                File directory = directoryChooser.showDialog(primaryStage);
+                if(directory != null){
+                    defaultRootDirectory.setText(directory.getAbsolutePath().replace("\\","/"));
+                }
+            }
+        });
         //ACTION FOR CREATING THE ENCRYPTED DOCUMENTS
         finishButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
@@ -104,6 +122,23 @@ public class FormsController {
                 }
                 else {
                     try{
+                        //automatically determine the position of the person who installs the app
+                        String position;
+                        if(
+                                Arrays.stream(sefDirectChoices)
+                                        .filter(superior -> superior.equals(nameText.getCharacters().toString()))
+                                        .findFirst().isPresent()
+                                )
+                            position = "Team Leader";
+                        else if(
+                                Arrays.stream(sefDepartamentChoices)
+                                        .filter(superior ->  superior.equals(nameText.getCharacters().toString()))
+                                        .findFirst().isPresent()
+                                )
+                            position = "Department Leader";
+                        else
+                            position = "User";
+
                         CodeSource codeSource = ClientStart.class.getProtectionDomain().getCodeSource();
                         File jarFile = new File(codeSource.getLocation().toURI().getPath());
                         String jarDir = jarFile.getParentFile().getPath();
@@ -119,12 +154,12 @@ public class FormsController {
                             Properties properties = new Properties();
                             //store the properties encoded with the established alg.
                             properties.setProperty(encodeMessage("appUser"), encodeMessage(nameText.getCharacters().toString()));
-                            properties.setProperty(encodeMessage("userOccupiedPosition"), encodeMessage("User"));
+                            properties.setProperty(encodeMessage("userOccupiedPosition"), encodeMessage(position));
                             properties.setProperty(encodeMessage("superiorName"), encodeMessage(directLeader.getValue().toString()));
                             properties.setProperty(encodeMessage("departmentSuperiorName"), encodeMessage(departmentLeader.getValue().toString()));
                             properties.setProperty(encodeMessage("pathToXML"), encodeMessage(xmlLabel.getText()));
                             //WARNING! THIS IS ONLY A TEMPORARY SOLUTION UNTIL WE DECIDE WHAT THE ACTUAL PATH SHOULD BE !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-                            properties.setProperty(encodeMessage("pathToDocuments"), encodeMessage(jarDir + "\\Bilete Invoire"));
+                            properties.setProperty(encodeMessage("pathToDocuments"), encodeMessage(defaultRootDirectory.getText()));
 
                             properties.store(writer, "User Information");
                             writer.close();
@@ -150,6 +185,15 @@ public class FormsController {
     }
 
     public void initialize(){
+        try{
+            CodeSource codeSource = ClientStart.class.getProtectionDomain().getCodeSource();
+            File jarFile = new File(codeSource.getLocation().toURI().getPath());
+            String jarDir = jarFile.getParentFile().getPath();
+            defaultRootDirectory.setText(jarDir.replace("\\", "/") + "/Bilete Invoire");
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
         xmlLabel.setOpacity(0);
         warningLabel.setOpacity(0);
         departmentLeader.setDisable(true);

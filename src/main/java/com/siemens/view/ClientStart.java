@@ -16,6 +16,7 @@ import javafx.stage.Stage;
 import java.io.*;
 import java.net.URISyntaxException;
 import java.security.CodeSource;
+import java.util.ArrayList;
 import java.util.Properties;
 
 /**
@@ -36,6 +37,31 @@ public class ClientStart extends Application {
     public static String superiorsFilePath;
     public static String fileDirectoryPath ;
     public ClientStart() {}
+
+    public static void  restartApplication()
+    {
+        try{
+            final String javaBin = System.getProperty("java.home") + File.separator + "bin" + File.separator + "java";
+            final File currentJar = new File(ClientStart.class.getProtectionDomain().getCodeSource().getLocation().toURI());
+
+            /* is it a jar file? */
+            if(!currentJar.getName().endsWith(".jar"))
+                return;
+
+            /* Build command: java -jar application.jar */
+            final ArrayList<String> command = new ArrayList<String>();
+            command.add(javaBin);
+            command.add("-jar");
+            command.add(currentJar.getPath());
+
+            final ProcessBuilder builder = new ProcessBuilder(command);
+            builder.start();
+            System.exit(0);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
+    }
 
     private void loadUserProperties()throws Exception{
 
@@ -99,7 +125,7 @@ public class ClientStart extends Application {
                 root.setId("pane");
                 Scene scene = new Scene(root);
 
-                scene.getStylesheets().add("style/pagina_sefcss");
+                scene.getStylesheets().add("style/pagina_sef.css");
 
                 stage.setTitle("Invoire");
                 stage.setScene(scene);

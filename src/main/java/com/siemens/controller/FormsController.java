@@ -100,6 +100,8 @@ public class FormsController {
                 );
                 File xmlFile = fileChooser.showOpenDialog(primaryStage);
                 if(xmlFile != null){
+                    directLeader.getItems().clear();
+                    departmentLeader.getItems().clear();
                     xmlLabel.setText(xmlFile.getAbsolutePath().replace("\\", "/"));
                     xmlLabel.setOpacity(100);
                     getSuperiors();

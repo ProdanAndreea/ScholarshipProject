@@ -58,6 +58,8 @@ import java.util.List;
 import java.util.Properties;
 import java.util.stream.Collectors;
 
+import static com.siemens.view.ClientStart.superiorsFilePath;
+
 /**
  * @Author: Siemens CT Cluj-Napoca, Romania
  * @Since: Jul 25, 2019
@@ -309,14 +311,20 @@ public class ClientController {
                     Parent root = fxmlLoader.load();
                     root.setId("pane");
                     Stage stage = new Stage();
-                    stage.setTitle("Cereri de învoire");
+                    stage.setTitle("Cereri de invoire");
+
 
                     stage.initModality(Modality.WINDOW_MODAL);
                     stage.initOwner(ClientStart.primaryStage.getScene().getWindow());
 
+                    PaginaSefController paginaSefController = fxmlLoader.getController();
+                    paginaSefController.populateDepartment(sefiDepartament);
+
+
                     Scene scene = new Scene(root);
                     scene.getStylesheets().add("style/pagina_sef.css");
                     stage.setScene(scene);
+
                     stage.show();
                 }catch (Exception e){
                     e.printStackTrace();
@@ -354,7 +362,7 @@ public class ClientController {
             @Override
             public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
                 XMLMapper xmlMapper = new XMLMapper();
-                xmlMapper.setAvailable(nume.getText(), bossAvailability.isSelected(), ClientStart.superiorsFilePath);
+                xmlMapper.setAvailable(nume.getText(), bossAvailability.isSelected(), superiorsFilePath);
             }
         });
 
@@ -383,10 +391,16 @@ public class ClientController {
                     Stage stage = new Stage();
                     stage.setTitle("Confirmare");
 
+
+
                     stage.initModality(Modality.WINDOW_MODAL);
                     stage.initOwner(ClientStart.primaryStage.getScene().getWindow());
 
                     Scene scene = new Scene(root);
+
+                    scene.getStylesheets().add("style/modify_config_prompt.css");
+
+
                     stage.setScene(scene);
                     stage.show();
                 }catch (Exception e){
@@ -432,7 +446,7 @@ public class ClientController {
                     bossAvailability.setDisable(false);
 
                     XMLMapper xmlMapper = new XMLMapper();
-                    bossAvailability.setSelected(xmlMapper.isAvailable(ClientStart.userName, ClientStart.superiorsFilePath));
+                    bossAvailability.setSelected(xmlMapper.isAvailable(ClientStart.userName, superiorsFilePath));
 
                     bossButton.setOpacity(100);
                     bossButton.setDisable(false);
@@ -513,11 +527,23 @@ public class ClientController {
     }
 
     void getSuperiors() {
-        List<Superior> sups = XMLMapper.jaxbXMLToObjects(Superiors.class, ClientStart.superiorsFilePath).getSuperiors();
+        List<Superior> sups = XMLMapper.jaxbXMLToObjects(Superiors.class, superiorsFilePath).getSuperiors();
 
         sefiDirecti = sups.stream().filter(superior -> superior.getPositionEnum().equals(PositionEnum.DIRECT)).collect(Collectors.toList());
         sefiDepartament = sups.stream().filter(superior -> superior.getPositionEnum().equals(PositionEnum.DEPARTAMENT)).collect(Collectors.toList());
 
+    }
+
+    private String getFolderForSefDirect(String sefDirect) {
+        List<Superior> sups = XMLMapper.jaxbXMLToObjects(Superiors.class, superiorsFilePath).getSuperiors();
+
+        String sefDirectMail = sups.stream()
+                .filter(superior -> superior.getName().equals(sefDirect))
+                .findFirst()
+                .get()
+                .getEmail();
+
+        return sefDirectMail.split("@")[0];
     }
 
     public static void setDatePickerFormat(DatePicker datePicker) {
@@ -563,8 +589,22 @@ public class ClientController {
         try{
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
 
+            String fullDirectory;
+
+            String folderNameForDepartment = getFolderForSefDirect(sefDepartament.getValue().toString());
+            String directoryForSefDirect = ClientStart.fileDirectoryPath.concat("\\").concat(folderNameForDepartment);
+            new File(directoryForSefDirect).mkdir();
+            if (ClientStart.userPosition.equals("Team Leader")) {
+                fullDirectory = directoryForSefDirect.concat("\\").concat(folderNameForDepartment);
+            } else {
+                String folderNameForSefDirect = getFolderForSefDirect(sefDirect.getValue().toString());
+                fullDirectory = directoryForSefDirect.concat("\\").concat(folderNameForSefDirect);
+            }
+
+            new File(fullDirectory).mkdir();
+
             String pdfFilePath =
-                    ClientStart.fileDirectoryPath +"\\Invoire_" + nume.getCharacters().toString()+
+                    fullDirectory +"\\Invoire_" + nume.getCharacters().toString()+
                     "_" + LocalDate.now().format(formatter)  +// desiredLeave.getLeaveDate().toString()
                     "_" + LocalTime.now().format(DateTimeFormatter.ofPattern("HH-mm")).toString()+".pdf";
             PdfWriter writer = new PdfWriter(pdfFilePath);

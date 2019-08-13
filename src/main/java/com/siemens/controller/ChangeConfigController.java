@@ -19,12 +19,12 @@ public class ChangeConfigController {
     @FXML
     private Text wrongPasswordWarning;
     @FXML
-    private Button confirmButton;
+    private Button confirmModifyConfig;
 
     public void initialize(){
         wrongPasswordWarning.setOpacity(0);
 
-        confirmButton.setOnAction(new EventHandler<ActionEvent>() {
+        confirmModifyConfig.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
                 try{

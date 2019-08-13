@@ -7,15 +7,72 @@
     -fx-effect: dropshadow(three-pass-box, black, 30, 0.5, 0, 0);
 }
 
-#acceptButton, #denyButton {
+#acceptButton, #denyButton, #waitingToggleButton, #signedToggleButton, #resolvedToggleButton {
     -fx-background-color:
             #e3e3e3,
             linear-gradient(#ebebeb 50%, white 20%),
             radial-gradient(center 50% -40%, radius 20%, #f0f0f0 25%, rgba(245, 245, 245, 1) 20%);
     -fx-background-radius: 20;
     -fx-background-insets: 0,1,1;
-    -fx-text-fill: black;
     -fx-effect: dropshadow( three-pass-box , rgba(0,0,0,0.5) , 3, 0.0 , 0 , 1 );
+}
+
+#resolvedToggleButton:hover {
+    -fx-background-color:
+            #15009c,
+            linear-gradient(#ebebeb 50%, white 20%),
+            radial-gradient(center 50% -40%, radius 20%, #f0f0f0 25%, rgba(245, 245, 245, 1) 20%);
+}
+
+#resolvedToggleButton:selected {
+    -fx-background-color:
+            #15009c,
+            linear-gradient(#ebebeb 50%, white 20%),
+            radial-gradient(center 50% -40%, radius 20%, #f0f0f0 25%, rgba(245, 245, 245, 1) 20%);
+}
+
+#resolvedToggleButton:pressed {
+    -fx-background-color: #AAAFB4;
+}
+
+#signedToggleButton:hover {
+    -fx-background-color:
+            #058348,
+            linear-gradient(#ebebeb 50%, white 20%),
+            radial-gradient(center 50% -40%, radius 20%, #f0f0f0 25%, rgba(245, 245, 245, 1) 20%);
+}
+
+
+
+#signedToggleButton:selected {
+    -fx-background-color:
+            #058348,
+            linear-gradient(#ebebeb 50%, white 20%),
+            radial-gradient(center 50% -40%, radius 20%, #f0f0f0 25%, rgba(245, 245, 245, 1) 20%);
+}
+
+#signedToggleButton:pressed {
+    -fx-background-color: #AAAFB4;
+}
+
+#waitingToggleButton:hover {
+    -fx-background-color:
+            #c67d00,
+            linear-gradient(#ebebeb 50%, white 20%),
+            radial-gradient(center 50% -40%, radius 20%, #f0f0f0 25%, rgba(245, 245, 245, 1) 20%);
+}
+
+
+#waitingToggleButton:selected {
+    -fx-background-color:
+            #c67d00,
+            linear-gradient(#ebebeb 50%, white 20%),
+            radial-gradient(center 50% -40%, radius 20%, #f0f0f0 25%, rgba(245, 245, 245, 1) 20%);
+}
+
+
+#waitingToggleButton:pressed {
+    -fx-background-color: #AAAFB4;
 }
 
 #acceptButton:hover {

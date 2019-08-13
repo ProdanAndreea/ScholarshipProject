@@ -136,6 +136,9 @@ public class ClientStart extends Application {
                 Parent root = FXMLLoader.load(ClientStart.class.getResource("/configuratii.fxml"));
                 root.setId("pane");
                 Scene scene = new Scene(root);
+
+                scene.getStylesheets().add("style/configuratii.css");
+
                 stage.setTitle("Form Proprietati");
                 stage.setScene(scene);
                 stage.show();

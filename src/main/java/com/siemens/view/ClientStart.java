@@ -136,16 +136,19 @@ public class ClientStart extends Application {
             loadMailProperties();
             //The department leader should not have access to the user code.
 
-                Parent root = FXMLLoader.load(getClass().getResource("/client_view.fxml"));
-                root.setId("pane");
-                Scene scene = new Scene(root);
 
-                scene.getStylesheets().add("style/client_view.css");
+            Parent root = FXMLLoader.load(getClass().getResource("/client_view.fxml"));
+            stage.setResizable(false);
+            root.setId("pane");
+            Scene scene = new Scene(root);
 
-                stage.setTitle("Invoire");
-                stage.setScene(scene);
-                stage.show();
-                primaryStage = stage;
+            scene.getStylesheets().add("style/client_view.css");
+
+            stage.setTitle("Invoire");
+            stage.setResizable(false);
+            stage.setScene(scene);
+            stage.show();
+            primaryStage = stage;
         }catch (IOException e) {
             try{
                 Parent root = FXMLLoader.load(ClientStart.class.getResource("/configuratii.fxml"));
@@ -154,7 +157,8 @@ public class ClientStart extends Application {
 
                 scene.getStylesheets().add("style/configuratii.css");
 
-                stage.setTitle("Form Proprietati");
+                stage.setTitle("Configuratii");
+                stage.setResizable(false);
                 stage.setScene(scene);
                 stage.show();
                 primaryStage = stage;

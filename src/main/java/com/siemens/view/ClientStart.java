@@ -128,6 +128,7 @@ public class ClientStart extends Application {
                 scene.getStylesheets().add("style/pagina_sef.css");
 
                 stage.setTitle("Invoire");
+                stage.setResizable(false);
                 stage.setScene(scene);
                 stage.show();
                 primaryStage = stage;
@@ -141,6 +142,7 @@ public class ClientStart extends Application {
                 scene.getStylesheets().add("style/client_view.css");
 
                 stage.setTitle("Invoire");
+                stage.setResizable(false);
                 stage.setScene(scene);
                 stage.show();
                 primaryStage = stage;
@@ -154,7 +156,8 @@ public class ClientStart extends Application {
 
                 scene.getStylesheets().add("style/configuratii.css");
 
-                stage.setTitle("Form Proprietati");
+                stage.setTitle("Configuratii");
+                stage.setResizable(false);
                 stage.setScene(scene);
                 stage.show();
                 primaryStage = stage;

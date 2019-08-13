@@ -14,10 +14,8 @@ import com.itextpdf.kernel.pdf.*;
 import com.itextpdf.kernel.pdf.annot.PdfAnnotation;
 import com.itextpdf.kernel.pdf.annot.PdfWidgetAnnotation;
 import com.itextpdf.layout.Document;
+import com.itextpdf.layout.element.*;
 import com.itextpdf.layout.element.Cell;
-import com.itextpdf.layout.element.Paragraph;
-import com.itextpdf.layout.element.Table;
-import com.itextpdf.layout.element.Text;
 import com.itextpdf.layout.property.HorizontalAlignment;
 import com.itextpdf.layout.property.TextAlignment;
 import com.itextpdf.layout.property.UnitValue;
@@ -44,6 +42,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.text.Font;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.StringConverter;
@@ -492,6 +491,7 @@ public class ClientController {
         sefDirectLabel.setStyle("-fx-font-weight: bold");
         setDatePickerFormat(datePickerInvoire);
 
+
         clientController = this;
 
         // disable add button
@@ -591,13 +591,13 @@ public class ClientController {
 
             String fullDirectory;
 
-            String folderNameForDepartment = getFolderForSefDirect(sefDepartament.getValue().toString());
+            String folderNameForDepartment = getFolderForSefDirect(sefDepartamentLabel.getText());
             String directoryForSefDirect = ClientStart.fileDirectoryPath.concat("\\").concat(folderNameForDepartment);
             new File(directoryForSefDirect).mkdir();
             if (ClientStart.userPosition.equals("Team Leader")) {
                 fullDirectory = directoryForSefDirect.concat("\\").concat(folderNameForDepartment);
             } else {
-                String folderNameForSefDirect = getFolderForSefDirect(sefDirect.getValue().toString());
+                String folderNameForSefDirect = getFolderForSefDirect(sefDirectLabel.getText());
                 fullDirectory = directoryForSefDirect.concat("\\").concat(folderNameForSefDirect);
             }
 
@@ -743,25 +743,40 @@ public class ClientController {
             recoveryTable.setHorizontalAlignment(HorizontalAlignment.CENTER);
             document.add(recoveryTable);
 
+            Table approvalTable = new Table(UnitValue.createPercentArray(new float[]{3, 2}));
+            if(ClientStart.userPosition.equals("User")){
+                approvalTable.addCell(
+                        new com.itextpdf.layout.element.Cell(1, 2).add(new Paragraph("  Aprobare"))
+                );
+                approvalTable.addCell("Sef");
+                approvalTable.addCell("Semnatura"); //.setFont(font);
+                approvalTable.addCell(
+                        new com.itextpdf.layout.element.Cell()
+                                .add(new Paragraph("Direct:"))
+                                .add(new Paragraph(ClientStart.superiorName)
+                                ));
+                approvalTable.addCell("");
+                approvalTable.addCell(
+                        new Cell()
+                                .add(new Paragraph("Departament:"))
+                                .add(new Paragraph(ClientStart.departmentSuperior))
+                );
+                approvalTable.addCell("");
 
-            Table approvalTable = new Table(new float[]{1, 2});
-            approvalTable.addCell(
-                    new com.itextpdf.layout.element.Cell(1, 2).add(new Paragraph("  Aprobare"))
-            );
-            approvalTable.addCell("Sef");
-            approvalTable.addCell("Semnatura"); //.setFont(font);
-            approvalTable.addCell(
-                    new com.itextpdf.layout.element.Cell()
-                            .add(new Paragraph("Direct:"))
-                            .add(new Paragraph(sefDirectLabel.getText())
-                            ));
-            approvalTable.addCell("");
-            approvalTable.addCell(
-                    new Cell()
-                            .add(new Paragraph("Departament:"))
-                            .add(new Paragraph(sefDirectLabel.getText()))
-            );
-            approvalTable.addCell("");
+            }else{
+                approvalTable.addCell(
+                        new com.itextpdf.layout.element.Cell(1, 2).add(new Paragraph("  Aprobare"))
+                );
+                approvalTable.addCell("Sef");
+                approvalTable.addCell("Semnatura"); //.setFont(font);
+                approvalTable.addCell(
+                        new Cell()
+                                .add(new Paragraph("Departament:"))
+                                .add(new Paragraph(ClientStart.departmentSuperior))
+                );
+                approvalTable.addCell("");
+
+            }
 
 
             document.add(new Paragraph("\n\n"));
@@ -783,6 +798,7 @@ public class ClientController {
             document.add(new Paragraph("\n\n"));
 
             approvalTable.setWidth(UnitValue.createPercentValue(60));
+            approvalTable.setFixedLayout();
             approvalTable.setHorizontalAlignment(HorizontalAlignment.CENTER);
             document.add(approvalTable);
 
@@ -791,20 +807,28 @@ public class ClientController {
 
             // get the number of the table's rows to shift the signature form on y axis based on the table's height
             int noRows = recoveryTable.getNumberOfRows();
-
             /* sef direct signature */
             // create a signature form field
-            PdfSignatureFormField signatureField = PdfFormField.createSignature(pdf, new Rectangle((float)314.4, (float)361.5 - (noRows * (float)22.4), (float)149.1, (float)40.1)); // 329.5
-            signatureField.setFieldName("signatureSefDirect");
-            // set the widget properties
-            signatureField.getWidgets().get(0).setHighlightMode(PdfAnnotation.HIGHLIGHT_OUTLINE).setFlags(PdfAnnotation.PRINT);
-            // add the field
-            PdfAcroForm.getAcroForm(pdf, true).addField(signatureField);
-            /* sef departament signature */
-            signatureField = PdfFormField.createSignature(pdf, new Rectangle((float)314.4, (float)321 - (noRows * (float)22.4), (float)149.1, (float)40.1));
-            signatureField.setFieldName("signatureSefDepartament");
-            signatureField.getWidgets().get(0).setHighlightMode(PdfAnnotation.HIGHLIGHT_OUTLINE).setFlags(PdfAnnotation.PRINT);
-            PdfAcroForm.getAcroForm(pdf, true).addField(signatureField);
+            if(ClientStart.userPosition.equals("User")){
+                PdfSignatureFormField signatureField = PdfFormField.createSignature(pdf, new Rectangle((float)330.4, (float)361.5 - (noRows * (float)22.4), (float)133.9, (float)40.1)); // 329.5
+                signatureField.setFieldName("signatureSefDirect");
+                // set the widget properties
+                signatureField.getWidgets().get(0).setHighlightMode(PdfAnnotation.HIGHLIGHT_OUTLINE).setFlags(PdfAnnotation.PRINT);
+                // add the field
+                PdfAcroForm.getAcroForm(pdf, true).addField(signatureField);
+                /* sef departament signature */
+                signatureField = PdfFormField.createSignature(pdf, new Rectangle((float)330.4, (float)321 - (noRows * (float)22.4), (float)133.9, (float)40.1));
+                signatureField.setFieldName("signatureSefDepartament");
+                signatureField.getWidgets().get(0).setHighlightMode(PdfAnnotation.HIGHLIGHT_OUTLINE).setFlags(PdfAnnotation.PRINT);
+                PdfAcroForm.getAcroForm(pdf, true).addField(signatureField);
+            }else{
+                PdfSignatureFormField signatureField = PdfFormField.createSignature(pdf, new Rectangle((float)330.4, (float)361.5 - (noRows * (float)22.4), (float)133.9, (float)40.1));
+                signatureField.setFieldName("signatureSefDepartament");
+                signatureField.getWidgets().get(0).setHighlightMode(PdfAnnotation.HIGHLIGHT_OUTLINE).setFlags(PdfAnnotation.PRINT);
+                PdfAcroForm.getAcroForm(pdf, true).addField(signatureField);
+            }
+
+
 
 
             document.close();
@@ -819,14 +843,23 @@ public class ClientController {
         }
     }
     private void generateMailData(){
-        Superior directLeader = sefiDirecti.stream()
-                .filter(boss -> boss.getName().equals(sefDirectLabel.getText())).findFirst().get();
-        Superior departmentLeader = sefiDepartament.stream()
-                .filter(departLeader ->  departLeader.getName().equals(sefDepartamentLabel.getText()))
-                .findFirst().get();
+        Superior directLeader = null;
+        Superior departmentLeader;
+        if(ClientStart.userPosition.equals("User")){
+            directLeader = sefiDirecti.stream()
+                    .filter(boss -> boss.getName().equals(sefDirectLabel.getText())).findFirst().get();
+            departmentLeader = sefiDepartament.stream()
+                    .filter(departLeader ->  departLeader.getName().equals(sefDepartamentLabel.getText()))
+                    .findFirst().get();
+        }else{
+            departmentLeader = sefiDepartament.stream()
+                    .filter(departLeader ->  departLeader.getName().equals(sefDepartamentLabel.getText()))
+                    .findFirst().get();
+        }
+
         String message = "ATI PRIMIT O CERERE PENTRU INVOIRE DE LA " + nume.getCharacters().toString().toUpperCase();
 
-        if(ClientStart.userPosition.equals("Department Leader")){
+        if(ClientStart.userPosition.equals("Team Leader")){
             MailConfiguration.sendMessage(departmentLeader.getEmail(), "CERERE INVOIRE", message);
             return;
         }
@@ -848,249 +881,6 @@ public class ClientController {
             reads = is.read();
         }
         return baos.toByteArray();
-    }
-
-
-    public void generatePdfWithDiacritics(){
-        try{
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
-
-            String pdfFilePath =
-                    ClientStart.fileDirectoryPath +"\\Invoire_" + nume.getCharacters().toString()+
-                            "_" + LocalDate.now().format(formatter)  +// desiredLeave.getLeaveDate().toString()
-                            "_" + LocalTime.now().format(DateTimeFormatter.ofPattern("HH-mm")).toString()+".pdf";
-            PdfWriter writer = new PdfWriter(pdfFilePath);
-            PdfDocument pdf = new PdfDocument(writer);
-            Document document = new Document(pdf, PageSize.A4);
-            document.setMargins(20, 20, 20, 20);
-
-
-            InputStream is = this.getClass().getClassLoader().getResourceAsStream("FreeSans.ttf");
-
-
-            //   PdfFont font = PdfFontFactory.createFont(toByteArray(is), PdfEncodings.IDENTITY_H); // "src/main/resources/FreeSans.ttf" // ByteStreams.toByteArray(is) - guava //toByteArray(is)
-
-
-            FontProgramFactory.registerFont("C:\\Siemens\\scholarship_project\\build\\libs\\FreeSans.ttf", "garamond bold");
-            //  PdfFont font = PdfFontFactory.createFont("C:\\Siemens\\scholarship_project\\build\\libs\\FreeSans.ttf", "Identity-H", true);
-            PdfFont font = PdfFontFactory.createRegisteredFont("garamond bold", PdfEncodings.IDENTITY_H, true);
-
-
-            // add hidden email
-            PdfPage page = pdf.addNewPage();
-            PdfAcroForm form = PdfAcroForm.getAcroForm(pdf, true);
-            PdfFormField field = PdfFormField.createText(pdf);
-            field.setFieldName("email");
-
-            Rectangle rect1 = new Rectangle(240, 800, 150, 20);
-            PdfWidgetAnnotation widget1 = new PdfWidgetAnnotation(rect1);
-            widget1.makeIndirect(pdf);
-            page.addAnnotation(widget1);
-            field.addKid(widget1);
-            field.setValue("test@gmail.com");
-            field.setVisibility(PdfFormField.HIDDEN); // hide it
-            form.addField(field, page);
-
-            // get the value of the field
-//            form = PdfAcroForm.getAcroForm(pdf, true);
-//            Map<String, PdfFormField> fields = form.getFormFields();
-//            PdfFormField field1 = fields.get("email");
-//            System.out.println("hidden email field: " + field1.getValueAsString());
-            ////////////
-
-            document.add(
-                    new Paragraph("SIEMENS SRL")
-                            .setTextAlignment(TextAlignment.LEFT)
-                            .setFontSize(22)
-                            .setBold()
-                            .setFontColor(new DeviceRgb(0, 153, 153))
-            );
-            document.add(
-                    new Paragraph("Bilet Învoire i\u0301 - a\u030c - a\u0303")
-                            .setTextAlignment(TextAlignment.CENTER)
-                            .setFontSize(20)
-                            .setBold()
-                    //.setFont(font)
-            );
-
-
-            Text text1 = new Text("Subsemnatul/a ");
-            Text text2 = new Text(nume.getCharacters().toString()).setBold();
-            Text text3 = new Text(" doresc a beneficia de o învoire având durata de ").setFont(font);
-            Text text4 = new Text(nrOreInvoire.getValue().toString()).setBold();
-            Text text5 = new Text(" ore, " +
-                    "perioada necesară pentru rezolvarea unor probleme cu caracter personal.").setFont(font);
-
-            document.add(
-                    new Paragraph().add(text1).add(text2).add(text3).add(text4).add(text5)
-                            .setFirstLineIndent(40)
-                            .setFontSize(14)
-            );
-
-            Text t = new Text("Învoire:").setFont(font).setBold().setFontSize(16);
-            document.add(new Paragraph(t).setFirstLineIndent(40));
-
-            document.add(
-                    new Paragraph("Învoire:")
-                            .setBold()
-                            .setFontSize(16)
-                            .setFirstLineIndent(40)
-                            .setFont(font)
-            );
-
-            Table table = new Table(new float[]{2, 2});
-            table.setWidth(UnitValue.createPercentValue(80));
-
-            table.addHeaderCell(
-                    new com.itextpdf.layout.element.Cell().add(
-                            new Paragraph("Data învoirii i\u030c - a\u030c - a\u0303")
-                    )
-            );
-            table.addHeaderCell(
-                    new com.itextpdf.layout.element.Cell().add(
-                            new Paragraph("Nr. ore")
-                    )
-            );
-            table.addCell(
-                    new Paragraph(
-                            desiredLeave.getLeaveDate().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")).toString()
-                    )
-            );
-            table.addCell(
-                    new Paragraph(
-                            desiredLeave.getNumberOfHours().toString()
-                    )
-            );
-            table.setHorizontalAlignment(HorizontalAlignment.CENTER);
-            document.add(table);
-
-            document.add(
-                    new Paragraph("Propuneri recuperare:")
-                            .setBold()
-                            .setFontSize(16)
-                            .setFirstLineIndent(40)
-            );
-
-            Table recoveryTable = new Table(new float[]{2, 2, 2});
-            recoveryTable.setWidth(UnitValue.createPercentValue(80));
-
-            recoveryTable.addHeaderCell(
-                    new com.itextpdf.layout.element.Cell().add(
-                            new Paragraph("Recuperare pentru data de")
-                    )
-            );
-            recoveryTable.addHeaderCell(
-                    new com.itextpdf.layout.element.Cell().add(
-                            new Paragraph("Data propusă pentru recuperare").setFont(font)
-                    )
-            );
-            recoveryTable.addHeaderCell(
-                    new com.itextpdf.layout.element.Cell().add(
-                            new Paragraph("Nr. ore recuperate")
-                    )
-            );
-            for (Recovery recovery : listOfRecoveries) {
-                recoveryTable.addCell(
-                        new Paragraph(
-                                recovery.getLeaveDate().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")).toString()
-                        )
-                );
-                recoveryTable.addCell(
-                        new Paragraph(
-                                recovery.getRecoveryDate().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")).toString()
-                        )
-                );
-                recoveryTable.addCell(
-                        new Paragraph(
-                                recovery.getNumberOfHours().toString()
-                        )
-                );
-            }
-
-            recoveryTable.setHorizontalAlignment(HorizontalAlignment.CENTER);
-            document.add(recoveryTable);
-
-
-            Table approvalTable = new Table(new float[]{1, 2});
-            approvalTable.addCell(
-                    new com.itextpdf.layout.element.Cell(1, 2).add(new Paragraph("  Aprobare"))
-            );
-            approvalTable.addCell("Șef").setFont(font);
-            approvalTable.addCell("Semnătură"); //.setFont(font);
-            approvalTable.addCell(
-                    new com.itextpdf.layout.element.Cell()
-                            .add(new Paragraph("Direct:"))
-                            .add(new Paragraph(sefDirectLabel.getText())
-                            ));
-            approvalTable.addCell("");
-            approvalTable.addCell(
-                    new Cell()
-                            .add(new Paragraph("Departament:"))
-                            .add(new Paragraph(sefDepartamentLabel.getText()))
-            );
-            approvalTable.addCell("");
-
-
-            document.add(new Paragraph("\n\n"));
-
-
-            Paragraph dataDeAzi = new Paragraph(
-                    "Data de azi: "
-            )
-                    .setVerticalAlignment(VerticalAlignment.BOTTOM)
-                    .setHorizontalAlignment(HorizontalAlignment.LEFT)
-                    .setFontSize(12);
-
-
-            Text text = new Text(LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd/MM/yyyy"))).setBold();
-            dataDeAzi.add(text);
-
-            document.add(dataDeAzi);
-
-//            document.add(
-//                    new Paragraph("Semnătură angajat: ")
-//                            .setVerticalAlignment(VerticalAlignment.BOTTOM)
-//                            .setHorizontalAlignment(HorizontalAlignment.LEFT)
-//                            .setFontSize(12)
-//            );
-
-            document.add(new Paragraph("\n\n"));
-
-            approvalTable.setWidth(UnitValue.createPercentValue(60));
-            approvalTable.setHorizontalAlignment(HorizontalAlignment.CENTER);
-            document.add(approvalTable);
-
-
-            /* add signature fields */
-
-            // get the number of the table's rows to shift the signature form on y axis based on the table's height
-            int noRows = recoveryTable.getNumberOfRows();
-
-            /* sef direct signature */
-            // create a signature form field
-            PdfSignatureFormField signatureField = PdfFormField.createSignature(pdf, new Rectangle((float)314.4, (float)329.5 - (noRows * (float)22.4), (float)149.1, (float)46.1));
-            signatureField.setFieldName("signatureSefDirect");
-            // set the widget properties
-            signatureField.getWidgets().get(0).setHighlightMode(PdfAnnotation.HIGHLIGHT_OUTLINE).setFlags(PdfAnnotation.PRINT);
-            // add the field
-            PdfAcroForm.getAcroForm(pdf, true).addField(signatureField);
-            /* sef departament signature */
-            signatureField = PdfFormField.createSignature(pdf, new Rectangle((float)314.4, (float)283 - (noRows * (float)22.4), (float)149.1, (float)46.1));
-            signatureField.setFieldName("signatureSefDepartament");
-            signatureField.getWidgets().get(0).setHighlightMode(PdfAnnotation.HIGHLIGHT_OUTLINE).setFlags(PdfAnnotation.PRINT);
-            PdfAcroForm.getAcroForm(pdf, true).addField(signatureField);
-
-
-            document.close();
-            //APEL PENTRU TRIMITERE MAIL
-
-            generateMailData();
-
-            System.exit(0);
-
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-        }
     }
 
 }

@@ -149,8 +149,8 @@ public class PaginaSefController {
         }
     }
     private void refreshItems(){
-        requestListView.setItems(null);
-        requestListView.setItems(requestObservableList);
+        requestObservableList.removeAll();
+        populateRequests();
     }
     private void handleDocument(Request selectedRequest, String source, String temp, String acceptance, Color color){
         try{
@@ -203,16 +203,7 @@ public class PaginaSefController {
                                 SignatureUtil signUtil = new SignatureUtil(pdf);
                                 if(signUtil.getSignatureNames().size() != 0){
                                     request.setSigned(true);
-                                    ArrayList<Request> listToSort = requestObservableList
-                                            .stream()
-                                            .collect(Collectors.toCollection(ArrayList::new));
-                                    requestObservableList = mergeSort(listToSort).stream()
-                                            .collect(
-                                                    Collectors.collectingAndThen(toList(),
-                                                            l -> FXCollections.observableArrayList(l))
-                                            );
                                 }
-
                                 pdf.close();
                             }catch (Exception e){
                                 e.printStackTrace();
@@ -226,8 +217,9 @@ public class PaginaSefController {
                 }
                 if(event.getClickCount() == 1){
                     Request selectedRequest = (Request) requestListView.getSelectionModel().getSelectedItem();
-                    String source = ClientStart.fileDirectoryPath + "\\"+selectedRequest.getFile().getName();
-                    String temp = ClientStart.fileDirectoryPath + "\\temp"+selectedRequest.getFile().getName();
+                    String source = selectedRequest.getFile().getAbsolutePath();
+                    String temp = selectedRequest.getFile().getAbsolutePath()
+                            .split(".pdf")[0] + "temp.pdf";
                     if(selectedRequest.isSigned() && !selectedRequest.isSent()){
                         acceptButton.setDisable(false);
                         denyButton.setDisable(false);

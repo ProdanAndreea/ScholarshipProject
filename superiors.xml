@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <superiors>
     <superior>
-        <name>Adrian</name>
-        <email>adrian@gmail.com</email>
+        <name>Antal Adrian</name>
+        <email>adrian.antal@siemens.com</email>
         <PositionEnum>Team Leader</PositionEnum>
         <available>true</available>
     </superior>
     <superior>
-        <name>Mihai Prenume</name>
+        <name>Homan Mihai</name>
         <email>prodan.a.andreea@gmail.com</email>
         <PositionEnum>Department Leader</PositionEnum>
         <available>true</available>

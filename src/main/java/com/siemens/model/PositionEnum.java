@@ -1,8 +1,5 @@
 package com.siemens.model;
 
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
-
 import javax.xml.bind.annotation.*;
 
 

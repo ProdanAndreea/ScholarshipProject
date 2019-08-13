@@ -2,9 +2,6 @@ package com.siemens.configuration;
 
 import com.siemens.view.ClientStart;
 
-import javax.activation.DataHandler;
-import javax.activation.DataSource;
-import javax.activation.FileDataSource;
 import javax.mail.*;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeBodyPart;
@@ -12,8 +9,6 @@ import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
 
 import java.io.*;
-import java.net.URL;
-import java.nio.charset.StandardCharsets;
 import java.security.CodeSource;
 import java.util.Properties;
 
@@ -155,13 +150,13 @@ public class MailConfiguration {
                 Transport.send(message);
 
             } catch (MessagingException e) {
-                e.printStackTrace();
+                ClientStart.logger.info(e.getMessage());
             }
         } catch (IOException e) {
-            System.out.println("Error reading credentials");
+            ClientStart.logger.info(e.getMessage());
         }
         catch (Exception e){
-            e.printStackTrace();
+            ClientStart.logger.info(e.getMessage());
         }
     }
 

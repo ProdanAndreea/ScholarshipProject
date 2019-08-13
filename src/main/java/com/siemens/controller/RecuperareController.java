@@ -12,8 +12,7 @@ import javafx.stage.Stage;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.util.Date;
-import java.util.List;
+
 
 /**
  * @Author: Siemens CT Cluj-Napoca, Romania

@@ -1,7 +1,6 @@
 package com.siemens.xml;
 
 import com.siemens.model.*;
-import com.sun.org.apache.xpath.internal.operations.Bool;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;

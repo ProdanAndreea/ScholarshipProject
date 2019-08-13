@@ -1,12 +1,9 @@
 package com.siemens.model;
 
-import javafx.beans.property.SimpleStringProperty;
-import lombok.Builder;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.util.Date;
 
 //@Builder
 public class Recovery {

@@ -18,6 +18,9 @@ import java.net.URISyntaxException;
 import java.security.CodeSource;
 import java.util.ArrayList;
 import java.util.Properties;
+import java.util.logging.FileHandler;
+import java.util.logging.Logger;
+import java.util.logging.SimpleFormatter;
 
 /**
  * @Author: Siemens CT Cluj-Napoca, Romania
@@ -36,26 +39,37 @@ public class ClientStart extends Application {
     public static String departmentSuperior;
     public static String superiorsFilePath;
     public static String fileDirectoryPath ;
+    public static Logger logger;
     public ClientStart() {}
 
+    private void initializeLogger(){
+        logger = Logger.getLogger("app_logs");
+
+
+        try {
+            CodeSource codeSource = ClientStart.class.getProtectionDomain().getCodeSource();
+            File jarFile = new File(codeSource.getLocation().toURI().getPath());
+            String jarDir = jarFile.getParentFile().getPath();
+            FileHandler fh;
+            // This block configure the logger with handler and formatter
+            fh = new FileHandler(jarDir + "/app_logs.log");
+            logger.addHandler(fh);
+            SimpleFormatter formatter = new SimpleFormatter();
+            fh.setFormatter(formatter);
+
+            // the following statement is used to log any messages
+
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
     public static void  restartApplication()
     {
         try{
-            final String javaBin = System.getProperty("java.home") + File.separator + "bin" + File.separator + "java";
-            final File currentJar = new File(ClientStart.class.getProtectionDomain().getCodeSource().getLocation().toURI());
-
-            /* is it a jar file? */
-            if(!currentJar.getName().endsWith(".jar"))
-                return;
-
-            /* Build command: java -jar application.jar */
-            final ArrayList<String> command = new ArrayList<String>();
-            command.add(javaBin);
-            command.add("-jar");
-            command.add(currentJar.getPath());
-
-            final ProcessBuilder builder = new ProcessBuilder(command);
-            builder.start();
+            CodeSource codeSource = ClientStart.class.getProtectionDomain().getCodeSource();
+            File jarFile = new File(codeSource.getLocation().toURI().getPath());
+            String jarDir = jarFile.getParentFile().getPath();
+            Process process = new ProcessBuilder(jarDir + "/Bilete Invoire.exe").start();
             System.exit(0);
         }catch (Exception e){
             e.printStackTrace();
@@ -116,6 +130,7 @@ public class ClientStart extends Application {
 
     @Override
     public void start(Stage stage) throws Exception {
+        initializeLogger();
         try{
             loadUserProperties();
             loadMailProperties();

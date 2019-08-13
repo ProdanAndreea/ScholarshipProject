@@ -210,7 +210,7 @@ public class FormsController {
                             properties.store(writer, "E-mail information");
                             writer.close();
                         }
-                        System.exit(0);
+                        ClientStart.restartApplication();
                     }catch (Exception e){
                         e.printStackTrace();
                     }

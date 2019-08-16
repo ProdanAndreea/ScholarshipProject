@@ -9,48 +9,48 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="443.0" prefWidth="380.0" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.siemens.controller.FormsController">
+<AnchorPane prefHeight="443.0" prefWidth="380.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.siemens.controller.FormsController">
    <children>
-      <TextField fx:id="nameText" layoutX="145.0" layoutY="34.0" prefHeight="25.0" prefWidth="196.0" />
-      <TextField fx:id="mailText" layoutX="145.0" layoutY="73.0" prefHeight="25.0" prefWidth="196.0" />
-      <PasswordField fx:id="passwordText" layoutX="145.0" layoutY="112.0" prefHeight="25.0" prefWidth="196.0" />
-      <Label layoutX="51.0" layoutY="38.0" prefHeight="17.0" prefWidth="92.0" text="Nume Prenume" />
-      <Label layoutX="50.0" layoutY="77.0" prefHeight="17.0" prefWidth="92.0" text="E-mail" />
-      <Label layoutX="50.0" layoutY="116.0" prefHeight="17.0" prefWidth="92.0" text="Parola e-mail" />
-      <Label layoutX="53.0" layoutY="164.0" text="Path către XML superiori:" textFill="#5026d1">
+      <TextField fx:id="nameText" layoutX="145.0" layoutY="34.0" prefHeight="25.0" prefWidth="196.0" AnchorPane.bottomAnchor="384.0" AnchorPane.leftAnchor="145.0" AnchorPane.rightAnchor="39.0" AnchorPane.topAnchor="34.0" />
+      <TextField fx:id="mailText" layoutX="145.0" layoutY="73.0" prefHeight="25.0" prefWidth="196.0" AnchorPane.bottomAnchor="345.0" AnchorPane.leftAnchor="145.0" AnchorPane.rightAnchor="39.0" AnchorPane.topAnchor="73.0" />
+      <PasswordField fx:id="passwordText" layoutX="145.0" layoutY="112.0" prefHeight="25.0" prefWidth="196.0" AnchorPane.bottomAnchor="306.0" AnchorPane.leftAnchor="145.0" AnchorPane.rightAnchor="39.0" AnchorPane.topAnchor="112.0" />
+      <Label layoutX="51.0" layoutY="38.0" prefHeight="17.0" prefWidth="92.0" text="Nume Prenume" AnchorPane.bottomAnchor="388.0" AnchorPane.leftAnchor="51.0" AnchorPane.rightAnchor="237.0" AnchorPane.topAnchor="38.0" />
+      <Label layoutX="50.0" layoutY="77.0" prefHeight="17.0" prefWidth="92.0" text="E-mail Siemens" AnchorPane.bottomAnchor="349.0" AnchorPane.leftAnchor="50.0" AnchorPane.rightAnchor="238.0" AnchorPane.topAnchor="77.0" />
+      <Label layoutX="50.0" layoutY="116.0" prefHeight="17.0" prefWidth="92.0" text="Parola e-mail" AnchorPane.bottomAnchor="310.0" AnchorPane.leftAnchor="50.0" AnchorPane.rightAnchor="238.0" AnchorPane.topAnchor="116.0" />
+      <Label layoutX="53.0" layoutY="164.0" text="Path către XML superiori:" textFill="#5026d1" AnchorPane.bottomAnchor="262.0" AnchorPane.leftAnchor="53.0" AnchorPane.rightAnchor="184.0" AnchorPane.topAnchor="164.0">
          <font>
             <Font name="System Bold" size="12.0" />
          </font></Label>
-      <Label layoutX="35.0" layoutY="315.0" text="Șef direct" />
-      <Label layoutX="35.0" layoutY="349.0" text="Șef departament" />
-      <Button fx:id="browseXML" layoutX="237.0" layoutY="160.0" mnemonicParsing="false" text="Browse">
+      <Label layoutX="35.0" layoutY="315.0" text="Șef direct" AnchorPane.bottomAnchor="111.0" AnchorPane.leftAnchor="35.0" AnchorPane.rightAnchor="295.0" AnchorPane.topAnchor="315.0" />
+      <Label layoutX="35.0" layoutY="349.0" prefHeight="17.0" prefWidth="92.0" text="Șef departament" AnchorPane.bottomAnchor="77.0" AnchorPane.leftAnchor="35.0" AnchorPane.rightAnchor="253.0" AnchorPane.topAnchor="349.0" />
+      <Button fx:id="browseXML" layoutX="237.0" layoutY="160.0" mnemonicParsing="false" text="Browse" AnchorPane.bottomAnchor="258.0" AnchorPane.leftAnchor="237.0" AnchorPane.rightAnchor="90.0" AnchorPane.topAnchor="160.0">
          <font>
             <Font name="System Italic" size="12.0" />
          </font>
          <cursor>
             <Cursor fx:constant="HAND" />
          </cursor></Button>
-      <ComboBox fx:id="directLeader" layoutX="195.0" layoutY="311.0" prefWidth="150.0" />
-      <ComboBox fx:id="departmentLeader" layoutX="195.0" layoutY="345.0" prefWidth="150.0" />
-      <Button fx:id="finishButton" layoutX="120.0" layoutY="404.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="150.0" text="Finalizare" textFill="#006531">
+      <ComboBox fx:id="directLeader" layoutX="195.0" layoutY="311.0" prefWidth="150.0" AnchorPane.bottomAnchor="107.0" AnchorPane.leftAnchor="195.0" AnchorPane.rightAnchor="35.0" AnchorPane.topAnchor="311.0" />
+      <ComboBox fx:id="departmentLeader" layoutX="195.0" layoutY="345.0" prefWidth="150.0" AnchorPane.bottomAnchor="73.0" AnchorPane.leftAnchor="195.0" AnchorPane.rightAnchor="35.0" AnchorPane.topAnchor="345.0" />
+      <Button fx:id="finishButton" layoutX="120.0" layoutY="404.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="150.0" text="Finalizare" textFill="#006531" AnchorPane.bottomAnchor="14.0" AnchorPane.leftAnchor="120.0" AnchorPane.rightAnchor="110.0" AnchorPane.topAnchor="404.0">
          <cursor>
             <Cursor fx:constant="HAND" />
          </cursor>
          <font>
             <Font name="System Bold" size="12.0" />
          </font></Button>
-      <Label layoutX="14.0" layoutY="185.0" prefHeight="17.0" prefWidth="363.0" text="Label" fx:id="xmlLabel" />
-      <Label fx:id="warningLabel" layoutX="50.0" layoutY="268.0" prefHeight="27.0" prefWidth="292.0" text="Toate câmpurile sunt obligatorii!" textAlignment="CENTER" textFill="#dd2020">
+      <Label layoutX="14.0" layoutY="194.0" prefHeight="17.0" prefWidth="363.0" text="Label" AnchorPane.bottomAnchor="232.0" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="3.0" AnchorPane.topAnchor="194.0" fx:id="xmlLabel" />
+      <Label fx:id="warningLabel" layoutX="50.0" layoutY="268.0" prefHeight="27.0" prefWidth="292.0" text="Toate câmpurile sunt obligatorii!" textAlignment="CENTER" textFill="#dd2020" AnchorPane.bottomAnchor="148.0" AnchorPane.leftAnchor="50.0" AnchorPane.rightAnchor="38.0" AnchorPane.topAnchor="268.0">
          <font>
             <Font size="18.0" />
          </font>
       </Label>
-      <Label layoutX="53.0" layoutY="213.0" text="Path default pentru PDF:" textFill="#5026d1">
+      <Label layoutX="53.0" layoutY="226.0" prefHeight="17.0" prefWidth="143.0" text="Path default pentru PDF:" textFill="#5026d1" AnchorPane.bottomAnchor="200.0" AnchorPane.leftAnchor="53.0" AnchorPane.rightAnchor="184.0" AnchorPane.topAnchor="226.0">
          <font>
             <Font name="System Bold" size="12.0" />
          </font></Label>
-      <Label fx:id="defaultRootDirectory" layoutX="14.0" layoutY="238.0" text="Label" />
-      <Button fx:id="changeRootButton" layoutX="233.0" layoutY="209.0" mnemonicParsing="false" text="Schimbă">
+      <Label fx:id="defaultRootDirectory" layoutX="14.0" layoutY="251.0" prefHeight="17.0" prefWidth="363.0" text="Label" AnchorPane.bottomAnchor="175.0" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="3.0" AnchorPane.topAnchor="251.0" />
+      <Button fx:id="changeRootButton" layoutX="233.0" layoutY="222.0" mnemonicParsing="false" text="Schimbă" AnchorPane.bottomAnchor="196.0" AnchorPane.leftAnchor="233.0" AnchorPane.rightAnchor="86.0" AnchorPane.topAnchor="222.0">
          <font>
             <Font name="System Italic" size="12.0" />
          </font>

@@ -15,38 +15,38 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="620.0" prefWidth="362.0" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.siemens.controller.ClientController">
+<AnchorPane prefHeight="620.0" prefWidth="362.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.siemens.controller.ClientController">
 
     <children>
-        <AnchorPane layoutX="1.0" maxHeight="-1.0" maxWidth="-1.0" prefHeight="673.0" prefWidth="425.0" VBox.vgrow="ALWAYS">
+        <AnchorPane layoutX="1.0" maxHeight="-1.0" maxWidth="-1.0" prefHeight="673.0" prefWidth="398.0" VBox.vgrow="ALWAYS">
             <children>
-                <DatePicker fx:id="datePickerInvoire" editable="false" layoutX="55.0" layoutY="243.0" prefHeight="25.0" prefWidth="131.0">
+                <DatePicker fx:id="datePickerInvoire" editable="false" layoutX="55.0" layoutY="243.0" prefHeight="25.0" prefWidth="131.0" AnchorPane.bottomAnchor="405.0" AnchorPane.leftAnchor="55.0" AnchorPane.rightAnchor="247.0" AnchorPane.topAnchor="243.0">
                <cursor>
                   <Cursor fx:constant="HAND" />
                </cursor></DatePicker>
-            <Label layoutX="73.0" layoutY="32.0" text="Nume Prenume" />
-            <TextField fx:id="nume" layoutX="168.0" layoutY="29.0" prefHeight="25.0" prefWidth="176.0" />
-            <Label layoutX="20.0" layoutY="180.0" text="Ore Învoire" textFill="#34acbc">
+            <Label layoutX="73.0" layoutY="32.0" text="Nume Prenume" AnchorPane.bottomAnchor="624.0" AnchorPane.leftAnchor="73.0" AnchorPane.rightAnchor="276.0" AnchorPane.topAnchor="32.0" />
+            <TextField fx:id="nume" layoutX="168.0" layoutY="29.0" prefHeight="25.0" prefWidth="176.0" AnchorPane.bottomAnchor="619.0" AnchorPane.leftAnchor="168.0" AnchorPane.rightAnchor="89.0" AnchorPane.topAnchor="29.0" />
+            <Label layoutX="20.0" layoutY="180.0" text="Ore Învoire" textFill="#34acbc" AnchorPane.bottomAnchor="462.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="302.0" AnchorPane.topAnchor="180.0">
                <font>
                   <Font name="System Bold" size="21.0" />
                </font>
             </Label>
-            <Label layoutX="75.0" layoutY="220.0" text="Ziua învoirii, data">
+            <Label layoutX="75.0" layoutY="220.0" text="Ziua învoirii, data" AnchorPane.bottomAnchor="436.0" AnchorPane.leftAnchor="75.0" AnchorPane.rightAnchor="266.0" AnchorPane.topAnchor="220.0">
                <font>
                   <Font name="System Italic" size="12.0" />
                </font></Label>
-            <ComboBox fx:id="nrOreInvoire" layoutX="236.0" layoutY="243.0" prefHeight="25.0" prefWidth="94.0" />
-            <Label layoutX="246.0" layoutY="220.0" text="Nr. ore învoite">
+            <ComboBox fx:id="nrOreInvoire" layoutX="236.0" layoutY="243.0" prefHeight="25.0" prefWidth="94.0" AnchorPane.bottomAnchor="405.0" AnchorPane.leftAnchor="236.0" AnchorPane.rightAnchor="103.0" AnchorPane.topAnchor="243.0" />
+            <Label layoutX="244.0" layoutY="220.0" text="Nr. ore învoite" AnchorPane.bottomAnchor="436.0" AnchorPane.leftAnchor="244.0" AnchorPane.rightAnchor="97.0" AnchorPane.topAnchor="220.0">
                <font>
                   <Font name="System Italic" size="12.0" />
                </font>
             </Label>
-            <Label layoutX="23.0" layoutY="299.0" prefHeight="31.0" prefWidth="154.0" text="Ore Recuperare" textFill="#523363">
+            <Label layoutX="23.0" layoutY="299.0" prefHeight="31.0" prefWidth="154.0" text="Ore Recuperare" textFill="#523363" AnchorPane.bottomAnchor="343.0" AnchorPane.leftAnchor="23.0" AnchorPane.rightAnchor="256.0" AnchorPane.topAnchor="299.0">
                <font>
                   <Font name="System Bold" size="21.0" />
                </font>
             </Label>
-            <Button fx:id="addRecuperare" layoutX="62.0" layoutY="462.0" mnemonicParsing="false" prefHeight="31.0" prefWidth="243.0" text="Adaugă dată nouă" textFill="#65397d">
+            <Button fx:id="addRecuperare" layoutX="62.0" layoutY="462.0" mnemonicParsing="false" prefHeight="31.0" prefWidth="243.0" text="Adaugă dată nouă" textFill="#65397d" AnchorPane.bottomAnchor="180.0" AnchorPane.leftAnchor="62.0" AnchorPane.rightAnchor="128.0" AnchorPane.topAnchor="462.0">
                <opaqueInsets>
                   <Insets />
                </opaqueInsets>
@@ -57,27 +57,25 @@
                   <Cursor fx:constant="HAND" />
                </cursor>
             </Button>
-            <Label layoutX="100.0" layoutY="531.0" text="Șef direct" />
-            <ComboBox fx:id="sefDirect" layoutX="174.0" layoutY="526.0" prefHeight="25.0" prefWidth="150.0" />
-            <Label layoutX="297.0" layoutY="315.0" prefHeight="21.0" prefWidth="111.0" text="(Maxim 4 recuperări)" textFill="#683d3d" />
-            <TableView fx:id="recoveryTableView" layoutX="20.0" layoutY="335.0" prefHeight="119.0" prefWidth="388.0">
+            <Label layoutX="100.0" layoutY="531.0" text="Șef direct" AnchorPane.bottomAnchor="125.0" AnchorPane.leftAnchor="100.0" AnchorPane.rightAnchor="283.0" AnchorPane.topAnchor="531.0" />
+            <Label layoutX="220.0" layoutY="315.0" prefHeight="21.0" prefWidth="111.0" text="(Maxim 4 recuperări)" textFill="#683d3d" AnchorPane.bottomAnchor="337.0" AnchorPane.leftAnchor="220.0" AnchorPane.rightAnchor="102.0" AnchorPane.topAnchor="315.0" />
+            <TableView fx:id="recoveryTableView" layoutX="20.0" layoutY="335.0" prefHeight="119.0" prefWidth="388.0" AnchorPane.bottomAnchor="219.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="25.0" AnchorPane.topAnchor="335.0">
               <columns>
                 <TableColumn fx:id="leaveDate" prefWidth="176.0" text="Recuperare în data de" />
                 <TableColumn fx:id="numberOfHours" minWidth="0.0" prefWidth="210.0" text="Durata recuperării (HH:mm)" />
               </columns>
             </TableView>
-            <Label layoutX="62.0" layoutY="563.0" text="Șef departament" />
-            <ComboBox fx:id="sefDepartament" layoutX="174.0" layoutY="558.0" prefWidth="150.0" />
-            <Button fx:id="btnTrimite" layoutX="182.0" layoutY="628.0" mnemonicParsing="false" text="Trimite">
+            <Label layoutX="62.0" layoutY="563.0" text="Șef departament" AnchorPane.bottomAnchor="93.0" AnchorPane.leftAnchor="62.0" AnchorPane.rightAnchor="282.0" AnchorPane.topAnchor="563.0" />
+            <Button fx:id="btnTrimite" layoutX="162.0" layoutY="625.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="89.0" text="Trimite" AnchorPane.bottomAnchor="23.0" AnchorPane.leftAnchor="162.0" AnchorPane.rightAnchor="182.0" AnchorPane.topAnchor="625.0">
                <cursor>
                   <Cursor fx:constant="HAND" />
                </cursor></Button>
-            <Button fx:id="bossButton" layoutX="28.0" layoutY="90.0" mnemonicParsing="false" prefHeight="58.0" prefWidth="50.0">
+            <Button fx:id="bossButton" layoutX="56.0" layoutY="88.0" mnemonicParsing="false" prefHeight="58.0" prefWidth="50.0" AnchorPane.bottomAnchor="527.0" AnchorPane.leftAnchor="56.0" AnchorPane.rightAnchor="327.0" AnchorPane.topAnchor="88.0">
                <cursor>
                   <Cursor fx:constant="HAND" />
                </cursor></Button>
-            <CheckBox fx:id="bossAvailability" layoutX="298.0" layoutY="106.0" mnemonicParsing="false" prefHeight="21.0" prefWidth="124.0" text="Disponibilitate Șef" />
-            <Button fx:id="btnDelete" contentDisplay="CENTER" layoutX="310.0" layoutY="462.0" mnemonicParsing="false" prefHeight="31.0" prefWidth="62.0" text="Delete" textAlignment="CENTER" textFill="#c90000">
+            <CheckBox fx:id="bossAvailability" layoutX="305.0" layoutY="107.0" mnemonicParsing="false" prefHeight="21.0" prefWidth="124.0" text="Disponibilitate Șef" AnchorPane.bottomAnchor="545.0" AnchorPane.leftAnchor="305.0" AnchorPane.rightAnchor="4.0" AnchorPane.topAnchor="107.0" />
+            <Button fx:id="btnDelete" contentDisplay="CENTER" layoutX="312.0" layoutY="462.0" mnemonicParsing="false" prefHeight="31.0" prefWidth="92.0" text="Delete" textAlignment="CENTER" textFill="#c90000" AnchorPane.bottomAnchor="180.0" AnchorPane.leftAnchor="312.0" AnchorPane.rightAnchor="29.0" AnchorPane.topAnchor="462.0">
                <font>
                   <Font name="System Bold Italic" size="13.0" />
                </font>
@@ -86,15 +84,18 @@
                </cursor>
             </Button>
             <Separator layoutX="41.0" layoutY="160.0" opacity="0.5" prefHeight="3.0" prefWidth="343.0" />
-            <Separator disable="true" layoutX="45.0" layoutY="77.0" opacity="0.5" prefHeight="3.0" prefWidth="343.0" />
-            <Label fx:id="labelInvoire" layoutX="84.0" layoutY="108.0" text="Învoiri" />
-            <Button fx:id="changeConfigsButton" layoutX="130.0" layoutY="104.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="154.0" text="Schimbă configurațiile" textFill="#416f44">
-               <font>
-                  <Font name="System Bold" size="12.0" />
-               </font>
-               <cursor>
-                  <Cursor fx:constant="HAND" />
-               </cursor></Button>
+                <Separator disable="true" layoutX="41.0" layoutY="77.0" opacity="0.5" prefHeight="3.0" prefWidth="343.0" />
+                <Separator layoutX="-1.0" layoutY="-5.0" prefHeight="17.0" prefWidth="434.0" />
+                <Label fx:id="labelInvoire" layoutX="19.0" layoutY="108.0" text="Învoiri" AnchorPane.bottomAnchor="548.0" AnchorPane.leftAnchor="19.0" AnchorPane.rightAnchor="381.0" AnchorPane.topAnchor="108.0" />
+                <Label fx:id="sefDirectLabel" layoutX="192.0" layoutY="531.0" prefHeight="17.0" prefWidth="154.0" text="Label" AnchorPane.bottomAnchor="125.0" AnchorPane.leftAnchor="192.0" AnchorPane.rightAnchor="87.0" AnchorPane.topAnchor="531.0" />
+                <Label fx:id="sefDepartamentLabel" layoutX="192.0" layoutY="563.0" prefHeight="17.0" prefWidth="154.0" text="Label" AnchorPane.bottomAnchor="93.0" AnchorPane.leftAnchor="192.0" AnchorPane.rightAnchor="87.0" AnchorPane.topAnchor="563.0" />
+                <Button fx:id="changeConfigsButton" layoutX="122.0" layoutY="104.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="168.0" text="Schimbă configurațiile" textFill="#416f44" AnchorPane.bottomAnchor="544.0" AnchorPane.leftAnchor="122.0" AnchorPane.rightAnchor="143.0" AnchorPane.topAnchor="104.0">
+                    <font>
+                        <Font name="System Bold" size="12.0" />
+                    </font>
+                    <cursor>
+                        <Cursor fx:constant="HAND" />
+                    </cursor></Button>
             </children>
         </AnchorPane>
     </children>

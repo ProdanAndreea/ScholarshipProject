@@ -150,13 +150,13 @@ public class MailConfiguration {
                 Transport.send(message);
 
             } catch (MessagingException e) {
-                ClientStart.logger.info(e.getMessage());
+                ClientStart.logger.severe(e.getMessage());
             }
         } catch (IOException e) {
-            ClientStart.logger.info(e.getMessage());
+            ClientStart.logger.severe(e.getMessage());
         }
         catch (Exception e){
-            ClientStart.logger.info(e.getMessage());
+            ClientStart.logger.severe(e.getMessage());
         }
     }
 

@@ -60,6 +60,31 @@ public class FormsController {
 
     public FormsController(){}
 
+    private void parseSuperiors(){
+        if(
+                Arrays.stream(sefDirectChoices)
+                        .filter(superior -> superior.equals(nameText.getCharacters().toString()))
+                        .findFirst().isPresent()
+                ){
+            position = "Team Leader";
+            departmentLeader.setDisable(false);
+            directLeader.setDisable(true);
+        }
+        else if(
+                Arrays.stream(sefDepartamentChoices)
+                        .filter(superior ->  superior.equals(nameText.getCharacters().toString()))
+                        .findFirst().isPresent()
+                ){
+            position = "Department Leader";
+            departmentLeader.setDisable(true);
+            directLeader.setDisable(true);
+        }
+        else{
+            position = "User";
+            departmentLeader.setDisable(false);
+            directLeader.setDisable(false);
+        }
+    }
     private void getSuperiors(){
         List<Superior> sups = XMLMapper.jaxbXMLToObjects(Superiors.class, xmlLabel.getText()).getSuperiors();
 
@@ -86,8 +111,9 @@ public class FormsController {
             public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
                 if(nameText.getCharacters().length() > 0)
                     browseXML.setDisable(false);
-                else
-                    browseXML.setDisable(true);
+                if(!xmlLabel.getText().equals("")){
+                    parseSuperiors();
+                }
             }
         });
         browseXML.setOnAction(new EventHandler<ActionEvent>() {
@@ -106,27 +132,7 @@ public class FormsController {
                     xmlLabel.setOpacity(100);
                     getSuperiors();
                     //automatically determine the position of the person who installs the app
-                    if(
-                            Arrays.stream(sefDirectChoices)
-                                    .filter(superior -> superior.equals(nameText.getCharacters().toString()))
-                                    .findFirst().isPresent()
-                            ){
-                        position = "Team Leader";
-                        departmentLeader.setDisable(false);
-                    }
-
-                    else if(
-                            Arrays.stream(sefDepartamentChoices)
-                                    .filter(superior ->  superior.equals(nameText.getCharacters().toString()))
-                                    .findFirst().isPresent()
-                            )
-                        position = "Department Leader";
-                    else{
-                        position = "User";
-                        departmentLeader.setDisable(false);
-                        directLeader.setDisable(false);
-                    }
-
+                    parseSuperiors();
                 }
             }
         });
@@ -213,6 +219,7 @@ public class FormsController {
                         ClientStart.restartApplication();
                     }catch (Exception e){
                         e.printStackTrace();
+                        ClientStart.logger.severe(e.getMessage());
                     }
                 }
             }
@@ -224,12 +231,14 @@ public class FormsController {
             CodeSource codeSource = ClientStart.class.getProtectionDomain().getCodeSource();
             File jarFile = new File(codeSource.getLocation().toURI().getPath());
             String jarDir = jarFile.getParentFile().getPath();
-            defaultRootDirectory.setText(jarDir.replace("\\", "/") + "/Bilete Invoire");
+            defaultRootDirectory.setText(jarDir.replace("\\", "/") + "/Invoiri");
         }catch (Exception e){
             e.printStackTrace();
+            ClientStart.logger.severe(e.getMessage());
         }
 
         browseXML.setDisable(true);
+        xmlLabel.setText("");
         xmlLabel.setOpacity(0);
         warningLabel.setOpacity(0);
         departmentLeader.setDisable(true);

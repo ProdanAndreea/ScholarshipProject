@@ -280,7 +280,7 @@ public class ClientController {
                     root.setId("pane");
                     Stage stage = new Stage();
                     stage.setTitle("Ore Recuperare");
-
+                    stage.setResizable(false);
                     stage.initModality(Modality.WINDOW_MODAL);
                     stage.initOwner(ClientStart.primaryStage.getScene().getWindow());
 

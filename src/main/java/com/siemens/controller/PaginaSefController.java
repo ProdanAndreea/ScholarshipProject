@@ -178,6 +178,7 @@ public class PaginaSefController {
             newDocument.renameTo(selectedRequest.getFile());
         }catch (Exception e){
             e.printStackTrace();
+            ClientStart.logger.info(e.getMessage());
         }
     }
 
@@ -191,7 +192,7 @@ public class PaginaSefController {
                         if(request.equals(selectedRequest)){
                             try{
                                 Desktop.getDesktop().open(request.getFile());
-                                Thread.sleep(500);
+                                Thread.sleep(3000);
                                 File file = new File(request.getFile().getAbsolutePath());
                                 while(!file.renameTo(file)){
                                     Thread.sleep(100);
@@ -207,6 +208,7 @@ public class PaginaSefController {
                                 pdf.close();
                             }catch (Exception e){
                                 e.printStackTrace();
+                                ClientStart.logger.severe(e.getMessage());
                             }
 
 

@@ -1,22 +1,18 @@
 package com.siemens.view;
 
-import com.siemens.configuration.MailConfiguration;
-import com.siemens.controller.ClientController;
 import javafx.application.Application;
-import javafx.application.Platform;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
+
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.layout.HBox;
+
 import javafx.stage.Stage;
 
 import java.io.*;
-import java.net.URISyntaxException;
+
+import java.nio.file.Files;
 import java.security.CodeSource;
-import java.util.ArrayList;
+
 import java.util.Properties;
 import java.util.logging.FileHandler;
 import java.util.logging.Logger;
@@ -40,16 +36,45 @@ public class ClientStart extends Application {
     public static String superiorsFilePath;
     public static String fileDirectoryPath ;
     public static Logger logger;
+    private String jarDir;
     public ClientStart() {}
 
+    private static void dismissSecurityCertificate(){
+        //UNDO the loadSecurityPath method so that the resource security certificate will be deleted from the java home
+        String javaHome = System.getProperty("java.home");
+        String javaLibPath = javaHome + "/lib/security/cacerts";
+        File fileToDismiss = new File(javaLibPath);
+        File fileToRecover = new File(javaLibPath + "_old");
+        fileToDismiss.delete();
+        fileToRecover.renameTo(new File(javaLibPath));
+    }
+    private void loadSecurityCertificate(){
+        try{
+            Runtime runtime = Runtime.getRuntime();
+            //String command = "java -Djavax.net.ssl.trustStore="+jarDir+"/Security/cacerts";
+            String javaHome = System.getProperty("java.home");
+//            String javaKeyTool = "\""+javaHome + "/bin/keytool.exe\"";
+            String javaLibPath = javaHome + "/lib/security/cacerts";
+            String fileToImportPath = jarDir+"/Security/cacerts";
+//            String command =  javaKeyTool + " -keystore " + javaLibPath + fileImport + " -storepass changeit";
+            File resourceCertificate = new File(fileToImportPath);
+            File file = new File(javaLibPath);
+            File tempCertificate = new File(javaLibPath + "_old");
+            //rename the current certificate so it wont be lost
+            file.renameTo(tempCertificate);
+            //copy the certificate required to run the application to the corresponding path
+            Files.copy(resourceCertificate.toPath(), file.toPath());
+//            runtime.exec(command);
+        }catch (Exception e){
+            logger.severe(e.getMessage());
+            System.exit(0);
+        }
+
+    }
     private void initializeLogger(){
         logger = Logger.getLogger("app_logs");
-
-
         try {
-            CodeSource codeSource = ClientStart.class.getProtectionDomain().getCodeSource();
-            File jarFile = new File(codeSource.getLocation().toURI().getPath());
-            String jarDir = jarFile.getParentFile().getPath();
+
             FileHandler fh;
             // This block configure the logger with handler and formatter
             fh = new FileHandler(jarDir + "/app_logs.log");
@@ -73,6 +98,7 @@ public class ClientStart extends Application {
             System.exit(0);
         }catch (Exception e){
             e.printStackTrace();
+            logger.severe(e.getMessage());
         }
 
     }
@@ -81,11 +107,7 @@ public class ClientStart extends Application {
 
         Properties property = new Properties();
         // get the path of the Jar; parse the file line by line and decode it
-        CodeSource codeSource = ClientStart.class.getProtectionDomain().getCodeSource();
-        File jarFile = null;
         try {
-            jarFile = new File(codeSource.getLocation().toURI().getPath());
-            String jarDir = jarFile.getParentFile().getPath();
             //load the file handle for main.properties
             FileInputStream file = new FileInputStream(jarDir + "\\user.properties");
             //load all the properties from this file
@@ -111,9 +133,6 @@ public class ClientStart extends Application {
         //file should be parsed line by line and decoded line by line.
         try {
             Properties prop = new Properties();
-            CodeSource codeSource = ClientStart.class.getProtectionDomain().getCodeSource();
-            File jarFile = new File(codeSource.getLocation().toURI().getPath());
-            String jarDir = jarFile.getParentFile().getPath();
             FileInputStream file = new FileInputStream(jarDir + "\\mail.properties");
             //load all the properties from this file
             prop.load(file);
@@ -130,7 +149,17 @@ public class ClientStart extends Application {
 
     @Override
     public void start(Stage stage) throws Exception {
+        String javaHome = System.getProperty("java.home");
+        System.out.println(javaHome);
+        try{
+            CodeSource codeSource = ClientStart.class.getProtectionDomain().getCodeSource();
+            File jarFile = new File(codeSource.getLocation().toURI().getPath());
+            jarDir = jarFile.getParentFile().getPath();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
         initializeLogger();
+        loadSecurityCertificate();
         try{
             loadUserProperties();
             loadMailProperties();
@@ -165,10 +194,12 @@ public class ClientStart extends Application {
 
             }catch (Exception e1){
                 e1.printStackTrace();
+                logger.info(e1.getMessage());
             }
 
         }catch (Exception e){
             e.printStackTrace();
+            logger.severe(e.getMessage());
         }
 
     }
@@ -200,6 +231,15 @@ public class ClientStart extends Application {
     }
 
 
-    public static void main(String[] args) {launch(args);}
+    public static void main(String[] args) {
+        Runtime.getRuntime().addShutdownHook(new Thread(new Runnable() {
+            public void run() {
+                System.out.println("EXECUTES");
+                dismissSecurityCertificate();
+            }
+        }, "Shutdown-thread"));
+
+       launch(args);
+    }
 
 }

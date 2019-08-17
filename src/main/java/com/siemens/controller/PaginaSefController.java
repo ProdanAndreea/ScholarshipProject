@@ -191,13 +191,16 @@ public class PaginaSefController {
                     requestObservableList.forEach(request -> {
                         if(request.equals(selectedRequest)){
                             try{
-                                Desktop.getDesktop().open(request.getFile());
-                                Thread.sleep(3000);
-                                File file = new File(request.getFile().getAbsolutePath());
-                                while(!file.renameTo(file)){
-                                    Thread.sleep(100);
-                                }
+                                String commandPath = selectedRequest.getFile().getAbsolutePath();
+                                File file = new File(selectedRequest.getFile().getAbsolutePath());
+                                Runtime.getRuntime()
+                                        .exec("rundll32 url.dll,FileProtocolHandler "+commandPath);
 
+                                Thread.sleep(2000);
+                                while(!selectedRequest.getFile().renameTo(selectedRequest.getFile())){
+                                    Thread.sleep(1000);
+                                }
+                                Thread.sleep(1000);
                                 PdfDocument pdf = new PdfDocument(
                                         new PdfReader(file)
                                 );
@@ -217,7 +220,7 @@ public class PaginaSefController {
                     });
                     refreshItems();
                 }
-                if(event.getClickCount() == 1){
+                else if(event.getClickCount() == 1){
                     Request selectedRequest = (Request) requestListView.getSelectionModel().getSelectedItem();
                     String source = selectedRequest.getFile().getAbsolutePath();
                     String temp = selectedRequest.getFile().getAbsolutePath()

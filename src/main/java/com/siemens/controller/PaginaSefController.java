@@ -55,6 +55,7 @@ import java.util.*;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static com.siemens.view.ClientStart.senderMail;
 import static com.siemens.view.ClientStart.superiorsFilePath;
 import static java.util.stream.Collectors.toList;
 
@@ -500,13 +501,8 @@ public class PaginaSefController {
             String folderNameForDepartment = getFolderForSefDirect(departmentLeadName);
             String directoryForSefDirect = ClientStart.fileDirectoryPath.concat("\\").concat(folderNameForDepartment);
             new File(directoryForSefDirect).mkdir();
-            if (ClientStart.userPosition.equals("Team Leader")) {
-                fullDirectory = directoryForSefDirect.concat("\\").concat(folderNameForDepartment);
-            } else {
-                String folderNameForSefDirect = getFolderForSefDirect(teamLeadName);
-                fullDirectory = directoryForSefDirect.concat("\\").concat(folderNameForSefDirect);
-            }
 
+            fullDirectory = directoryForSefDirect.concat("\\".concat(senderMail.split("@")[0]));
             new File(fullDirectory).mkdir();
 
             String pdfFilePath =

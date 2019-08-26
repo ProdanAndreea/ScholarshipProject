@@ -1,14 +1,10 @@
 package com.siemens.view;
-import com.siemens.controller.ClientController;
-import com.siemens.controller.ConfirmareController;
-import com.siemens.controller.RezolvareCerereController;
 import javafx.application.Application;
 
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 
-import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 import java.io.*;
@@ -40,6 +36,7 @@ public class ClientStart extends Application {
     public static String fileDirectoryPath ;
     public static Logger logger;
     private String jarDir;
+    public static  String[] parameterString;
     public ClientStart() {}
 
     private static void dismissSecurityCertificate(){
@@ -241,7 +238,8 @@ public class ClientStart extends Application {
                 dismissSecurityCertificate();
             }
         }, "Shutdown-thread"));
-       launch(args);
+        parameterString = args;
+        launch(args);
 
     }
 }

@@ -98,11 +98,8 @@ public class MailConfiguration {
 //        }
 //    }
     public static void sendMessage(String to, String subject, String text) {
-
         try {
             Properties prop = new Properties();
-
-
             CodeSource codeSource = ClientStart.class.getProtectionDomain().getCodeSource();
             File jarFile = new File(codeSource.getLocation().toURI().getPath());
             String jarDir = jarFile.getParentFile().getPath();
@@ -115,15 +112,11 @@ public class MailConfiguration {
             String password = ClientStart.decodeMessage(prop.getProperty(ClientStart.encodeMessage("password")));
 
             Properties props = new Properties();
-            props.put("mail.smtp.port", "587");
-            props.put("mail.smtp.host", "smtp.gmail.com");
-
-//            props.put("mail.smtp.host", "mail.siemens.de");
+            props.put("mail.smtp.host", "mail.siemens.de");
             props.put("mail.smtp.starttls.enable", "true");
             props.put("mail.smtp.user", ClientStart.senderMail);
             props.put("mail.smtp.password",password);
             props.put("mail.smtp.auth", "true");
-
 
             Session session = Session.getInstance(props,
                     new javax.mail.Authenticator() {
@@ -140,15 +133,11 @@ public class MailConfiguration {
                 message.setFrom(fromAddress);
                 message.setRecipient(Message.RecipientType.TO, toAddress);
                 message.setSubject(subject);
-
                 //No longer needed, no attachments added
 //                BodyPart messageBodyPart = new MimeBodyPart();
 //                messageBodyPart.setText(text);
-//
-//
 //                Multipart multipart = new MimeMultipart();
 //                multipart.addBodyPart(messageBodyPart);
-
                 message.setContent(text, "text/html; charset=utf-8");
 
                 Transport.send(message);

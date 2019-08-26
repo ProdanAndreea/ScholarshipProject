@@ -71,8 +71,8 @@ public class ClientController {
     private ObservableList<Recovery> listOfRecoveries;
     private Leave desiredLeave = null;
     private final String pattern = "dd-MM-yyyy";
-    static DateTimeFormatter format = DateTimeFormatter.ofPattern("dd-MM-yyyy");
-    static DateTimeFormatter hourFormatter = DateTimeFormatter.ofPattern("HH:mm");
+    public static DateTimeFormatter format = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+    public static DateTimeFormatter hourFormatter = DateTimeFormatter.ofPattern("HH:mm");
     private final String[] possibleChoises = {
             "Application Developer",
             "Applications Engineer",
@@ -174,46 +174,7 @@ public class ClientController {
     }
 
     private void setFieldsListeners() {
-        //Enable add recovery button only if all necessary fields have been completed
         setDatePickerFormat(datePickerInvoire);
-//        nume.textProperty().addListener(
-//                new ChangeListener<String>() {
-//                    @Override
-//                    public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
-//                        if (
-//                                datePickerInvoire.getValue() != null &&
-//                                        nrOreInvoire.getValue() != null
-//                        )
-//                            addRecuperare.setDisable(false);
-//                        if (nume.getCharacters().length() == 0) {
-//                            addRecuperare.setDisable(true);
-//                            btnTrimite.setDisable(true);
-//                        }
-//                        else if(nume.getCharacters().length() != 0 && recoveryList.size()!= 0)
-//                            btnTrimite.setDisable(false);
-//                    }
-//                }
-//        );
-//        pozitieAngajat.textProperty().addListener(
-//                new ChangeListener<String>() {
-//                    @Override
-//                    public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
-//                        if (
-//                                datePickerInvoire.getValue() != null &&
-//                                        nrOreInvoire.getValue() != null &&
-//                                        nume.getCharacters().length() != 0
-//                        )
-//                            addRecuperare.setDisable(false);
-//                        if (nume.getCharacters().length() == 0 ){
-//                            addRecuperare.setDisable(true);
-//                            btnTrimite.setDisable(true);
-//                        }
-//                        else if(nume.getCharacters().length() != 0 && recoveryList.size()!= 0)
-//                            btnTrimite.setDisable(false);
-//
-//                    }
-//                }
-//        );
         listOfRecoveries.addListener(new ListChangeListener<Recovery>() {
             @Override
             public void onChanged(Change<? extends Recovery> c) {
@@ -261,7 +222,6 @@ public class ClientController {
     }
 
     private void setButtonEvents(ObservableList<Recovery> listOfRecoveries) {
-
         addRecuperare.addEventHandler(
                 MouseEvent.MOUSE_ENTERED,
                 new EventHandler<MouseEvent>() {
@@ -276,7 +236,6 @@ public class ClientController {
         addRecuperare.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-
                 try {
                     FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/add_recuperare.fxml"));
                     Parent root = fxmlLoader.load();
@@ -286,7 +245,6 @@ public class ClientController {
                     stage.setResizable(false);
                     stage.initModality(Modality.WINDOW_MODAL);
                     stage.initOwner(ClientStart.primaryStage.getScene().getWindow());
-
                     RecuperareController recuperareController = fxmlLoader.getController();
 
                     if (desiredLeave == null)
@@ -294,8 +252,8 @@ public class ClientController {
                                 datePickerInvoire.getValue(),
                                 LocalTime.parse(nrOreInvoire.getValue().toString(), hourFormatter)
                         );
-                    recuperareController.initialize(desiredLeave, listOfRecoveries, datePickerInvoire);
 
+                    recuperareController.initialize(desiredLeave, listOfRecoveries, datePickerInvoire);
                     Scene scene = new Scene(root);
                     scene.getStylesheets().add("style/add_recuperare.css");
                     stage.setScene(scene);
@@ -316,18 +274,15 @@ public class ClientController {
                     stage.setTitle("Cereri de invoire");
                     stage.setResizable(false);
 
-
                     stage.initModality(Modality.WINDOW_MODAL);
                     stage.initOwner(ClientStart.primaryStage.getScene().getWindow());
 
                     PaginaSefController paginaSefController = fxmlLoader.getController();
                     paginaSefController.populateDepartment(sefiDepartament);
 
-
                     Scene scene = new Scene(root);
                     scene.getStylesheets().add("style/pagina_sef.css");
                     stage.setScene(scene);
-
                     stage.show();
                 }catch (Exception e){
                     e.printStackTrace();
@@ -414,83 +369,35 @@ public class ClientController {
             }
         });
     }
-    private void loadUserData(){
-        Properties property = new Properties();
-       // String userProperties = "user.properties";
-        // InputStream inputStream = getClass().getClassLoader().getResourceAsStream(userProperties);
-        try{
-           // if (inputStream != null) {
-                /*
-                property.load(inputStream);
-                userName = property.getProperty("appUser");
-                userPosition = property.getProperty("userOccupiedPosition");
-                superiorName = property.getProperty("superiorName");
-                departmentSuperior = property.getProperty("departmentSuperiorName");
-                */
+    private void determineFunctionalities(){
 
-                // get the path of the Jar
-                CodeSource codeSource = ClientController.class.getProtectionDomain().getCodeSource();
-                File jarFile = new File(codeSource.getLocation().toURI().getPath());
-                String jarDir = jarFile.getParentFile().getPath();
-
-
-                //load the file handle for main.properties
-                FileInputStream file = new FileInputStream(jarDir + "\\user.properties");
-                //load all the properties from this file
-                property.load(file);
-                //we have loaded the properties, so close the file handle
-                file.close();
-
-                //retrieve the properties
-
-                
-                if(ClientStart.userPosition.equals("Team Leader") || ClientStart.userPosition.equals("Department Leader")){
-                    labelInvoire.setOpacity(100);
-
-                    bossAvailability.setOpacity(100);
-                    bossAvailability.setDisable(false);
-
-                    XMLMapper xmlMapper = new XMLMapper();
-                    bossAvailability.setSelected(xmlMapper.isAvailable(ClientStart.userName, superiorsFilePath));
-
-                    bossButton.setOpacity(100);
-                    bossButton.setDisable(false);
-                }
-
-                nume.setText(ClientStart.userName);
-
-           // } else {
-           //     throw new FileNotFoundException("property file '" + userProperties + "' not found in the classpath");
-          //  }
-        }catch (Exception e)
-        {
-            e.printStackTrace();
+        if(ClientStart.userPosition.equals("Team Leader") || ClientStart.userPosition.equals("Department Leader")){
+            labelInvoire.setOpacity(100);
+            bossAvailability.setOpacity(100);
+            bossAvailability.setDisable(false);
+            XMLMapper xmlMapper = new XMLMapper();
+            bossAvailability.setSelected(xmlMapper.isAvailable(ClientStart.userName, superiorsFilePath));
+            bossButton.setOpacity(100);
+            bossButton.setDisable(false);
         }
-
-
+        nume.setText(ClientStart.userName);
     }
 
     // called by the FXML loader after the labels declared above are injected
     public void initialize() {
+
         if(ClientStart.userPosition.equals("Department Leader")){
             datePickerInvoire.setDisable(true);
             nrOreInvoire.setDisable(true);
         }
         nume.setEditable(false);
-
         labelInvoire.setOpacity(0);
-
         bossAvailability.setOpacity(0);
         bossAvailability.setDisable(true);
-
         bossButton.setOpacity(0);
         bossButton.setDisable(true);
-
         btnDelete.setDisable(true);
-
-        //Parse the user prop file
-        loadUserData();
-
+        determineFunctionalities();
         sefDirectLabel.setText(ClientStart.superiorName);
         sefDepartamentLabel.setText(ClientStart.departmentSuperior);
         sefDepartamentLabel.setStyle("-fx-font-weight: bold");
@@ -530,6 +437,34 @@ public class ClientController {
             });
             return row ;
         });
+
+        if(ClientStart.parameterString.length != 0){
+            try{
+                FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/pagina_sef.fxml"));
+                Parent root = fxmlLoader.load();
+                root.setId("pane");
+                Stage stage = new Stage();
+                stage.setTitle("Cereri de invoire");
+                stage.setResizable(false);
+
+
+                stage.initModality(Modality.WINDOW_MODAL);
+                stage.initOwner(ClientStart.primaryStage.getScene().getWindow());
+
+                PaginaSefController paginaSefController = fxmlLoader.getController();
+                paginaSefController.populateDepartment(sefiDepartament);
+
+
+                Scene scene = new Scene(root);
+                scene.getStylesheets().add("style/pagina_sef.css");
+                stage.setScene(scene);
+
+                stage.show();
+            }catch (Exception e){
+                ClientStart.logger.severe(e.getMessage());
+            }
+
+        }
     }
 
     void getSuperiors() {
@@ -540,17 +475,7 @@ public class ClientController {
 
     }
 
-    private String getFolderForSefDirect(String sefDirect) {
-        List<Superior> sups = XMLMapper.jaxbXMLToObjects(Superiors.class, superiorsFilePath).getSuperiors();
 
-        String sefDirectMail = sups.stream()
-                .filter(superior -> superior.getName().equals(sefDirect))
-                .findFirst()
-                .get()
-                .getEmail();
-
-        return sefDirectMail.split("@")[0];
-    }
 
     public static void setDatePickerFormat(DatePicker datePicker) {
         datePicker.setConverter(new StringConverter<LocalDate>() {
@@ -580,279 +505,37 @@ public class ClientController {
             }
         });
 
-//        // disable past days
         datePicker.setDayCellFactory(picker -> new DateCell() {
             public void updateItem(LocalDate date, boolean empty) {
                 super.updateItem(date, empty);
                 LocalDate today = LocalDate.now();
-
                 setDisable(empty || date.compareTo(today) < 0 );
             }
         });
     }
 
-    public void generatePdf(){
-        try{
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
-
-            String fullDirectory;
-
-            this.listOfRecoveries.sort(Comparator.comparing(Recovery::getRecoveryDate));
-
-            String folderNameForDepartment = getFolderForSefDirect(sefDepartamentLabel.getText());
-            String directoryForSefDirect = ClientStart.fileDirectoryPath.concat("\\").concat(folderNameForDepartment);
-            new File(directoryForSefDirect).mkdir();
-            if (ClientStart.userPosition.equals("Team Leader")) {
-                fullDirectory = directoryForSefDirect.concat("\\").concat(folderNameForDepartment);
-            } else {
-                String folderNameForSefDirect = getFolderForSefDirect(sefDirectLabel.getText());
-                fullDirectory = directoryForSefDirect.concat("\\").concat(folderNameForSefDirect);
-            }
-
-            new File(fullDirectory).mkdir();
-
-            String pdfFilePath =
-                    fullDirectory +"\\Invoire_" + nume.getCharacters().toString()+
-                    "_" + LocalDate.now().format(formatter)  +// desiredLeave.getLeaveDate().toString()
-                    "_" + LocalTime.now().format(DateTimeFormatter.ofPattern("HH-mm")).toString()+".pdf";
-            PdfWriter writer = new PdfWriter(pdfFilePath);
-            PdfDocument pdf = new PdfDocument(writer);
-            Document document = new Document(pdf, PageSize.A4);
-            document.setMargins(20, 20, 20, 20);
-
-
-            // add hidden email
-            PdfPage page = pdf.addNewPage();
-            PdfAcroForm form = PdfAcroForm.getAcroForm(pdf, true);
-            PdfFormField field = PdfFormField.createText(pdf);
-            field.setFieldName("email");
-
-            Rectangle rect1 = new Rectangle(240, 800, 150, 20);
-            PdfWidgetAnnotation widget1 = new PdfWidgetAnnotation(rect1);
-            widget1.makeIndirect(pdf);
-            page.addAnnotation(widget1);
-            field.addKid(widget1);
-            field.setValue(ClientStart.senderMail);
-            field.setVisibility(PdfFormField.HIDDEN); // hide it
-            form.addField(field, page);
-
-            // get the value of the field
-//            form = PdfAcroForm.getAcroForm(pdf, true);
-//            Map<String, PdfFormField> fields = form.getFormFields();
-//            PdfFormField field1 = fields.get("email");
-//            System.out.println("hidden email field: " + field1.getValueAsString());
-            ////////////
-
-            document.add(
-                    new Paragraph("SIEMENS SRL")
-                            .setTextAlignment(TextAlignment.LEFT)
-                            .setFontSize(22)
-                            .setBold()
-                            .setFontColor(new DeviceRgb(0, 153, 153))
-            );
-            document.add(
-                    new Paragraph("Bilet Invoire")
-                            .setTextAlignment(TextAlignment.CENTER)
-                            .setFontSize(20)
-                            .setBold()
-                    //.setFont(font)
-            );
-
-
-            Text text1 = new Text("Subsemnatul/a ");
-            Text text2 = new Text(nume.getCharacters().toString()).setBold();
-            Text text3 = new Text(" doresc a beneficia de o invoire avand durata de ");
-            Text text4 = new Text(nrOreInvoire.getValue().toString()).setBold();
-            Text text5 = new Text(" ore, " +
-                    "perioada necesara pentru rezolvarea unor probleme cu caracter personal.");
-
-            document.add(
-                    new Paragraph().add(text1).add(text2).add(text3).add(text4).add(text5)
-                            .setFirstLineIndent(40)
-                            .setFontSize(14)
-            );
-
-            document.add(
-                    new Paragraph("Invoire:")
-                            .setBold()
-                            .setFontSize(16)
-                            .setFirstLineIndent(40)
-            );
-
-            Table table = new Table(new float[]{2, 2});
-            table.setWidth(UnitValue.createPercentValue(80));
-
-            table.addHeaderCell(
-                    new com.itextpdf.layout.element.Cell().add(
-                            new Paragraph("Data invoirii")
-                    )
-            );
-            table.addHeaderCell(
-                    new com.itextpdf.layout.element.Cell().add(
-                            new Paragraph("Nr. ore")
-                    )
-            );
-            table.addCell(
-                    new Paragraph(
-                            desiredLeave.getLeaveDate().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")).toString()
-                    )
-            );
-            table.addCell(
-                    new Paragraph(
-                            desiredLeave.getNumberOfHours().toString()
-                    )
-            );
-            table.setHorizontalAlignment(HorizontalAlignment.CENTER);
-            document.add(table);
-
-            document.add(
-                    new Paragraph("Propuneri recuperare:")
-                            .setBold()
-                            .setFontSize(16)
-                            .setFirstLineIndent(40)
-            );
-
-            Table recoveryTable = new Table(new float[]{2, 2, 2});
-            recoveryTable.setWidth(UnitValue.createPercentValue(80));
-
-            recoveryTable.addHeaderCell(
-                    new com.itextpdf.layout.element.Cell().add(
-                            new Paragraph("Recuperare pentru data de")
-                    )
-            );
-            recoveryTable.addHeaderCell(
-                    new com.itextpdf.layout.element.Cell().add(
-                            new Paragraph("Data propusa pentru recuperare")
-                    )
-            );
-            recoveryTable.addHeaderCell(
-                    new com.itextpdf.layout.element.Cell().add(
-                            new Paragraph("Nr. ore recuperate")
-                    )
-            );
-            for (Recovery recovery : listOfRecoveries) {
-                recoveryTable.addCell(
-                        new Paragraph(
-                                recovery.getLeaveDate().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")).toString()
-                        )
-                );
-                recoveryTable.addCell(
-                        new Paragraph(
-                                recovery.getRecoveryDate().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")).toString()
-                        )
-                );
-                recoveryTable.addCell(
-                        new Paragraph(
-                                recovery.getNumberOfHours().toString()
-                        )
-                );
-            }
-
-            recoveryTable.setHorizontalAlignment(HorizontalAlignment.CENTER);
-            document.add(recoveryTable);
-
-            Table approvalTable = new Table(UnitValue.createPercentArray(new float[]{3, 2}));
-            if(ClientStart.userPosition.equals("User")){
-                approvalTable.addCell(
-                        new com.itextpdf.layout.element.Cell(1, 2).add(new Paragraph("  Aprobare"))
-                );
-                approvalTable.addCell("Sef");
-                approvalTable.addCell("Semnatura"); //.setFont(font);
-                approvalTable.addCell(
-                        new com.itextpdf.layout.element.Cell()
-                                .add(new Paragraph("Direct:"))
-                                .add(new Paragraph(ClientStart.superiorName)
-                                ));
-                approvalTable.addCell("");
-                approvalTable.addCell(
-                        new Cell()
-                                .add(new Paragraph("Departament:"))
-                                .add(new Paragraph(ClientStart.departmentSuperior))
-                );
-                approvalTable.addCell("");
-
-            }else{
-                approvalTable.addCell(
-                        new com.itextpdf.layout.element.Cell(1, 2).add(new Paragraph("  Aprobare"))
-                );
-                approvalTable.addCell("Sef");
-                approvalTable.addCell("Semnatura"); //.setFont(font);
-                approvalTable.addCell(
-                        new Cell()
-                                .add(new Paragraph("Departament:"))
-                                .add(new Paragraph(ClientStart.departmentSuperior))
-                );
-                approvalTable.addCell("");
-
-            }
-
-
-            document.add(new Paragraph("\n\n"));
-
-
-            Paragraph dataDeAzi = new Paragraph(
-                    "Data de azi: "
-            )
-                    .setVerticalAlignment(VerticalAlignment.BOTTOM)
-                    .setHorizontalAlignment(HorizontalAlignment.LEFT)
-                    .setFontSize(12);
-
-
-            Text text = new Text(LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd/MM/yyyy"))).setBold();
-            dataDeAzi.add(text);
-
-            document.add(dataDeAzi);
-
-            document.add(new Paragraph("\n\n"));
-
-            approvalTable.setWidth(UnitValue.createPercentValue(60));
-            approvalTable.setFixedLayout();
-            approvalTable.setHorizontalAlignment(HorizontalAlignment.CENTER);
-            document.add(approvalTable);
-
-
-            /* add signature fields */
-
-            // get the number of the table's rows to shift the signature form on y axis based on the table's height
-            int noRows = recoveryTable.getNumberOfRows();
-            /* sef direct signature */
-            // create a signature form field
-            if(ClientStart.userPosition.equals("User")){
-                PdfSignatureFormField signatureField = PdfFormField.createSignature(pdf, new Rectangle((float)330.4, (float)361.5 - (noRows * (float)22.4), (float)133.9, (float)40.1)); // 329.5
-                signatureField.setFieldName("signatureSefDirect");
-                // set the widget properties
-                signatureField.getWidgets().get(0).setHighlightMode(PdfAnnotation.HIGHLIGHT_OUTLINE).setFlags(PdfAnnotation.PRINT);
-                // add the field
-                PdfAcroForm.getAcroForm(pdf, true).addField(signatureField);
-                /* sef departament signature */
-                signatureField = PdfFormField.createSignature(pdf, new Rectangle((float)330.4, (float)321 - (noRows * (float)22.4), (float)133.9, (float)40.1));
-                signatureField.setFieldName("signatureSefDepartament");
-                signatureField.getWidgets().get(0).setHighlightMode(PdfAnnotation.HIGHLIGHT_OUTLINE).setFlags(PdfAnnotation.PRINT);
-                PdfAcroForm.getAcroForm(pdf, true).addField(signatureField);
-            }else{
-                PdfSignatureFormField signatureField = PdfFormField.createSignature(pdf, new Rectangle((float)330.4, (float)361.5 - (noRows * (float)22.4), (float)133.9, (float)40.1));
-                signatureField.setFieldName("signatureSefDepartament");
-                signatureField.getWidgets().get(0).setHighlightMode(PdfAnnotation.HIGHLIGHT_OUTLINE).setFlags(PdfAnnotation.PRINT);
-                PdfAcroForm.getAcroForm(pdf, true).addField(signatureField);
-            }
-
-
-
-
-            document.close();
-            //APEL PENTRU TRIMITERE MAIL
-
-            generateMailData();
-
-            System.exit(0);
-
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
+    private String encodeParameters(){
+        String recoveryGroups = "";
+        for(Recovery recovery : listOfRecoveries){
+            recoveryGroups += "m" +
+                    recovery.getRecoveryDate().format(format) +
+                    "n" +
+                    recovery.getNumberOfHours().toString();
         }
+        return ClientStart.userName + "," +
+                ClientStart.senderMail.split("@")[0] +"," +
+                ClientStart.superiorName +"," +
+                ClientStart.departmentSuperior + "," +
+                desiredLeave.getLeaveDate().format(format) + "," +
+                desiredLeave.getNumberOfHours().toString() + "," +
+                LocalDateTime.now().format(format) +
+                recoveryGroups;
     }
-    private void generateMailData(){
+
+    public void generateMailData(){
         Superior directLeader = null;
         Superior departmentLeader;
+        String encodedMessage = encodeParameters();
         if(ClientStart.userPosition.equals("User")){
             directLeader = sefiDirecti.stream()
                     .filter(boss -> boss.getName().equals(sefDirectLabel.getText())).findFirst().get();
@@ -876,13 +559,8 @@ public class ClientController {
                     );
         }
 
-
         message.append("<br>");
-        message.append("<a href='file:///g:/Siemens/Bilet invoire/BileteInvoire1/Bilete_Invoire/Bilete Invoire.exe'>Apasa aici pentru a rezolva cererea</a>" +
-                "<br>" +
-                "<a href='https://javaee.github.io/javamail/FAQ#sendhtml'>Hello</a>");
-
-
+        message.append("<a href=\"invoiri:" + encodedMessage + "\">Apasa aici pentru a rezolva cererea</a>");
 
         if(ClientStart.userPosition.equals("Team Leader")){
             MailConfiguration.sendMessage(departmentLeader.getEmail(), "Cerere Invoire", message.toString());
@@ -894,131 +572,8 @@ public class ClientController {
         } else {
             MailConfiguration.sendMessage(departmentLeader.getEmail(), "Cerere Invoire", message.toString());
         }
-
+        System.exit(0);
     }
-
-    public void generatePdf(String name, Leave requestedLeave, List<Recovery> recoveryList) {
-
-    }
-
-    public void openRezolvareCerereView(String[] args) {
-        String name = args[1].replaceAll("%20", " ");
-        String mailName = args[2];
-        String teamLeadName = args[3];
-        String departmentName = args[4];
-        LocalDate leaveDate = this.decipherDate(Integer.parseInt(args[5]));
-        Leave leave = new Leave(leaveDate, this.decipherHours(Integer.parseInt(args[6])));
-        List<Recovery> recoveryList = this.decipherRecoveries(leaveDate, args[7]);
-        try{
-            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/rezolvare_cerere.fxml"));
-            Parent root = fxmlLoader.load();
-            root.setId("pane");
-            Stage stage = new Stage();
-            stage.setTitle("Rezolvare Cerere");
-            stage.setResizable(false);
-
-
-            stage.initModality(Modality.WINDOW_MODAL);
-            stage.initOwner(ClientStart.primaryStage.getScene().getWindow());
-
-            RezolvareCerereController rezolvareCerereController = fxmlLoader.getController();
-            rezolvareCerereController.initialize(clientController, name, leave, recoveryList);
-
-
-            Scene scene = new Scene(root);
-//            scene.getStylesheets().add("style/pagina_sef.css");
-            stage.setScene(scene);
-
-            stage.show();
-        }catch (Exception e){
-            e.printStackTrace();
-        }
-    }
-
-    private LocalDate decipherDate(int dateInInt) {
-        int year = 0;
-
-        for (int i = 1; i <= 1000; i*=10) {
-            int c = dateInInt % 10 * i;
-            year += c;
-            dateInInt/=10;
-        }
-
-        int month = 0;
-
-        for (int i = 1; i <= 10; i*=10) {
-            int c = dateInInt % 10 * i;
-            month += c;
-            dateInInt/=10;
-        }
-
-        String monthString = String.valueOf(month);
-        if (monthString.length() == 1)
-            monthString = "0" + monthString;
-
-        int day = 0;
-
-        for (int i = 1; i <= 10; i*=10) {
-            int c = dateInInt % 10 * i;
-            day += c;
-            dateInInt/=10;
-        }
-
-        String dayString = String.valueOf(day);
-        if (dayString.length() == 1)
-            dayString = "0" + dayString;
-
-        String finalDateString = dayString + "-" + monthString + "-" + year;
-
-        return LocalDate.parse(finalDateString, format);
-    }
-
-    private LocalTime decipherHours(int hourInInt) {
-        int hour = 0;
-
-        for (int i = 1; i <= 10; i*=10) {
-            int c = hourInInt % 10 * i;
-            hour += c;
-            hourInInt/=10;
-        }
-
-        String hourString = String.valueOf(hour);
-        if (hourString.length() == 1)
-            hourString = "0" + hourString;
-
-        int minutes = 0;
-
-        for (int i = 1; i <= 10; i*=10) {
-            int c = hourInInt % 10 * i;
-            minutes += c;
-            hourInInt/=10;
-        }
-
-        String minutesString = String.valueOf(minutes);
-        if (minutesString.length() == 1)
-            minutesString = "0" + minutesString;
-
-        String finalHourTime = hourString + ":" + minutesString;
-        return LocalTime.parse(finalHourTime, hourFormatter);
-    }
-
-    private List<Recovery> decipherRecoveries(LocalDate leaveDate, String recoveriesCode) {
-        List<Recovery> recoveries = new ArrayList<Recovery>();
-
-        String[] recoveriesString = recoveriesCode.split("m");
-
-        for (String recovery : recoveriesString) {
-            String[] dateAndTime = recovery.split("n");
-            LocalDate dateRecovery = this.decipherDate(Integer.parseInt(dateAndTime[0]));
-            LocalTime timeRecovery = this.decipherHours(Integer.parseInt(dateAndTime[1]));
-            recoveries.add(new Recovery(leaveDate, dateRecovery, timeRecovery));
-        }
-
-        return recoveries;
-    }
-
-
-
 
     public static byte[] toByteArray(InputStream is) throws IOException {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();

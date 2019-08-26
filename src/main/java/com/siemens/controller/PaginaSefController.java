@@ -94,6 +94,8 @@ public class PaginaSefController {
     private LocalDate creationDate;
     private LocalTime time;
 
+    private String fullPath;
+
 
     private void populateRequests(){
 
@@ -368,6 +370,8 @@ public class PaginaSefController {
     }
 
     public void initialize(){
+        if(ClientStart.parameterString.length != 0)
+            decodeParameters();
         acceptButton.setDisable(true);
         denyButton.setDisable(true);
         requestListView.setItems(requestObservableList);
@@ -449,6 +453,23 @@ public class PaginaSefController {
             wholeIndex++;
         }
     }
+    private void openPdf(){
+        try{
+            String commandPath = fullPath;
+            File file = new File(fullPath);
+            Runtime.getRuntime()
+                    .exec("rundll32 url.dll,FileProtocolHandler "+commandPath);
+
+            Thread.sleep(2000);
+            while(!file.renameTo(file)){
+                Thread.sleep(1000);
+            }
+            Thread.sleep(1000);
+        }catch (Exception e){
+            e.printStackTrace();
+            ClientStart.logger.severe(e.getMessage());
+        }
+    }
 
     public void decodeParameters(){
         String[] argsArray = ClientStart.parameterString[0].split(":");
@@ -461,8 +482,9 @@ public class PaginaSefController {
         time = LocalTime.parse(parameters[5], ClientController.hourFormatter);
         desiredLeave = new Leave(leaveDate, time);
         creationDate = LocalDate.parse(parameters[6], ClientController.format);
-        listOfRecoveries = this.decipherRecoveries(leaveDate, parameters[7]);
+        listOfRecoveries = decipherRecoveries(leaveDate, parameters[7]);
         generatePdf();
+        openPdf();
     }
 
     private List<Recovery> decipherRecoveries(LocalDate leaveDate, String recoveriesCode) {
@@ -530,7 +552,7 @@ public class PaginaSefController {
             widget1.makeIndirect(pdf);
             page.addAnnotation(widget1);
             field.addKid(widget1);
-            field.setValue(ClientStart.senderMail);
+            field.setValue(mailName + "@siemens.com");
             field.setVisibility(PdfFormField.HIDDEN); // hide it
             form.addField(field, page);
 
@@ -735,7 +757,7 @@ public class PaginaSefController {
             }
 
             document.close();
-
+            fullPath = pdfFilePath;
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }

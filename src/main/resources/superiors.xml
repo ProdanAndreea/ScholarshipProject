@@ -7,6 +7,12 @@
         <available>true</available>
     </superior>
     <superior>
+        <name>Dragos</name>
+        <email>learningplatform10@gmail.com</email>
+        <PositionEnum>Team Leader</PositionEnum>
+        <available>true</available>
+    </superior>
+    <superior>
         <name>Mihai</name>
         <email>prodan.a.andreea@gmail.com</email>
         <PositionEnum>Department Leader</PositionEnum>

@@ -27,6 +27,7 @@ import com.siemens.model.PositionEnum;
 import com.siemens.model.Superior;
 import com.siemens.model.Superiors;
 import com.siemens.view.ClientStart;
+import com.sun.org.apache.xml.internal.utils.URI;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -53,6 +54,8 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Properties;
 import java.util.stream.Collectors;
@@ -594,6 +597,8 @@ public class ClientController {
 
             String fullDirectory;
 
+            this.listOfRecoveries.sort(Comparator.comparing(Recovery::getRecoveryDate));
+
             String folderNameForDepartment = getFolderForSefDirect(sefDepartamentLabel.getText());
             String directoryForSefDirect = ClientStart.fileDirectoryPath.concat("\\").concat(folderNameForDepartment);
             new File(directoryForSefDirect).mkdir();
@@ -860,20 +865,159 @@ public class ClientController {
                     .findFirst().get();
         }
 
-        String message = "ATI PRIMIT O CERERE PENTRU INVOIRE DE LA " + nume.getCharacters().toString().toUpperCase();
+        StringBuilder message = new StringBuilder("Ai primit o cerere de invoire de la <b>" + nume.getCharacters().toString().toUpperCase() + "</b> pentru data de <b>" +
+                desiredLeave.getLeaveDate().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")) + "</b>, durata: <b>" +
+                desiredLeave.getNumberOfHours().toString() + "</b> ore.<br><br>" +
+                "Subsemnatul/a doreste sa recupereze orele invoite in:<br>");
+
+        for (Recovery recovery: listOfRecoveries) {
+            message.append("<b>" +  recovery.getRecoveryDate().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")) + "</b> - <b>" +
+                    recovery.getNumberOfHours().toString() + "</b> ore<br>"
+                    );
+        }
+
+
+        message.append("<br>");
+        message.append("<a href='file:///g:/Siemens/Bilet invoire/BileteInvoire1/Bilete_Invoire/Bilete Invoire.exe'>Apasa aici pentru a rezolva cererea</a>" +
+                "<br>" +
+                "<a href='https://javaee.github.io/javamail/FAQ#sendhtml'>Hello</a>");
+
+
 
         if(ClientStart.userPosition.equals("Team Leader")){
-            MailConfiguration.sendMessage(departmentLeader.getEmail(), "CERERE INVOIRE", message);
+            MailConfiguration.sendMessage(departmentLeader.getEmail(), "Cerere Invoire", message.toString());
             return;
         }
 
         if (directLeader.getAvailable()) {
-            MailConfiguration.sendMessage(directLeader.getEmail(), "CERERE INVOIRE", message);
+            MailConfiguration.sendMessage(directLeader.getEmail(), "Cerere Invoire", message.toString());
         } else {
-            MailConfiguration.sendMessage(departmentLeader.getEmail(), "CERERE INVOIRE", message);
+            MailConfiguration.sendMessage(departmentLeader.getEmail(), "Cerere Invoire", message.toString());
         }
 
     }
+
+    public void generatePdf(String name, Leave requestedLeave, List<Recovery> recoveryList) {
+
+    }
+
+    public void openRezolvareCerereView(String[] args) {
+        String name = args[1].replaceAll("%20", " ");
+        String mailName = args[2];
+        String teamLeadName = args[3];
+        String departmentName = args[4];
+        LocalDate leaveDate = this.decipherDate(Integer.parseInt(args[5]));
+        Leave leave = new Leave(leaveDate, this.decipherHours(Integer.parseInt(args[6])));
+        List<Recovery> recoveryList = this.decipherRecoveries(leaveDate, args[7]);
+        try{
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/rezolvare_cerere.fxml"));
+            Parent root = fxmlLoader.load();
+            root.setId("pane");
+            Stage stage = new Stage();
+            stage.setTitle("Rezolvare Cerere");
+            stage.setResizable(false);
+
+
+            stage.initModality(Modality.WINDOW_MODAL);
+            stage.initOwner(ClientStart.primaryStage.getScene().getWindow());
+
+            RezolvareCerereController rezolvareCerereController = fxmlLoader.getController();
+            rezolvareCerereController.initialize(clientController, name, leave, recoveryList);
+
+
+            Scene scene = new Scene(root);
+//            scene.getStylesheets().add("style/pagina_sef.css");
+            stage.setScene(scene);
+
+            stage.show();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+
+    private LocalDate decipherDate(int dateInInt) {
+        int year = 0;
+
+        for (int i = 1; i <= 1000; i*=10) {
+            int c = dateInInt % 10 * i;
+            year += c;
+            dateInInt/=10;
+        }
+
+        int month = 0;
+
+        for (int i = 1; i <= 10; i*=10) {
+            int c = dateInInt % 10 * i;
+            month += c;
+            dateInInt/=10;
+        }
+
+        String monthString = String.valueOf(month);
+        if (monthString.length() == 1)
+            monthString = "0" + monthString;
+
+        int day = 0;
+
+        for (int i = 1; i <= 10; i*=10) {
+            int c = dateInInt % 10 * i;
+            day += c;
+            dateInInt/=10;
+        }
+
+        String dayString = String.valueOf(day);
+        if (dayString.length() == 1)
+            dayString = "0" + dayString;
+
+        String finalDateString = dayString + "-" + monthString + "-" + year;
+
+        return LocalDate.parse(finalDateString, format);
+    }
+
+    private LocalTime decipherHours(int hourInInt) {
+        int hour = 0;
+
+        for (int i = 1; i <= 10; i*=10) {
+            int c = hourInInt % 10 * i;
+            hour += c;
+            hourInInt/=10;
+        }
+
+        String hourString = String.valueOf(hour);
+        if (hourString.length() == 1)
+            hourString = "0" + hourString;
+
+        int minutes = 0;
+
+        for (int i = 1; i <= 10; i*=10) {
+            int c = hourInInt % 10 * i;
+            minutes += c;
+            hourInInt/=10;
+        }
+
+        String minutesString = String.valueOf(minutes);
+        if (minutesString.length() == 1)
+            minutesString = "0" + minutesString;
+
+        String finalHourTime = hourString + ":" + minutesString;
+        return LocalTime.parse(finalHourTime, hourFormatter);
+    }
+
+    private List<Recovery> decipherRecoveries(LocalDate leaveDate, String recoveriesCode) {
+        List<Recovery> recoveries = new ArrayList<Recovery>();
+
+        String[] recoveriesString = recoveriesCode.split("m");
+
+        for (String recovery : recoveriesString) {
+            String[] dateAndTime = recovery.split("n");
+            LocalDate dateRecovery = this.decipherDate(Integer.parseInt(dateAndTime[0]));
+            LocalTime timeRecovery = this.decipherHours(Integer.parseInt(dateAndTime[1]));
+            recoveries.add(new Recovery(leaveDate, dateRecovery, timeRecovery));
+        }
+
+        return recoveries;
+    }
+
+
 
 
     public static byte[] toByteArray(InputStream is) throws IOException {

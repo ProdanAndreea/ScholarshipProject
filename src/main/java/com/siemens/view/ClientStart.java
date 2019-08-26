@@ -1,11 +1,14 @@
 package com.siemens.view;
-
+import com.siemens.controller.ClientController;
+import com.siemens.controller.ConfirmareController;
+import com.siemens.controller.RezolvareCerereController;
 import javafx.application.Application;
 
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 import java.io.*;
@@ -88,6 +91,7 @@ public class ClientStart extends Application {
             e.printStackTrace();
         }
     }
+
     public static void  restartApplication()
     {
         try{
@@ -165,7 +169,6 @@ public class ClientStart extends Application {
             loadMailProperties();
             //The department leader should not have access to the user code.
 
-
             Parent root = FXMLLoader.load(getClass().getResource("/client_view.fxml"));
             stage.setResizable(false);
             root.setId("pane");
@@ -178,6 +181,7 @@ public class ClientStart extends Application {
             stage.setScene(scene);
             stage.show();
             primaryStage = stage;
+
         }catch (IOException e) {
             try{
                 Parent root = FXMLLoader.load(ClientStart.class.getResource("/configuratii.fxml"));
@@ -230,7 +234,6 @@ public class ClientStart extends Application {
         return  encryptedMessage.toString();
     }
 
-
     public static void main(String[] args) {
         Runtime.getRuntime().addShutdownHook(new Thread(new Runnable() {
             public void run() {
@@ -238,8 +241,7 @@ public class ClientStart extends Application {
                 dismissSecurityCertificate();
             }
         }, "Shutdown-thread"));
-
        launch(args);
-    }
 
+    }
 }

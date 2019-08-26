@@ -249,7 +249,7 @@ public class PaginaSefController {
                                 refreshItems();
                                 MailConfiguration.sendMessage(
                                         selectedRequest.getEmailSender(),
-                                        "CONFIRMARE CERERE",
+                                        "Cerere Confirmata",
                                         "Cererea " + selectedRequest.getFile().getName() + " a fost aprobata!"
                                 );
 
@@ -277,7 +277,7 @@ public class PaginaSefController {
 
                                 MailConfiguration.sendMessage(
                                         selectedRequest.getEmailSender(),
-                                        "RESPINGERE CERERE",
+                                        "Cerere Respinsa",
                                         "Cererea "+ selectedRequest.getFile().getName() + " a fost respinsa!"
                                 );
 

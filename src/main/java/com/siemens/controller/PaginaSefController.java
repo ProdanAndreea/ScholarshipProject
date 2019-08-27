@@ -92,6 +92,7 @@ public class PaginaSefController {
     private String mailName;
     private String teamLeadName;
     private String departmentLeadName;
+    private String requestUserPosition;
     private LocalDate leaveDate;
     private LocalDate creationDate;
     private LocalTime time;
@@ -481,13 +482,23 @@ public class PaginaSefController {
         String[] parameters = argsArray[1].split(",");
         name = parameters[0].replaceAll("%20", " ");
         mailName = parameters[1];
-        teamLeadName = parameters[2].replace("%20", " ");
-        departmentLeadName = parameters[3].replace("%20", " ");
-        leaveDate = LocalDate.parse(parameters[4], ClientController.format);
-        time = LocalTime.parse(parameters[5], ClientController.hourFormatter);
+
+        String[] leaders = parameters[2].split("&");
+        if (leaders.length == 2) {
+            teamLeadName = leaders[0].replaceAll("%20", " ");
+            departmentLeadName = leaders[1].replace("%20", " ");
+            this.requestUserPosition = "User";
+        } else {
+            departmentLeadName = leaders[0].replaceAll("%20", " ");
+            this.requestUserPosition = "Team Leader";
+        }
+
+        leaveDate = LocalDate.parse(parameters[3], ClientController.format);
+        time = LocalTime.parse(parameters[4], ClientController.hourFormatter);
         desiredLeave = new Leave(leaveDate, time);
-        creationDate = LocalDate.parse(parameters[6], ClientController.format);
-        listOfRecoveries = decipherRecoveries(leaveDate, parameters[7]);
+        creationDate = LocalDate.parse(parameters[5], ClientController.format);
+        listOfRecoveries = decipherRecoveries(leaveDate, parameters[6]);
+
         generatePdf();
         openPdf();
         List<Superior> sups = XMLMapper.jaxbXMLToObjects(Superiors.class, superiorsFilePath).getSuperiors();
@@ -674,7 +685,7 @@ public class PaginaSefController {
             document.add(recoveryTable);
 
             Table approvalTable = new Table(UnitValue.createPercentArray(new float[]{3, 2}));
-            if(ClientStart.userPosition.equals("User")){
+            if(this.requestUserPosition.equals("User")){
                 approvalTable.addCell(
                         new com.itextpdf.layout.element.Cell(1, 2).add(new Paragraph("  Aprobare"))
                 );
@@ -683,13 +694,13 @@ public class PaginaSefController {
                 approvalTable.addCell(
                         new com.itextpdf.layout.element.Cell()
                                 .add(new Paragraph("Direct:"))
-                                .add(new Paragraph(ClientStart.superiorName)
+                                .add(new Paragraph(teamLeadName)
                                 ));
                 approvalTable.addCell("");
                 approvalTable.addCell(
                         new com.itextpdf.layout.element.Cell()
                                 .add(new Paragraph("Departament:"))
-                                .add(new Paragraph(ClientStart.departmentSuperior))
+                                .add(new Paragraph(departmentLeadName))
                 );
                 approvalTable.addCell("");
 
@@ -702,7 +713,7 @@ public class PaginaSefController {
                 approvalTable.addCell(
                         new com.itextpdf.layout.element.Cell()
                                 .add(new Paragraph("Departament:"))
-                                .add(new Paragraph(ClientStart.departmentSuperior))
+                                .add(new Paragraph(departmentLeadName))
                 );
                 approvalTable.addCell("");
 
@@ -739,7 +750,7 @@ public class PaginaSefController {
             int noRows = recoveryTable.getNumberOfRows();
             /* sef direct signature */
             // create a signature form field
-            if(ClientStart.userPosition.equals("User")){
+            if(this.requestUserPosition.equals("User")){
                 PdfSignatureFormField signatureField = PdfFormField.createSignature(pdf, new Rectangle((float)330.4, (float)361.5 - (noRows * (float)22.4), (float)133.9, (float)40.1)); // 329.5
                 signatureField.setFieldName("signatureSefDirect");
                 // set the widget properties

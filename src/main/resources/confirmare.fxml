@@ -9,7 +9,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane prefHeight="155.0" prefWidth="424.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.siemens.controller.ConfirmareController">
+<AnchorPane prefHeight="155.0" prefWidth="424.0" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.siemens.controller.ConfirmareController">
    <children>
       <Button fx:id="btnOk" layoutX="94.0" layoutY="111.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="77.0" text="Ok" AnchorPane.bottomAnchor="19.0" AnchorPane.leftAnchor="94.0" AnchorPane.rightAnchor="253.0" AnchorPane.topAnchor="111.0">
          <cursor>
@@ -19,9 +19,8 @@
          <cursor>
             <Cursor fx:constant="HAND" />
          </cursor></Button>
-      <Text layoutX="88.0" layoutY="47.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Un e-mail de notificare va fi trimis șefilor." textAlignment="CENTER" wrappingWidth="248.62890625" AnchorPane.bottomAnchor="104.0" AnchorPane.leftAnchor="88.0" AnchorPane.rightAnchor="87.37109375" AnchorPane.topAnchor="34.0" />
-      <Text fill="#0a0a0a" layoutX="88.0" layoutY="27.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Biletul de învoire, format PDF, se va crea pe T." textAlignment="CENTER" AnchorPane.bottomAnchor="124.0" AnchorPane.leftAnchor="88.0" AnchorPane.rightAnchor="95.314453125" AnchorPane.topAnchor="14.0" />
-      <Text fill="#0a0a0a" layoutX="155.0" layoutY="93.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Doriți să continuați?" textAlignment="CENTER" AnchorPane.bottomAnchor="58.98828125" AnchorPane.leftAnchor="155.0" AnchorPane.rightAnchor="155.4453125" AnchorPane.topAnchor="80.05078125">
+      <Text layoutX="87.0" layoutY="36.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Un e-mail de notificare va fi trimis șefilor." textAlignment="CENTER" wrappingWidth="248.62890625" AnchorPane.bottomAnchor="115.0" AnchorPane.leftAnchor="87.0" AnchorPane.rightAnchor="88.37109375" AnchorPane.topAnchor="23.0" />
+      <Text fill="#0a0a0a" layoutX="154.0" layoutY="64.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Doriți să continuați?" textAlignment="CENTER" AnchorPane.bottomAnchor="87.98828125" AnchorPane.leftAnchor="154.0" AnchorPane.rightAnchor="156.4453125" AnchorPane.topAnchor="51.05078125">
          <font>
             <Font name="System Bold" size="12.0" />
          </font></Text>

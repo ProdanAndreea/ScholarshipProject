@@ -530,8 +530,7 @@ public class ClientController {
         }
         return ClientStart.userName + "," +
                 ClientStart.senderMail.split("@")[0] +"," +
-                ClientStart.superiorName +"," +
-                ClientStart.departmentSuperior + "," +
+                (ClientStart.superiorName.equals("") ? (ClientStart.departmentSuperior) : (ClientStart.superiorName + "&" + ClientStart.departmentSuperior)) + "," +
                 desiredLeave.getLeaveDate().format(format) + "," +
                 desiredLeave.getNumberOfHours().toString() + "," +
                 LocalDateTime.now().format(format) +

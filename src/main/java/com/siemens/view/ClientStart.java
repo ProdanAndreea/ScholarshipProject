@@ -35,6 +35,7 @@ public class ClientStart extends Application {
     public static String superiorsFilePath;
     public static String fileDirectoryPath ;
     public static Logger logger;
+    public static boolean alreadyParsed = false;
     private String jarDir;
     public static  String[] parameterString;
     public ClientStart() {}
@@ -165,7 +166,7 @@ public class ClientStart extends Application {
             loadUserProperties();
             loadMailProperties();
             //The department leader should not have access to the user code.
-
+            primaryStage = stage;
             Parent root = FXMLLoader.load(getClass().getResource("/client_view.fxml"));
             stage.setResizable(false);
             root.setId("pane");
@@ -177,7 +178,7 @@ public class ClientStart extends Application {
             stage.setResizable(false);
             stage.setScene(scene);
             stage.show();
-            primaryStage = stage;
+
 
         }catch (IOException e) {
             try{

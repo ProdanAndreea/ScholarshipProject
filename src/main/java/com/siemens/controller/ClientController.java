@@ -27,7 +27,6 @@ import com.siemens.model.PositionEnum;
 import com.siemens.model.Superior;
 import com.siemens.model.Superiors;
 import com.siemens.view.ClientStart;
-import com.sun.org.apache.xml.internal.utils.URI;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -46,6 +45,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.text.Font;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 import javafx.util.StringConverter;
 
 import java.io.*;
@@ -60,6 +60,7 @@ import java.util.List;
 import java.util.Properties;
 import java.util.stream.Collectors;
 
+import static com.siemens.view.ClientStart.alreadyParsed;
 import static com.siemens.view.ClientStart.superiorsFilePath;
 
 /**
@@ -277,9 +278,6 @@ public class ClientController {
                     stage.initModality(Modality.WINDOW_MODAL);
                     stage.initOwner(ClientStart.primaryStage.getScene().getWindow());
 
-                    PaginaSefController paginaSefController = fxmlLoader.getController();
-                    paginaSefController.populateDepartment(sefiDepartament);
-
                     Scene scene = new Scene(root);
                     scene.getStylesheets().add("style/pagina_sef.css");
                     stage.setScene(scene);
@@ -382,10 +380,44 @@ public class ClientController {
         }
         nume.setText(ClientStart.userName);
     }
+    private void launchPdfForSigning(){
+        if(ClientStart.parameterString.length != 0 && alreadyParsed == false){
+            try{
+                FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/pagina_sef.fxml"));
+                Parent root = fxmlLoader.load();
+                root.setId("pane");
+                Stage stage = new Stage();
+                stage.setTitle("Cereri de invoire");
+                stage.setResizable(false);
+
+
+                stage.initModality(Modality.WINDOW_MODAL);
+                stage.initOwner(ClientStart.primaryStage.getScene().getWindow());
+
+//                PaginaSefController paginaSefController = fxmlLoader.getController();
+//                paginaSefController.populateDepartment(sefiDepartament);
+
+
+                Scene scene = new Scene(root);
+                scene.getStylesheets().add("style/pagina_sef.css");
+                stage.setScene(scene);
+
+                stage.show();
+            }catch (Exception e){
+                ClientStart.logger.severe(e.getMessage());
+                e.printStackTrace();
+            }
+        }
+    }
 
     // called by the FXML loader after the labels declared above are injected
     public void initialize() {
-
+        ClientStart.primaryStage.setOnShowing(new EventHandler<WindowEvent>() {
+            @Override
+            public void handle(WindowEvent event) {
+                launchPdfForSigning();
+            }
+        });
         if(ClientStart.userPosition.equals("Department Leader")){
             datePickerInvoire.setDisable(true);
             nrOreInvoire.setDisable(true);
@@ -438,33 +470,7 @@ public class ClientController {
             return row ;
         });
 
-        if(ClientStart.parameterString.length != 0){
-            try{
-                FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/pagina_sef.fxml"));
-                Parent root = fxmlLoader.load();
-                root.setId("pane");
-                Stage stage = new Stage();
-                stage.setTitle("Cereri de invoire");
-                stage.setResizable(false);
 
-
-                stage.initModality(Modality.WINDOW_MODAL);
-                stage.initOwner(ClientStart.primaryStage.getScene().getWindow());
-
-                PaginaSefController paginaSefController = fxmlLoader.getController();
-                paginaSefController.populateDepartment(sefiDepartament);
-
-
-                Scene scene = new Scene(root);
-                scene.getStylesheets().add("style/pagina_sef.css");
-                stage.setScene(scene);
-
-                stage.show();
-            }catch (Exception e){
-                ClientStart.logger.severe(e.getMessage());
-            }
-
-        }
     }
 
     void getSuperiors() {

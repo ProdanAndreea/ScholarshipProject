@@ -55,6 +55,7 @@ import java.util.*;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static com.siemens.view.ClientStart.alreadyParsed;
 import static com.siemens.view.ClientStart.senderMail;
 import static com.siemens.view.ClientStart.superiorsFilePath;
 import static java.util.stream.Collectors.toList;
@@ -371,8 +372,11 @@ public class PaginaSefController {
     }
 
     public void initialize(){
-        if(ClientStart.parameterString.length != 0)
+        if(ClientStart.parameterString.length != 0 && alreadyParsed == false){
             decodeParameters();
+            alreadyParsed = true;
+        }
+
         acceptButton.setDisable(true);
         denyButton.setDisable(true);
         requestListView.setItems(requestObservableList);
@@ -473,7 +477,7 @@ public class PaginaSefController {
     }
 
     public void decodeParameters(){
-        String[] argsArray = ClientStart.parameterString[0].split(":");
+        String[] argsArray = ClientStart.parameterString[0].split(":", 2);
         String[] parameters = argsArray[1].split(",");
         name = parameters[0].replaceAll("%20", " ");
         mailName = parameters[1];
@@ -486,6 +490,8 @@ public class PaginaSefController {
         listOfRecoveries = decipherRecoveries(leaveDate, parameters[7]);
         generatePdf();
         openPdf();
+        List<Superior> sups = XMLMapper.jaxbXMLToObjects(Superiors.class, superiorsFilePath).getSuperiors();
+        populateDepartment(sups.stream().filter(superior -> superior.getPositionEnum().equals(PositionEnum.DEPARTAMENT)).collect(Collectors.toList()));
     }
 
     private List<Recovery> decipherRecoveries(LocalDate leaveDate, String recoveriesCode) {
@@ -530,7 +536,7 @@ public class PaginaSefController {
             String pdfFilePath =
                     fullDirectory +"\\Invoire_" + name+
                             "_" + LocalDate.now().format(formatter)  +// desiredLeave.getLeaveDate().toString()
-                            "_" + LocalTime.now().format(DateTimeFormatter.ofPattern("HH-mm")).toString()+".pdf";
+                            "_" + LocalTime.now().format(DateTimeFormatter.ofPattern("HH-mm-ss")).toString()+".pdf";
             PdfWriter writer = new PdfWriter(pdfFilePath);
             PdfDocument pdf = new PdfDocument(writer);
             Document document = new Document(pdf, PageSize.A4);

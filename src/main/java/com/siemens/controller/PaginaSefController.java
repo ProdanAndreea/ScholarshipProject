@@ -218,10 +218,12 @@ public class PaginaSefController {
                             try{
                                 String commandPath = selectedRequest.getFile().getAbsolutePath();
                                 File file = new File(selectedRequest.getFile().getAbsolutePath());
-                                Runtime.getRuntime()
-                                        .exec("rundll32 url.dll,FileProtocolHandler "+commandPath);
+                                ProcessBuilder processBuilder = new ProcessBuilder("cmd.exe", "/C", commandPath);
+//                                Runtime.getRuntime()
+//                                        .exec("rundll32 url.dll,FileProtocolHandler "+commandPath).waitFor();
+                                processBuilder.start().waitFor();
 
-                                Thread.sleep(2000);
+                                Thread.sleep(3000);
                                 while(!selectedRequest.getFile().renameTo(selectedRequest.getFile())){
                                     Thread.sleep(1000);
                                 }
@@ -463,10 +465,12 @@ public class PaginaSefController {
         try{
             String commandPath = fullPath;
             File file = new File(fullPath);
-            Runtime.getRuntime()
-                    .exec("rundll32 url.dll,FileProtocolHandler "+commandPath);
+            ProcessBuilder processBuilder = new ProcessBuilder("cmd.exe", "/C", commandPath);
+//            Runtime.getRuntime()
+//                    .exec("rundll32 url.dll,FileProtocolHandler "+commandPath).waitFor();
+            processBuilder.start().waitFor();
 
-            Thread.sleep(2000);
+            Thread.sleep(3000);
             while(!file.renameTo(file)){
                 Thread.sleep(1000);
             }

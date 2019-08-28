@@ -168,16 +168,16 @@ public class ClientStart extends Application {
             //The department leader should not have access to the user code.
             primaryStage = stage;
             Parent root = FXMLLoader.load(getClass().getResource("/client_view.fxml"));
-            stage.setResizable(false);
+            primaryStage.setResizable(false);
             root.setId("pane");
             Scene scene = new Scene(root);
 
             scene.getStylesheets().add("style/client_view.css");
 
-            stage.setTitle("Invoire");
-            stage.setResizable(false);
-            stage.setScene(scene);
-            stage.show();
+            primaryStage.setTitle("Invoire");
+            primaryStage.setResizable(false);
+            primaryStage.setScene(scene);
+            primaryStage.show();
 
 
         }catch (IOException e) {

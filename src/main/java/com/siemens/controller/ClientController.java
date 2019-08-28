@@ -61,6 +61,7 @@ import java.util.Properties;
 import java.util.stream.Collectors;
 
 import static com.siemens.view.ClientStart.alreadyParsed;
+import static com.siemens.view.ClientStart.logger;
 import static com.siemens.view.ClientStart.superiorsFilePath;
 
 /**
@@ -278,6 +279,9 @@ public class ClientController {
                     stage.initModality(Modality.WINDOW_MODAL);
                     stage.initOwner(ClientStart.primaryStage.getScene().getWindow());
 
+                    PaginaSefController paginaSefController = fxmlLoader.getController();
+                    paginaSefController.populateDepartment(sefiDepartament);
+
                     Scene scene = new Scene(root);
                     scene.getStylesheets().add("style/pagina_sef.css");
                     stage.setScene(scene);
@@ -390,21 +394,14 @@ public class ClientController {
                 stage.setTitle("Cereri de invoire");
                 stage.setResizable(false);
 
-
                 stage.initModality(Modality.WINDOW_MODAL);
                 stage.initOwner(ClientStart.primaryStage.getScene().getWindow());
-
-//                PaginaSefController paginaSefController = fxmlLoader.getController();
-//                paginaSefController.populateDepartment(sefiDepartament);
-
 
                 Scene scene = new Scene(root);
                 scene.getStylesheets().add("style/pagina_sef.css");
                 stage.setScene(scene);
-
                 stage.show();
             }catch (Exception e){
-                ClientStart.logger.severe(e.getMessage());
                 e.printStackTrace();
             }
         }
@@ -412,7 +409,7 @@ public class ClientController {
 
     // called by the FXML loader after the labels declared above are injected
     public void initialize() {
-        ClientStart.primaryStage.setOnShowing(new EventHandler<WindowEvent>() {
+        ClientStart.primaryStage.setOnShown(new EventHandler<WindowEvent>() {
             @Override
             public void handle(WindowEvent event) {
                 launchPdfForSigning();
@@ -523,17 +520,19 @@ public class ClientController {
     private String encodeParameters(){
         String recoveryGroups = "";
         for(Recovery recovery : listOfRecoveries){
-            recoveryGroups += "m" +
+            recoveryGroups +=
                     recovery.getRecoveryDate().format(format) +
                     "n" +
-                    recovery.getNumberOfHours().toString();
+                    recovery.getNumberOfHours().toString()
+                    + "m";
         }
+        recoveryGroups = recoveryGroups.substring(0, recoveryGroups.length() - 1);
         return ClientStart.userName + "," +
                 ClientStart.senderMail.split("@")[0] +"," +
                 (ClientStart.superiorName.equals("") ? (ClientStart.departmentSuperior) : (ClientStart.superiorName + "&" + ClientStart.departmentSuperior)) + "," +
                 desiredLeave.getLeaveDate().format(format) + "," +
                 desiredLeave.getNumberOfHours().toString() + "," +
-                LocalDateTime.now().format(format) +
+                LocalDateTime.now().format(format) + "," +
                 recoveryGroups;
     }
 

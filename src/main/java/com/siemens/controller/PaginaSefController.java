@@ -40,16 +40,14 @@ import javafx.scene.input.MouseEvent;
 
 import javax.swing.*;
 import java.awt.*;
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
+import java.rmi.registry.Registry;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
-import java.io.FileReader;
-import java.io.FileWriter;
 import java.nio.file.*;
 import java.util.*;
 import java.util.List;
@@ -218,10 +216,16 @@ public class PaginaSefController {
                             try{
                                 String commandPath = selectedRequest.getFile().getAbsolutePath();
                                 File file = new File(selectedRequest.getFile().getAbsolutePath());
-                                ProcessBuilder processBuilder = new ProcessBuilder("cmd.exe", "/C", commandPath);
+//                                ProcessBuilder processBuilder = new ProcessBuilder("cmd.exe", "/C", commandPath);
+
+
+                                Process p = Runtime.getRuntime().exec("\""+ ClientStart.acrobatCommand + "\"" + " " + "\"" +commandPath + "\"");
+                                p.waitFor();
+
+
 //                                Runtime.getRuntime()
 //                                        .exec("rundll32 url.dll,FileProtocolHandler "+commandPath).waitFor();
-                                processBuilder.start().waitFor();
+//                                processBuilder.start().waitFor();
 
 //                                Thread.sleep(3000);
 //                                while(!selectedRequest.getFile().renameTo(selectedRequest.getFile())){
@@ -374,6 +378,7 @@ public class PaginaSefController {
 
     }
 
+
     public void initialize(){
         if(ClientStart.parameterString.length != 0 && alreadyParsed == false){
             decodeParameters();
@@ -464,11 +469,14 @@ public class PaginaSefController {
     private void openPdf(){
         try{
             String commandPath = fullPath;
-            File file = new File(fullPath);
-            ProcessBuilder processBuilder = new ProcessBuilder("cmd.exe", "/C", commandPath);
+//            File file = new File(fullPath);
+//            ProcessBuilder processBuilder = new ProcessBuilder("cmd.exe", "/C", commandPath);
 //            Runtime.getRuntime()
 //                    .exec("rundll32 url.dll,FileProtocolHandler "+commandPath).waitFor();
-            processBuilder.start().waitFor();
+//            processBuilder.start().waitFor();
+
+            Process p = Runtime.getRuntime().exec("\""+ ClientStart.acrobatCommand + "\"" + " " + "\"" +commandPath + "\"");
+            p.waitFor();
 
 //            Thread.sleep(3000);
 //            while(!file.renameTo(file)){

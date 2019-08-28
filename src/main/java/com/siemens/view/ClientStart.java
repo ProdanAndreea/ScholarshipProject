@@ -1,4 +1,5 @@
 package com.siemens.view;
+import com.siemens.controller.PaginaSefController;
 import javafx.application.Application;
 
 import javafx.fxml.FXMLLoader;
@@ -34,6 +35,7 @@ public class ClientStart extends Application {
     public static String departmentSuperior;
     public static String superiorsFilePath;
     public static String fileDirectoryPath ;
+    public static String acrobatCommand;
     public static Logger logger;
     public static boolean alreadyParsed = false;
     private String jarDir;
@@ -144,7 +146,7 @@ public class ClientStart extends Application {
 
         }catch (Exception e)
         {
-            e.printStackTrace();
+            logger.severe(e.getMessage());
         }
 
     }
@@ -152,7 +154,7 @@ public class ClientStart extends Application {
     @Override
     public void start(Stage stage) throws Exception {
         String javaHome = System.getProperty("java.home");
-        System.out.println(javaHome);
+
         try{
             CodeSource codeSource = ClientStart.class.getProtectionDomain().getCodeSource();
             File jarFile = new File(codeSource.getLocation().toURI().getPath());
@@ -162,6 +164,7 @@ public class ClientStart extends Application {
         }
         initializeLogger();
         loadSecurityCertificate();
+        getAcrobatExe();
         try{
             loadUserProperties();
             loadMailProperties();
@@ -204,6 +207,45 @@ public class ClientStart extends Application {
             logger.severe(e.getMessage());
         }
 
+    }
+
+    private void getAcrobatExe(){
+       try {
+           String reg = "HKCR\\Applications\\AcroRD32.exe\\shell\\Read\\command";
+           Process process = Runtime.getRuntime().exec("reg query " + reg + " /ve");
+
+           StreamReader reader = new StreamReader(process.getInputStream());
+           reader.start();
+           process.waitFor();
+           reader.join();
+           acrobatCommand = reader.getResult().split("\"")[1];
+       }
+       catch (Exception e) {
+           logger.severe("PLEASE INSTALL ACROBAT READER!");
+           System.exit(0);
+       }
+    }
+
+    static class StreamReader extends Thread {
+        private InputStream is;
+        private StringWriter sw= new StringWriter();
+
+        public StreamReader(InputStream is) {
+            this.is = is;
+        }
+
+        public void run() {
+            try {
+                int c;
+                while ((c = is.read()) != -1)
+                    sw.write(c);
+            } catch (IOException e) {
+            }
+        }
+
+        public String getResult() {
+            return sw.toString();
+        }
     }
 
     public static String decodeMessage(String input){

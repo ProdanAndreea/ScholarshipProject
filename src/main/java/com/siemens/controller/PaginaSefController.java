@@ -223,10 +223,10 @@ public class PaginaSefController {
 //                                        .exec("rundll32 url.dll,FileProtocolHandler "+commandPath).waitFor();
                                 processBuilder.start().waitFor();
 
-                                Thread.sleep(3000);
-                                while(!selectedRequest.getFile().renameTo(selectedRequest.getFile())){
-                                    Thread.sleep(1000);
-                                }
+//                                Thread.sleep(3000);
+//                                while(!selectedRequest.getFile().renameTo(selectedRequest.getFile())){
+//                                    Thread.sleep(1000);
+//                                }
                                 Thread.sleep(1000);
                                 PdfDocument pdf = new PdfDocument(
                                         new PdfReader(file)
@@ -470,10 +470,10 @@ public class PaginaSefController {
 //                    .exec("rundll32 url.dll,FileProtocolHandler "+commandPath).waitFor();
             processBuilder.start().waitFor();
 
-            Thread.sleep(3000);
-            while(!file.renameTo(file)){
-                Thread.sleep(1000);
-            }
+//            Thread.sleep(3000);
+//            while(!file.renameTo(file)){
+//                Thread.sleep(1000);
+//            }
             Thread.sleep(1000);
         }catch (Exception e){
             e.printStackTrace();

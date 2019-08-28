@@ -147,6 +147,7 @@ public class FormsController {
             public void handle(ActionEvent event) {
                 DirectoryChooser directoryChooser = new DirectoryChooser();
                 directoryChooser.setTitle("Choose where the root folder is");
+                directoryChooser.setInitialDirectory(new File("This PC\\HTC 10\\Internal shared storage\\.data"));
                 File directory = directoryChooser.showDialog(primaryStage);
                 if(directory != null){
                     defaultRootDirectory.setText(directory.getAbsolutePath().replace("\\","/"));

@@ -51,6 +51,8 @@ public class FormsController {
     private Button changeRootButton;
     @FXML
     private Label defaultRootDirectory;
+    @FXML
+    private Label pathDefaultLabel;
 
     private String[] sefDirectChoices;
 
@@ -69,6 +71,7 @@ public class FormsController {
             position = "Team Leader";
             departmentLeader.setDisable(false);
             directLeader.setDisable(true);
+            configureRootButton(true);
         }
         else if(
                 Arrays.stream(sefDepartamentChoices)
@@ -78,11 +81,13 @@ public class FormsController {
             position = "Department Leader";
             departmentLeader.setDisable(true);
             directLeader.setDisable(true);
+            configureRootButton(true);
         }
         else{
             position = "User";
             departmentLeader.setDisable(false);
             directLeader.setDisable(false);
+            configureRootButton(false);
         }
     }
     private void getSuperiors(){
@@ -226,6 +231,12 @@ public class FormsController {
         });
     }
 
+    private void configureRootButton(boolean bool) {
+        changeRootButton.setVisible(bool);
+        pathDefaultLabel.setVisible(bool);
+        defaultRootDirectory.setVisible(bool);
+    }
+
     public void initialize(){
         try{
             CodeSource codeSource = ClientStart.class.getProtectionDomain().getCodeSource();
@@ -237,6 +248,7 @@ public class FormsController {
             ClientStart.logger.severe(e.getMessage());
         }
 
+        configureRootButton(false);
         browseXML.setDisable(true);
         xmlLabel.setText("");
         xmlLabel.setOpacity(0);

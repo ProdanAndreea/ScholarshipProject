@@ -9,7 +9,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="443.0" prefWidth="380.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.siemens.controller.FormsController">
+<AnchorPane prefHeight="443.0" prefWidth="380.0" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.siemens.controller.FormsController">
    <children>
       <TextField fx:id="nameText" layoutX="145.0" layoutY="34.0" prefHeight="25.0" prefWidth="196.0" AnchorPane.bottomAnchor="384.0" AnchorPane.leftAnchor="145.0" AnchorPane.rightAnchor="39.0" AnchorPane.topAnchor="34.0" />
       <TextField fx:id="mailText" layoutX="145.0" layoutY="73.0" prefHeight="25.0" prefWidth="196.0" AnchorPane.bottomAnchor="345.0" AnchorPane.leftAnchor="145.0" AnchorPane.rightAnchor="39.0" AnchorPane.topAnchor="73.0" />
@@ -45,7 +45,7 @@
             <Font size="18.0" />
          </font>
       </Label>
-      <Label layoutX="53.0" layoutY="226.0" prefHeight="17.0" prefWidth="143.0" text="Path default pentru PDF:" textFill="#5026d1" AnchorPane.bottomAnchor="200.0" AnchorPane.leftAnchor="53.0" AnchorPane.rightAnchor="184.0" AnchorPane.topAnchor="226.0">
+      <Label fx:id="pathDefaultLabel" layoutX="53.0" layoutY="226.0" prefHeight="17.0" prefWidth="143.0" text="Path default pentru PDF:" textFill="#5026d1" AnchorPane.bottomAnchor="200.0" AnchorPane.leftAnchor="53.0" AnchorPane.rightAnchor="184.0" AnchorPane.topAnchor="226.0">
          <font>
             <Font name="System Bold" size="12.0" />
          </font></Label>

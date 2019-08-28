@@ -21,11 +21,7 @@ import com.itextpdf.layout.property.TextAlignment;
 import com.itextpdf.layout.property.UnitValue;
 import com.itextpdf.layout.property.VerticalAlignment;
 import com.siemens.configuration.MailConfiguration;
-import com.siemens.model.Leave;
-import com.siemens.model.Recovery;
-import com.siemens.model.PositionEnum;
-import com.siemens.model.Superior;
-import com.siemens.model.Superiors;
+import com.siemens.model.*;
 import com.siemens.view.ClientStart;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -168,6 +164,11 @@ public class ClientController {
     private Label sefDirectLabel;
     @FXML
     private Label sefDepartamentLabel;
+    @FXML
+    private Label sefDirectLabelDefault;
+    @FXML
+    private Label sefDepartamentLabelDefault;
+
 
     private ClientController clientController;
 
@@ -432,6 +433,7 @@ public class ClientController {
         sefDepartamentLabel.setStyle("-fx-font-weight: bold");
         sefDirectLabel.setStyle("-fx-font-weight: bold");
         setDatePickerFormat(datePickerInvoire);
+        hideSefLabels();
 
 
         clientController = this;
@@ -476,6 +478,15 @@ public class ClientController {
         sefiDirecti = sups.stream().filter(superior -> superior.getPositionEnum().equals(PositionEnum.DIRECT)).collect(Collectors.toList());
         sefiDepartament = sups.stream().filter(superior -> superior.getPositionEnum().equals(PositionEnum.DEPARTAMENT)).collect(Collectors.toList());
 
+    }
+
+    private void hideSefLabels() {
+        if (ClientStart.userPosition.equals("Team Leader"))
+            sefDirectLabelDefault.setVisible(false);
+        else if (ClientStart.userPosition.equals("Departament Leader")) {
+            sefDirectLabelDefault.setVisible(false);
+            sefDepartamentLabelDefault.setVisible(false);
+        }
     }
 
 

@@ -57,7 +57,7 @@
                   <Cursor fx:constant="HAND" />
                </cursor>
             </Button>
-            <Label layoutX="100.0" layoutY="531.0" text="Șef direct" AnchorPane.bottomAnchor="125.0" AnchorPane.leftAnchor="100.0" AnchorPane.rightAnchor="283.0" AnchorPane.topAnchor="531.0" />
+            <Label fx:id="sefDirectLabelDefault" layoutX="100.0" layoutY="531.0" text="Șef direct" AnchorPane.bottomAnchor="125.0" AnchorPane.leftAnchor="100.0" AnchorPane.rightAnchor="283.0" AnchorPane.topAnchor="531.0" />
             <Label layoutX="296.0" layoutY="304.0" prefHeight="21.0" prefWidth="111.0" text="(Maxim 4 recuperări)" textFill="#683d3d" AnchorPane.bottomAnchor="348.0" AnchorPane.leftAnchor="296.0" AnchorPane.rightAnchor="26.0" AnchorPane.topAnchor="304.0" />
             <TableView fx:id="recoveryTableView" layoutX="20.0" layoutY="335.0" prefHeight="119.0" prefWidth="388.0" AnchorPane.bottomAnchor="219.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="25.0" AnchorPane.topAnchor="335.0">
               <columns>
@@ -65,7 +65,7 @@
                 <TableColumn fx:id="numberOfHours" minWidth="0.0" prefWidth="210.0" text="Durata recuperării (HH:mm)" />
               </columns>
             </TableView>
-            <Label layoutX="62.0" layoutY="563.0" text="Șef departament" AnchorPane.bottomAnchor="93.0" AnchorPane.leftAnchor="62.0" AnchorPane.rightAnchor="282.0" AnchorPane.topAnchor="563.0" />
+            <Label fx:id="sefDepartamentLabelDefault" layoutX="62.0" layoutY="563.0" text="Șef departament" AnchorPane.bottomAnchor="93.0" AnchorPane.leftAnchor="62.0" AnchorPane.rightAnchor="282.0" AnchorPane.topAnchor="563.0" />
             <Button fx:id="btnTrimite" layoutX="162.0" layoutY="625.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="89.0" text="Trimite" AnchorPane.bottomAnchor="23.0" AnchorPane.leftAnchor="162.0" AnchorPane.rightAnchor="182.0" AnchorPane.topAnchor="625.0">
                <cursor>
                   <Cursor fx:constant="HAND" />

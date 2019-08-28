@@ -207,7 +207,7 @@ public class FormsController {
                             properties.setProperty(encodeMessage("departmentSuperiorName"), encodeMessage(departmentLeaderName));
                             properties.setProperty(encodeMessage("pathToXML"), encodeMessage(xmlLabel.getText()));
                             //WARNING! THIS IS ONLY A TEMPORARY SOLUTION UNTIL WE DECIDE WHAT THE ACTUAL PATH SHOULD BE !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-                            properties.setProperty(encodeMessage("pathToDocuments"), encodeMessage(defaultRootDirectoryTextField.getText()));
+                            properties.setProperty(encodeMessage("pathToDocuments"), encodeMessage(defaultRootDirectoryTextField.getText().replace("\\","/")));
 
                             properties.store(writer, "User Information");
                             writer.close();
@@ -246,6 +246,7 @@ public class FormsController {
             File jarFile = new File(codeSource.getLocation().toURI().getPath());
             String jarDir = jarFile.getParentFile().getPath();
             defaultRootDirectory.setText(jarDir.replace("\\", "/") + "/Invoiri");
+            System.out.println(defaultRootDirectory);
         }catch (Exception e){
             e.printStackTrace();
             ClientStart.logger.severe(e.getMessage());

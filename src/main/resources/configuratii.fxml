@@ -9,7 +9,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="443.0" prefWidth="380.0" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.siemens.controller.FormsController">
+<AnchorPane fx:id="d" prefHeight="443.0" prefWidth="380.0" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.siemens.controller.FormsController">
    <children>
       <TextField fx:id="nameText" layoutX="145.0" layoutY="34.0" prefHeight="25.0" prefWidth="196.0" AnchorPane.bottomAnchor="384.0" AnchorPane.leftAnchor="145.0" AnchorPane.rightAnchor="39.0" AnchorPane.topAnchor="34.0" />
       <TextField fx:id="mailText" layoutX="145.0" layoutY="73.0" prefHeight="25.0" prefWidth="196.0" AnchorPane.bottomAnchor="345.0" AnchorPane.leftAnchor="145.0" AnchorPane.rightAnchor="39.0" AnchorPane.topAnchor="73.0" />
@@ -50,12 +50,6 @@
             <Font name="System Bold" size="12.0" />
          </font></Label>
       <Label fx:id="defaultRootDirectory" layoutX="14.0" layoutY="251.0" prefHeight="17.0" prefWidth="363.0" text="Label" AnchorPane.bottomAnchor="175.0" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="3.0" AnchorPane.topAnchor="251.0" />
-      <Button fx:id="changeRootButton" layoutX="233.0" layoutY="222.0" mnemonicParsing="false" text="Schimbă" AnchorPane.bottomAnchor="196.0" AnchorPane.leftAnchor="233.0" AnchorPane.rightAnchor="86.0" AnchorPane.topAnchor="222.0">
-         <font>
-            <Font name="System Italic" size="12.0" />
-         </font>
-         <cursor>
-            <Cursor fx:constant="HAND" />
-         </cursor></Button>
+      <TextField fx:id="defaultRootDirectoryTextField" layoutX="11.0" layoutY="247.0" prefHeight="25.0" prefWidth="363.0" />
    </children>
 </AnchorPane>

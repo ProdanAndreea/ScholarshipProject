@@ -47,8 +47,10 @@ public class FormsController {
     private Label xmlLabel;
     @FXML
     private Label warningLabel;
+//    @FXML
+//    private Button changeRootButton;
     @FXML
-    private Button changeRootButton;
+    private TextField defaultRootDirectoryTextField;
     @FXML
     private Label defaultRootDirectory;
     @FXML
@@ -142,17 +144,17 @@ public class FormsController {
             }
         });
         //BROWSE FOR FILE
-        changeRootButton.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                DirectoryChooser directoryChooser = new DirectoryChooser();
-                directoryChooser.setTitle("Choose where the root folder is");
-                File directory = directoryChooser.showDialog(primaryStage);
-                if(directory != null){
-                    defaultRootDirectory.setText(directory.getAbsolutePath().replace("\\","/"));
-                }
-            }
-        });
+//        changeRootButton.setOnAction(new EventHandler<ActionEvent>() {
+//            @Override
+//            public void handle(ActionEvent event) {
+//                DirectoryChooser directoryChooser = new DirectoryChooser();
+//                directoryChooser.setTitle("Choose where the root folder is");
+//                File directory = directoryChooser.showDialog(primaryStage);
+//                if(directory != null){
+//                    defaultRootDirectory.setText(directory.getAbsolutePath().replace("\\","/"));
+//                }
+//            }
+//        });
         //ACTION FOR CREATING THE ENCRYPTED DOCUMENTS
         finishButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
@@ -205,7 +207,7 @@ public class FormsController {
                             properties.setProperty(encodeMessage("departmentSuperiorName"), encodeMessage(departmentLeaderName));
                             properties.setProperty(encodeMessage("pathToXML"), encodeMessage(xmlLabel.getText()));
                             //WARNING! THIS IS ONLY A TEMPORARY SOLUTION UNTIL WE DECIDE WHAT THE ACTUAL PATH SHOULD BE !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-                            properties.setProperty(encodeMessage("pathToDocuments"), encodeMessage(defaultRootDirectory.getText()));
+                            properties.setProperty(encodeMessage("pathToDocuments"), encodeMessage(defaultRootDirectoryTextField.getText()));
 
                             properties.store(writer, "User Information");
                             writer.close();
@@ -232,10 +234,11 @@ public class FormsController {
     }
 
     private void configureRootButton(boolean bool) {
-        changeRootButton.setVisible(bool);
         pathDefaultLabel.setVisible(bool);
-        defaultRootDirectory.setVisible(bool);
+        defaultRootDirectoryTextField.setVisible(bool);
+        defaultRootDirectory.setVisible(false);
     }
+
 
     public void initialize(){
         try{

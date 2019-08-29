@@ -216,11 +216,11 @@ public class PaginaSefController {
                             try{
                                 String commandPath = selectedRequest.getFile().getAbsolutePath();
                                 File file = new File(selectedRequest.getFile().getAbsolutePath());
-//                                ProcessBuilder processBuilder = new ProcessBuilder("cmd.exe", "/C", commandPath);
-
-
-                                Process p = Runtime.getRuntime().exec("\""+ ClientStart.acrobatCommand + "\"" + " " + "\"" +commandPath + "\"");
-                                p.waitFor();
+                                ProcessBuilder processBuilder = new ProcessBuilder(ClientStart.acrobatCommand, commandPath);
+                                processBuilder.start().waitFor();
+//
+//                                Process p = Runtime.getRuntime().exec("cmd /C \""+ ClientStart.acrobatCommand + "\"" + " " + "\"" +commandPath + "\"");
+//                                p.waitFor();
 
 
 //                                Runtime.getRuntime()
@@ -470,13 +470,13 @@ public class PaginaSefController {
         try{
             String commandPath = fullPath;
 //            File file = new File(fullPath);
-//            ProcessBuilder processBuilder = new ProcessBuilder("cmd.exe", "/C", commandPath);
+            ProcessBuilder processBuilder = new ProcessBuilder(ClientStart.acrobatCommand, commandPath);
 //            Runtime.getRuntime()
 //                    .exec("rundll32 url.dll,FileProtocolHandler "+commandPath).waitFor();
-//            processBuilder.start().waitFor();
+            processBuilder.start().waitFor();
 
-            Process p = Runtime.getRuntime().exec("\""+ ClientStart.acrobatCommand + "\"" + " " + "\"" +commandPath + "\"");
-            p.waitFor();
+//            Process p = Runtime.getRuntime().exec("cmd /C \""+ ClientStart.acrobatCommand + "\"" + " " + "\"" +commandPath + "\"");
+//            p.waitFor();
 
 //            Thread.sleep(3000);
 //            while(!file.renameTo(file)){

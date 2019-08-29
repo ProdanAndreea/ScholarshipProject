@@ -483,7 +483,7 @@ public class ClientController {
     private void hideSefLabels() {
         if (ClientStart.userPosition.equals("Team Leader"))
             sefDirectLabelDefault.setVisible(false);
-        else if (ClientStart.userPosition.equals("Departament Leader")) {
+        else if (ClientStart.userPosition.equals("Department Leader")) {
             sefDirectLabelDefault.setVisible(false);
             sefDepartamentLabelDefault.setVisible(false);
         }

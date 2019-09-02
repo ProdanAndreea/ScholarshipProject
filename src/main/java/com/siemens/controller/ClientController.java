@@ -71,6 +71,8 @@ public class ClientController {
     private final String pattern = "dd-MM-yyyy";
     public static DateTimeFormatter format = DateTimeFormatter.ofPattern("dd/MM/yyyy");
     public static DateTimeFormatter hourFormatter = DateTimeFormatter.ofPattern("HH:mm");
+    public static DateTimeFormatter hourFormatterWithSeconds = DateTimeFormatter.ofPattern("HH:mm:ss");
+
     private final String[] possibleChoises = {
             "Application Developer",
             "Applications Engineer",
@@ -544,6 +546,7 @@ public class ClientController {
                 desiredLeave.getLeaveDate().format(format) + "," +
                 desiredLeave.getNumberOfHours().toString() + "," +
                 LocalDateTime.now().format(format) + "," +
+                LocalTime.now().format(hourFormatterWithSeconds) + "," +
                 recoveryGroups;
     }
 

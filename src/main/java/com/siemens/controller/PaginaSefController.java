@@ -31,6 +31,8 @@ import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.concurrent.Task;
+import javafx.concurrent.WorkerStateEvent;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -216,9 +218,49 @@ public class PaginaSefController {
                             try{
                                 String commandPath = selectedRequest.getFile().getAbsolutePath();
                                 File file = new File(selectedRequest.getFile().getAbsolutePath());
-                                ProcessBuilder processBuilder = new ProcessBuilder(ClientStart.acrobatCommand, commandPath);
-                                processBuilder.start().waitFor();
-//
+
+                                Task backgroundSigning = new Task() {
+                                    @Override
+                                    protected Object call() throws Exception {
+
+                                        if (isCancelled()) {
+                                            updateMessage("Cancelled");
+                                            return 0;
+                                        }
+                                        ProcessBuilder processBuilder = new ProcessBuilder("\""+ClientStart.acrobatCommand+"\"", "\""+commandPath+"\"");
+                                        processBuilder.start();
+                                        Thread.sleep(3000);
+                                        while(!selectedRequest.getFile().renameTo(selectedRequest.getFile())){
+                                            Thread.sleep(1000);
+                                        }
+                                        Thread.sleep(1000);
+                                        PdfDocument pdf = new PdfDocument(
+                                                new PdfReader(file)
+                                        );
+                                        SignatureUtil signUtil = new SignatureUtil(pdf);
+                                        if(signUtil.getSignatureNames().size() != 0){
+                                            request.setSigned(true);
+                                        }
+                                        pdf.close();
+                                        try {
+                                            Thread.sleep(100);
+                                        } catch (InterruptedException interrupted) {
+                                            if (isCancelled()) {
+                                                updateMessage("Cancelled");
+                                                return 0;
+                                            }
+                                        }
+                                        return 0;
+                                    }
+                                };
+                                backgroundSigning.setOnSucceeded(new EventHandler<WorkerStateEvent>() {
+                                    @Override
+                                    public void handle(WorkerStateEvent event) {
+                                        refreshItems();
+                                    }
+                                });
+                                new Thread(backgroundSigning).start();
+
 //                                Process p = Runtime.getRuntime().exec("cmd /C \""+ ClientStart.acrobatCommand + "\"" + " " + "\"" +commandPath + "\"");
 //                                p.waitFor();
 
@@ -227,29 +269,14 @@ public class PaginaSefController {
 //                                        .exec("rundll32 url.dll,FileProtocolHandler "+commandPath).waitFor();
 //                                processBuilder.start().waitFor();
 
-//                                Thread.sleep(3000);
-//                                while(!selectedRequest.getFile().renameTo(selectedRequest.getFile())){
-//                                    Thread.sleep(1000);
-//                                }
-                                Thread.sleep(1000);
-                                PdfDocument pdf = new PdfDocument(
-                                        new PdfReader(file)
-                                );
-                                SignatureUtil signUtil = new SignatureUtil(pdf);
-                                if(signUtil.getSignatureNames().size() != 0){
-                                    request.setSigned(true);
-                                }
-                                pdf.close();
+
                             }catch (Exception e){
                                 e.printStackTrace();
                                 ClientStart.logger.severe(e.getMessage());
                             }
-
-
                         }
-
                     });
-                    refreshItems();
+//                    refreshItems();
                 }
                 else if(event.getClickCount() == 1){
                     Request selectedRequest = (Request) requestListView.getSelectionModel().getSelectedItem();
@@ -470,7 +497,7 @@ public class PaginaSefController {
         try{
             String commandPath = fullPath;
 //            File file = new File(fullPath);
-            ProcessBuilder processBuilder = new ProcessBuilder(ClientStart.acrobatCommand, commandPath);
+            ProcessBuilder processBuilder = new ProcessBuilder("\""+ClientStart.acrobatCommand+"\"", "\""+commandPath+"\"");
 //            Runtime.getRuntime()
 //                    .exec("rundll32 url.dll,FileProtocolHandler "+commandPath).waitFor();
             processBuilder.start().waitFor();

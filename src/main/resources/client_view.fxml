@@ -20,7 +20,7 @@
     <children>
         <AnchorPane layoutX="1.0" maxHeight="-1.0" maxWidth="-1.0" prefHeight="673.0" prefWidth="398.0" VBox.vgrow="ALWAYS">
             <children>
-                <DatePicker fx:id="datePickerInvoire" editable="false" layoutX="55.0" layoutY="243.0" prefHeight="25.0" prefWidth="131.0" AnchorPane.bottomAnchor="405.0" AnchorPane.leftAnchor="55.0" AnchorPane.rightAnchor="247.0" AnchorPane.topAnchor="243.0">
+                <DatePicker fx:id="datePickerInvoire" editable="false" layoutX="76.0" layoutY="244.0" prefHeight="25.0" prefWidth="131.0" AnchorPane.bottomAnchor="404.0" AnchorPane.leftAnchor="76.0" AnchorPane.rightAnchor="226.0" AnchorPane.topAnchor="244.0">
                <cursor>
                   <Cursor fx:constant="HAND" />
                </cursor></DatePicker>
@@ -31,12 +31,12 @@
                   <Font name="System Bold" size="21.0" />
                </font>
             </Label>
-            <Label layoutX="75.0" layoutY="220.0" text="Ziua învoirii, data" AnchorPane.bottomAnchor="436.0" AnchorPane.leftAnchor="75.0" AnchorPane.rightAnchor="266.0" AnchorPane.topAnchor="220.0">
+            <Label layoutX="96.0" layoutY="221.0" text="Ziua învoirii, data" AnchorPane.bottomAnchor="435.0" AnchorPane.leftAnchor="96.0" AnchorPane.rightAnchor="245.0" AnchorPane.topAnchor="221.0">
                <font>
                   <Font name="System Italic" size="12.0" />
                </font></Label>
-            <ComboBox fx:id="nrOreInvoire" layoutX="236.0" layoutY="243.0" prefHeight="25.0" prefWidth="94.0" AnchorPane.bottomAnchor="405.0" AnchorPane.leftAnchor="236.0" AnchorPane.rightAnchor="103.0" AnchorPane.topAnchor="243.0" />
-            <Label layoutX="244.0" layoutY="220.0" text="Nr. ore învoite" AnchorPane.bottomAnchor="436.0" AnchorPane.leftAnchor="244.0" AnchorPane.rightAnchor="97.0" AnchorPane.topAnchor="220.0">
+            <ComboBox fx:id="nrOreInvoire" layoutX="257.0" layoutY="244.0" prefHeight="25.0" prefWidth="94.0" AnchorPane.bottomAnchor="404.0" AnchorPane.leftAnchor="257.0" AnchorPane.rightAnchor="82.0" AnchorPane.topAnchor="244.0" />
+            <Label layoutX="265.0" layoutY="221.0" text="Nr. ore învoite" AnchorPane.bottomAnchor="435.0" AnchorPane.leftAnchor="265.0" AnchorPane.rightAnchor="76.0" AnchorPane.topAnchor="221.0">
                <font>
                   <Font name="System Italic" size="12.0" />
                </font>

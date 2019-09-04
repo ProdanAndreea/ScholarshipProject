@@ -95,6 +95,7 @@ public class PaginaSefController {
     private String requestUserPosition;
     private LocalDate leaveDate;
     private LocalDate creationDate;
+    private LocalTime creationHour;
     private LocalTime time;
 
     private String fullPath;
@@ -536,12 +537,39 @@ public class PaginaSefController {
         time = LocalTime.parse(parameters[4], ClientController.hourFormatter);
         desiredLeave = new Leave(leaveDate, time);
         creationDate = LocalDate.parse(parameters[5], ClientController.format);
-        listOfRecoveries = decipherRecoveries(leaveDate, parameters[6]);
+        creationHour = LocalTime.parse(parameters[6], ClientController.hourFormatterWithSeconds);
+        listOfRecoveries = decipherRecoveries(leaveDate, parameters[7]);
 
-        generatePdf();
-        openPdf();
+
+        fullPath = getPdfFilePath();
+
+        if (new File(fullPath).isFile()) {
+            openPdf();
+        } else {
+            generatePdf(fullPath);
+            openPdf();
+        }
         List<Superior> sups = XMLMapper.jaxbXMLToObjects(Superiors.class, superiorsFilePath).getSuperiors();
         populateDepartment(sups.stream().filter(superior -> superior.getPositionEnum().equals(PositionEnum.DEPARTAMENT)).collect(Collectors.toList()));
+    }
+
+    private String getPdfFilePath() {
+
+        String fullDirectory;
+
+        String folderNameForDepartment = getFolderForSefDirect(departmentLeadName);
+        String directoryForSefDirect = ClientStart.fileDirectoryPath.concat("\\").concat(folderNameForDepartment);
+        new File(directoryForSefDirect).mkdir();
+
+        fullDirectory = directoryForSefDirect.concat("\\".concat(senderMail.split("@")[0]));
+        new File(fullDirectory).mkdir();
+
+        String pdfFilePath =
+                fullDirectory +"\\Invoire_" + name+
+                        "_" + DateTimeFormatter.ofPattern("dd-MM-yyyy", Locale.ENGLISH).format(creationDate)  +// desiredLeave.getLeaveDate().toString()
+                        "_" + creationHour.toString().replaceAll(":", "-")+".pdf";
+
+        return pdfFilePath;
     }
 
     private List<Recovery> decipherRecoveries(LocalDate leaveDate, String recoveriesCode) {
@@ -568,25 +596,9 @@ public class PaginaSefController {
         return sefDirectMail.split("@")[0];
     }
 
-    public void generatePdf(){
+    public void generatePdf(String pdfFilePath){
         try{
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
-
-            String fullDirectory;
-
             listOfRecoveries.sort(Comparator.comparing(Recovery::getRecoveryDate));
-
-            String folderNameForDepartment = getFolderForSefDirect(departmentLeadName);
-            String directoryForSefDirect = ClientStart.fileDirectoryPath.concat("\\").concat(folderNameForDepartment);
-            new File(directoryForSefDirect).mkdir();
-
-            fullDirectory = directoryForSefDirect.concat("\\".concat(senderMail.split("@")[0]));
-            new File(fullDirectory).mkdir();
-
-            String pdfFilePath =
-                    fullDirectory +"\\Invoire_" + name+
-                            "_" + LocalDate.now().format(formatter)  +// desiredLeave.getLeaveDate().toString()
-                            "_" + LocalTime.now().format(DateTimeFormatter.ofPattern("HH-mm-ss")).toString()+".pdf";
             PdfWriter writer = new PdfWriter(pdfFilePath);
             PdfDocument pdf = new PdfDocument(writer);
             Document document = new Document(pdf, PageSize.A4);

@@ -227,17 +227,6 @@ public class ClientController {
     }
 
     private void setButtonEvents(ObservableList<Recovery> listOfRecoveries) {
-        addRecuperare.addEventHandler(
-                MouseEvent.MOUSE_ENTERED,
-                new EventHandler<MouseEvent>() {
-                    @Override
-                    public void handle(MouseEvent e) {
-                        if (listOfRecoveries.size() >= 4)
-                            addRecuperare.setDisable(true);
-                    }
-                }
-        );
-
         addRecuperare.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
@@ -469,6 +458,12 @@ public class ClientController {
                 }
             });
             return row ;
+        });
+
+        listOfRecoveries.addListener((ListChangeListener.Change<? extends Recovery> change) -> {
+            if (listOfRecoveries.size() == 4) {
+                addRecuperare.setDisable(true);
+            }
         });
 
 

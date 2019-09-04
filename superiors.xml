@@ -16,6 +16,6 @@
         <name>Homan Mihai</name>
         <email>mihai.homan@siemens.com</email>
         <PositionEnum>Department Leader</PositionEnum>
-        <available>false</available>
+        <available>true</available>
     </superior>
 </superiors>

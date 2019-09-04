@@ -42,6 +42,7 @@ import javafx.scene.text.Font;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
+import javafx.util.Duration;
 import javafx.util.StringConverter;
 
 import java.io.*;
@@ -124,7 +125,7 @@ public class ClientController {
 
 
     @FXML
-    private CheckBox bossAvailability;
+    private ToggleButton availableButton;
 
     @FXML
     private Button bossButton;
@@ -311,11 +312,12 @@ public class ClientController {
             }
         });
 
-        bossAvailability.selectedProperty().addListener(new ChangeListener<Boolean>() {
+        availableButton.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
-            public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
+            public void handle(MouseEvent event) {
                 XMLMapper xmlMapper = new XMLMapper();
-                xmlMapper.setAvailable(nume.getText(), bossAvailability.isSelected(), superiorsFilePath);
+                xmlMapper.setAvailable(nume.getText(), availableButton.isSelected(), superiorsFilePath);
+                setTextForAvailableButton();
             }
         });
 
@@ -363,14 +365,23 @@ public class ClientController {
             }
         });
     }
+
+    private void setTextForAvailableButton() {
+        if ((availableButton.isSelected())) {
+            availableButton.setText("Disponibil");
+        } else {
+            availableButton.setText("Indisponibil");
+        }
+    }
+
     private void determineFunctionalities(){
 
         if(ClientStart.userPosition.equals("Team Leader") || ClientStart.userPosition.equals("Department Leader")){
             labelInvoire.setOpacity(100);
-            bossAvailability.setOpacity(100);
-            bossAvailability.setDisable(false);
             XMLMapper xmlMapper = new XMLMapper();
-            bossAvailability.setSelected(xmlMapper.isAvailable(ClientStart.userName, superiorsFilePath));
+            availableButton.setVisible(true);
+            availableButton.setSelected(xmlMapper.isAvailable(ClientStart.userName, superiorsFilePath));
+            setTextForAvailableButton();
             bossButton.setOpacity(100);
             bossButton.setDisable(false);
         }
@@ -413,8 +424,8 @@ public class ClientController {
         }
         nume.setEditable(false);
         labelInvoire.setOpacity(0);
-        bossAvailability.setOpacity(0);
-        bossAvailability.setDisable(true);
+        availableButton.setVisible(false);
+        availableButton.getTooltip().setShowDelay(new Duration(100));
         bossButton.setOpacity(0);
         bossButton.setDisable(true);
         btnDelete.setDisable(true);

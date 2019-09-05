@@ -44,44 +44,10 @@ public class ClientStart extends Application {
 
     private static void dismissSecurityCertificate(){
         //UNDO the loadSecurityPath method so that the resource security certificate will be deleted from the java home
-        String javaHome = System.getProperty("java.home");
-        String javaLibPath = javaHome + "/lib/security/cacerts";
-        File fileToDismiss = new File(javaLibPath);
-        File fileToRecover = new File(javaLibPath + "_old");
-        fileToDismiss.delete();
-        fileToRecover.renameTo(new File(javaLibPath));
+        System.clearProperty("javax.net.ssl.trustStore");
     }
     private void loadSecurityCertificate(){
-        try{
-            Runtime runtime = Runtime.getRuntime();
-            //String command = "java -Djavax.net.ssl.trustStore="+jarDir+"/Security/cacerts";
-            String javaHome = System.getProperty("java.home");
-//            String javaKeyTool = "\""+javaHome + "/bin/keytool.exe\"";
-            String javaLibPath = javaHome + "/lib/security/cacerts";
-            String fileToImportPath = jarDir+"/Security/cacerts";
-//            String command =  javaKeyTool + " -keystore " + javaLibPath + fileImport + " -storepass changeit";
-//            File resourceCertificate = new File(fileToImportPath);
-//            File file = new File(javaLibPath);
-//            Process process = Runtime.getRuntime().exec("powershell Start-Process powershell -Verb runAs -ArgumentList `" +
-//                    "ren \"" + javaLibPath + "\" \"" + javaLibPath + "_old\"`");
-            javaLibPath = javaLibPath.replace("/", "\\");
-            fileToImportPath = fileToImportPath.replace("/", "\\");
-            ProcessBuilder pb = new ProcessBuilder("cmd", "/c",
-                    jarDir + "/rename.bat - Shortcut.lnk \"" + javaLibPath + "\" \"" + fileToImportPath + "\"");
-            pb.start();
-
-
-            //File tempCertificate = new File(javaLibPath + "_old");
-            //rename the current certificate so it wont be lost
-            //file.renameTo(tempCertificate);
-            //copy the certificate required to run the application to the corresponding path
-//            Files.copy(resourceCertificate.toPath(), file.toPath());
-//            runtime.exec(command);
-        }catch (Exception e){
-            logger.severe(e.getMessage());
-            System.exit(0);
-        }
-
+        System.setProperty("javax.net.ssl.trustStore", jarDir + "\\Security\\cacerts");
     }
     private void initializeLogger(){
         logger = Logger.getLogger("app_logs");
@@ -287,7 +253,7 @@ public class ClientStart extends Application {
         Runtime.getRuntime().addShutdownHook(new Thread(new Runnable() {
             public void run() {
                 System.out.println("EXECUTES");
-                //dismissSecurityCertificate();
+                dismissSecurityCertificate();
             }
         }, "Shutdown-thread"));
         parameterString = args;

@@ -37,6 +37,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.Button;
 import javafx.scene.input.MouseEvent;
+import javafx.util.Duration;
 
 import javax.swing.*;
 import java.awt.*;
@@ -386,6 +387,7 @@ public class PaginaSefController {
             alreadyParsed = true;
         }
 
+        initializeTooltips();
         acceptButton.setDisable(true);
         denyButton.setDisable(true);
         requestListView.setItems(requestObservableList);
@@ -399,6 +401,14 @@ public class PaginaSefController {
 
     }
 
+    private void initializeTooltips() {
+        signedToggleButton.getTooltip().setShowDelay(new Duration(500));
+        resolvedToggleButton.getTooltip().setShowDelay(new Duration(500));
+        waitingToggleButton.getTooltip().setShowDelay(new Duration(500));
+        signedToggleButton.getTooltip().setShowDuration(new Duration(9000));
+        resolvedToggleButton.getTooltip().setShowDuration(new Duration(9000));
+        waitingToggleButton.getTooltip().setShowDuration(new Duration(9000));
+    }
 
 
     private ArrayList<Request> mergeSort(ArrayList<Request> whole) {

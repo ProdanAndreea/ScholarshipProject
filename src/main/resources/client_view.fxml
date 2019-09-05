@@ -74,7 +74,10 @@
             <Button fx:id="bossButton" layoutX="56.0" layoutY="88.0" mnemonicParsing="false" prefHeight="58.0" prefWidth="50.0" AnchorPane.bottomAnchor="527.0" AnchorPane.leftAnchor="56.0" AnchorPane.rightAnchor="327.0" AnchorPane.topAnchor="88.0">
                <cursor>
                   <Cursor fx:constant="HAND" />
-               </cursor></Button>
+               </cursor>
+               <tooltip>
+                  <Tooltip text="Lista cu cererile de învoire" />
+               </tooltip></Button>
             <Button fx:id="btnDelete" contentDisplay="CENTER" layoutX="305.0" layoutY="470.0" mnemonicParsing="false" prefHeight="31.0" prefWidth="92.0" text="Delete" textAlignment="CENTER" textFill="#c90000" AnchorPane.bottomAnchor="172.0" AnchorPane.leftAnchor="305.0" AnchorPane.rightAnchor="36.0" AnchorPane.topAnchor="470.0">
                <font>
                   <Font name="System Bold Italic" size="13.0" />
@@ -95,7 +98,10 @@
                     </font>
                     <cursor>
                         <Cursor fx:constant="HAND" />
-                    </cursor></Button>
+                    </cursor>
+               <tooltip>
+                  <Tooltip text="În urma unor modificări aduse contului dumneavoastră &#10;sau ale unor modificări externe ale aplicației,&#10;este necesar ca anumite configurații ale aplicației să fie modificate. &#10;&#10;Pentru a realiza acest lucru, apăsați pe buton." />
+               </tooltip></Button>
             <ToggleButton fx:id="availableButton" layoutX="300.0" layoutY="104.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="111.0" text="Valabilitate" textAlignment="CENTER" textFill="WHITE" AnchorPane.bottomAnchor="544.0" AnchorPane.leftAnchor="300.0" AnchorPane.rightAnchor="22.0" AnchorPane.topAnchor="104.0">
                <font>
                   <Font name="System Bold" size="12.0" />

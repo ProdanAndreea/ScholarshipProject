@@ -425,11 +425,11 @@ public class ClientController {
         nume.setEditable(false);
         labelInvoire.setOpacity(0);
         availableButton.setVisible(false);
-        availableButton.getTooltip().setShowDelay(new Duration(100));
         bossButton.setOpacity(0);
         bossButton.setDisable(true);
         btnDelete.setDisable(true);
         determineFunctionalities();
+        inializeTooltips();
         sefDirectLabel.setText(ClientStart.superiorName);
         sefDepartamentLabel.setText(ClientStart.departmentSuperior);
         sefDepartamentLabel.setStyle("-fx-font-weight: bold");
@@ -477,6 +477,16 @@ public class ClientController {
             }
         });
 
+
+    }
+
+    private void inializeTooltips() {
+        availableButton.getTooltip().setShowDelay(new Duration(500));
+        availableButton.getTooltip().setShowDuration(new Duration(9000));
+        changeConfigsButton.getTooltip().setShowDelay(new Duration(500));
+        changeConfigsButton.getTooltip().setShowDuration(new Duration(9000));
+        bossButton.getTooltip().setShowDelay(new Duration(500));
+        bossButton.getTooltip().setShowDuration(new Duration(9000));
 
     }
 

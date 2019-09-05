@@ -84,6 +84,29 @@
     -fx-text-fill: white;
 }
 
+
+#availableButton {
+    -fx-background-color: #990000;
+    -fx-background-radius: 30;
+    -fx-background-insets: 0,1,1;
+    -fx-effect: dropshadow( three-pass-box , rgba(0,0,0,0.5) , 3, 0.0 , 0 , 1 );
+}
+
+#availableButton:hover {
+    -fx-effect: dropshadow( three-pass-box , rgba(0,0,0,0.5) , 3, 0.5 , 0.8 , 1 );
+}
+
+
+
+#availableButton:selected {
+    -fx-background-color: green;
+    -fx-background-insets: 0, 1.7, 1.7;
+}
+
+#availableButton:pressed {
+    -fx-background-color: grey
+}
+
 /* BACKGROUND */
 #pane{
     -fx-background-color: #ffffff;

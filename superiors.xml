@@ -4,7 +4,7 @@
         <name>Antal Adrian</name>
         <email>adrian.antal@siemens.com</email>
         <PositionEnum>Team Leader</PositionEnum>
-        <available>true</available>
+        <available>false</available>
     </superior>
     <superior>
         <name>Dragos</name>
@@ -16,6 +16,6 @@
         <name>Homan Mihai</name>
         <email>mihai.homan@siemens.com</email>
         <PositionEnum>Department Leader</PositionEnum>
-        <available>true</available>
+        <available>false</available>
     </superior>
 </superiors>

@@ -481,12 +481,12 @@ public class ClientController {
     }
 
     private void inializeTooltips() {
-        availableButton.getTooltip().setShowDelay(new Duration(500));
-        availableButton.getTooltip().setShowDuration(new Duration(9000));
-        changeConfigsButton.getTooltip().setShowDelay(new Duration(500));
-        changeConfigsButton.getTooltip().setShowDuration(new Duration(9000));
-        bossButton.getTooltip().setShowDelay(new Duration(500));
-        bossButton.getTooltip().setShowDuration(new Duration(9000));
+//        availableButton.getTooltip().setShowDelay(new Duration(500));
+//        availableButton.getTooltip().setShowDuration(new Duration(9000));
+//        changeConfigsButton.getTooltip().setShowDelay(new Duration(500));
+//        changeConfigsButton.getTooltip().setShowDuration(new Duration(9000));
+//        bossButton.getTooltip().setShowDelay(new Duration(500));
+//        bossButton.getTooltip().setShowDuration(new Duration(9000));
 
     }
 

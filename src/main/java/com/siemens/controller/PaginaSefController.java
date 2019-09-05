@@ -429,12 +429,12 @@ public class PaginaSefController {
     }
 
     private void initializeTooltips() {
-        signedToggleButton.getTooltip().setShowDelay(new Duration(500));
-        resolvedToggleButton.getTooltip().setShowDelay(new Duration(500));
-        waitingToggleButton.getTooltip().setShowDelay(new Duration(500));
-        signedToggleButton.getTooltip().setShowDuration(new Duration(9000));
-        resolvedToggleButton.getTooltip().setShowDuration(new Duration(9000));
-        waitingToggleButton.getTooltip().setShowDuration(new Duration(9000));
+//        signedToggleButton.getTooltip().setShowDelay(new Duration(500));
+//        resolvedToggleButton.getTooltip().setShowDelay(new Duration(500));
+//        waitingToggleButton.getTooltip().setShowDelay(new Duration(500));
+//        signedToggleButton.getTooltip().setShowDuration(new Duration(9000));
+//        resolvedToggleButton.getTooltip().setShowDuration(new Duration(9000));
+//        waitingToggleButton.getTooltip().setShowDuration(new Duration(9000));
     }
 
 
@@ -507,20 +507,41 @@ public class PaginaSefController {
     private void openPdf(){
         try{
             String commandPath = fullPath;
-//            File file = new File(fullPath);
+
             ProcessBuilder processBuilder = new ProcessBuilder("\""+ClientStart.acrobatCommand+"\"", "\""+commandPath+"\"");
-//            Runtime.getRuntime()
-//                    .exec("rundll32 url.dll,FileProtocolHandler "+commandPath).waitFor();
-            processBuilder.start().waitFor();
+            File file = new File(commandPath);
+            Task mailFile = new Task() {
+                @Override
+                protected Object call() throws Exception {
 
-//            Process p = Runtime.getRuntime().exec("cmd /C \""+ ClientStart.acrobatCommand + "\"" + " " + "\"" +commandPath + "\"");
-//            p.waitFor();
-
-//            Thread.sleep(3000);
-//            while(!file.renameTo(file)){
-//                Thread.sleep(1000);
-//            }
-            Thread.sleep(1000);
+                    if (isCancelled()) {
+                        updateMessage("Cancelled");
+                        return 0;
+                    }
+                    ProcessBuilder processBuilder = new ProcessBuilder("\""+ClientStart.acrobatCommand+"\"", "\""+commandPath+"\"");
+                    processBuilder.start();
+                    Thread.sleep(3000);
+                    while(!file.renameTo(file)){
+                        Thread.sleep(1000);
+                    }
+                    try {
+                        Thread.sleep(100);
+                    } catch (InterruptedException interrupted) {
+                        if (isCancelled()) {
+                            updateMessage("Cancelled");
+                            return 0;
+                        }
+                    }
+                    return 0;
+                }
+            };
+            mailFile.setOnSucceeded(new EventHandler<WorkerStateEvent>() {
+                @Override
+                public void handle(WorkerStateEvent event) {
+                    refreshItems();
+                }
+            });
+            new Thread(mailFile).start();
         }catch (Exception e){
             e.printStackTrace();
             ClientStart.logger.severe(e.getMessage());

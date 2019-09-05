@@ -364,6 +364,9 @@ public class PaginaSefController {
             public void changed(ObservableValue<? extends Toggle> observable, Toggle oldValue, Toggle newValue) {
                 if (newValue != null) {
 
+                    acceptButton.setDisable(true);
+                    denyButton.setDisable(true);
+
                     waitingToggleButton.setOnAction(new EventHandler<ActionEvent>() {
                         @Override
                         public void handle(ActionEvent event) {

@@ -487,7 +487,6 @@ public class ClientController {
 //        changeConfigsButton.getTooltip().setShowDuration(new Duration(9000));
 //        bossButton.getTooltip().setShowDelay(new Duration(500));
 //        bossButton.getTooltip().setShowDuration(new Duration(9000));
-
     }
 
     void getSuperiors() {

@@ -4,7 +4,7 @@
         <name>Antal Adrian</name>
         <email>adrian.antal@siemens.com</email>
         <PositionEnum>Team Leader</PositionEnum>
-        <available>false</available>
+        <available>true</available>
     </superior>
     <superior>
         <name>Dragos</name>

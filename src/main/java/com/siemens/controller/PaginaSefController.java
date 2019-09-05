@@ -337,6 +337,9 @@ public class PaginaSefController {
             public void changed(ObservableValue<? extends Toggle> observable, Toggle oldValue, Toggle newValue) {
                 if (newValue != null) {
 
+                    acceptButton.setDisable(true);
+                    denyButton.setDisable(true);
+
                     waitingToggleButton.setOnAction(new EventHandler<ActionEvent>() {
                         @Override
                         public void handle(ActionEvent event) {
@@ -402,12 +405,12 @@ public class PaginaSefController {
     }
 
     private void initializeTooltips() {
-        signedToggleButton.getTooltip().setShowDelay(new Duration(500));
-        resolvedToggleButton.getTooltip().setShowDelay(new Duration(500));
-        waitingToggleButton.getTooltip().setShowDelay(new Duration(500));
-        signedToggleButton.getTooltip().setShowDuration(new Duration(9000));
-        resolvedToggleButton.getTooltip().setShowDuration(new Duration(9000));
-        waitingToggleButton.getTooltip().setShowDuration(new Duration(9000));
+//        signedToggleButton.getTooltip().setShowDelay(new Duration(500));
+//        resolvedToggleButton.getTooltip().setShowDelay(new Duration(500));
+//        waitingToggleButton.getTooltip().setShowDelay(new Duration(500));
+//        signedToggleButton.getTooltip().setShowDuration(new Duration(9000));
+//        resolvedToggleButton.getTooltip().setShowDuration(new Duration(9000));
+//        waitingToggleButton.getTooltip().setShowDuration(new Duration(9000));
     }
 
 

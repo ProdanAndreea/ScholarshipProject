@@ -596,14 +596,14 @@ public class ClientController {
         message.append("<a href=\"invoiri:" + encodedMessage + "\">Apasa aici pentru a rezolva cererea</a>");
 
         if(ClientStart.userPosition.equals("Team Leader")){
-            MailConfiguration.sendMessage(departmentLeader.getEmail(), "Cerere Invoire", message.toString());
+            MailConfiguration.sendMessage(departmentLeader.getEmail(), "[INVOIRI] Cerere Invoire", message.toString());
             return;
         }
 
         if (directLeader.getAvailable()) {
-            MailConfiguration.sendMessage(directLeader.getEmail(), "Cerere Invoire", message.toString());
+            MailConfiguration.sendMessage(directLeader.getEmail(), "{INVOIRI] Cerere Invoire", message.toString());
         } else {
-            MailConfiguration.sendMessage(departmentLeader.getEmail(), "Cerere Invoire", message.toString());
+            MailConfiguration.sendMessage(departmentLeader.getEmail(), "[INVOIRI] Cerere Invoire", message.toString());
         }
         System.exit(0);
     }

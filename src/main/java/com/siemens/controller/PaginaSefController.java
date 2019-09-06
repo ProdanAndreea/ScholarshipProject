@@ -164,12 +164,61 @@ public class PaginaSefController {
             Map<String, PdfFormField> fields = form.getFormFields();
             PdfFormField field1 = fields.get("email");
             PdfFormField sentField = fields.get("hasBeenSent");
+            PdfFormField firstRecovery = fields.get("firstRecovery");
+            PdfFormField secondRecovery = fields.get("secondOptionalRecovery");
+            PdfFormField thirdRecovery = fields.get("thirdOptionalRecovery");
+            PdfFormField fourthRecovery = fields.get("fourthOptionalRecovery");
+            List<Recovery> requestRecoveries = new ArrayList<>();
             boolean isSent = false;
             if(sentField != null)
                 isSent = true;
             String senderMail = field1.getValueAsString();
+            String fRecovery = firstRecovery.getValueAsString();
+            String sRecovery = secondRecovery.getValueAsString();
+            String tRecovery = thirdRecovery.getValueAsString();
+            String fthRecovery = fourthRecovery.getValueAsString();
+            String timeToLeave = LocalTime.parse(fRecovery.split("_")[0], ClientController.hourFormatter).format(ClientController.hourFormatter);
+            LocalDate leaveDate = LocalDate.parse(fRecovery.split("_")[1], ClientController.format);
+            requestRecoveries.add(
+                    new Recovery(
+                            leaveDate,
+                            LocalDate.parse(fRecovery.split("_")[2], ClientController.format),
+                            LocalTime.parse(fRecovery.split("_")[3], ClientController.hourFormatter)
+                            )
+            );
+            //the rest of them do not necesarly have to be there
+            if(!sRecovery.equals("")){
+                requestRecoveries.add(
+                        new Recovery(
+                                leaveDate,
+                                LocalDate.parse(sRecovery.split("_")[0], ClientController.format),
+                                LocalTime.parse(sRecovery.split("_")[1], ClientController.hourFormatter)
+                        )
+                );
+            }
+
+            if(!tRecovery.equals("")){
+                requestRecoveries.add(
+                        new Recovery(
+                                leaveDate,
+                                LocalDate.parse(tRecovery.split("_")[0], ClientController.format),
+                                LocalTime.parse(tRecovery.split("_")[1], ClientController.hourFormatter)
+                        )
+                );
+            }
+
+            if(!fthRecovery.equals("")){
+                requestRecoveries.add(
+                        new Recovery(
+                                leaveDate,
+                                LocalDate.parse(fthRecovery.split("_")[0], ClientController.format),
+                                LocalTime.parse(fthRecovery.split("_")[1], ClientController.hourFormatter)
+                        )
+                );
+            }
+
             pdf.close();
-            return new Request(file.getName(), senderMail, file, isSigned, isSent, LocalDate.parse(parts[2], formatter), parser.parse(parts[3]));
+            return new Request(file.getName(), senderMail, file, isSigned, isSent, LocalDate.parse(parts[2], formatter), parser.parse(parts[3]), timeToLeave, requestRecoveries);
         }catch (Exception e){
             e.printStackTrace();
             return new Request();
@@ -207,6 +256,20 @@ public class PaginaSefController {
             e.printStackTrace();
             ClientStart.logger.info(e.getMessage());
         }
+    }
+    private String generateResponseMessage(String status, Request request){
+        StringBuilder message = new StringBuilder(status +"</b> pentru data de <b>" +
+                request.getRecoveries().get(0).getLeaveDate().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")) + "</b>, durata: <b>" +
+                request.getHoursToRecoverForMail() + "</b> ore.<br><br>" +
+                "Datele alese pentru a recupera: <br>"
+        );
+
+        for (Recovery recovery: request.getRecoveries()) {
+            message.append("<b>" +  recovery.getRecoveryDate().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")) + "</b> - <b>" +
+                    recovery.getNumberOfHours().toString() + "</b> ore<br>"
+            );
+        }
+        return message.toString();
     }
 
     private void setHandlers(){
@@ -309,8 +372,8 @@ public class PaginaSefController {
                                 refreshItems();
                                 MailConfiguration.sendMessage(
                                         selectedRequest.getEmailSender(),
-                                        "Cerere Confirmata",
-                                        "Cererea " + selectedRequest.getFile().getName() + " a fost aprobata!"
+                                        "[INVOIRI]Confirmare cerere:",
+                                        generateResponseMessage("Se aproba cerearea de invoire: ",selectedRequest)
                                 );
 
                             }
@@ -337,11 +400,9 @@ public class PaginaSefController {
 
                                 MailConfiguration.sendMessage(
                                         selectedRequest.getEmailSender(),
-                                        "Cerere Respinsa",
-                                        "Cererea "+ selectedRequest.getFile().getName() + " a fost respinsa!"
+                                        "[INVOIRI]Cerere Respinsa",
+                                        generateResponseMessage("Se respinge cererea de invoire: ", selectedRequest)
                                 );
-
-
                             }
                         });
 
@@ -661,6 +722,66 @@ public class PaginaSefController {
 //            System.out.println("hidden email field: " + field1.getValueAsString());
             ////////////
 
+            //add hidden values for recoveries
+            //max 4 recoveries are avaialble
+            PdfFormField firstRecovery = PdfFormField.createText(pdf);
+            firstRecovery.setFieldName("firstRecovery");
+            PdfFormField secondRecovery = PdfFormField.createText(pdf);
+            secondRecovery.setFieldName("secondOptionalRecovery");
+            PdfFormField thirdRecovery = PdfFormField.createText(pdf);
+            thirdRecovery.setFieldName("thirdOptionalRecovery");
+            PdfFormField fourthRecovery = PdfFormField.createText(pdf);
+            fourthRecovery.setFieldName("fourthOptionalRecovery");
+            firstRecovery.addKid(widget1);
+
+            secondRecovery.addKid(widget1);
+            secondRecovery.setVisibility(PdfFormField.HIDDEN);
+            thirdRecovery.addKid(widget1);
+            thirdRecovery.setVisibility(PdfFormField.HIDDEN);
+            fourthRecovery.addKid(widget1);
+            fourthRecovery.setVisibility(PdfFormField.HIDDEN);
+
+            //only the first recovery proposal is MANDATORY, the rest are not
+            firstRecovery.setValue(
+                    desiredLeave.getNumberOfHours().format(ClientController.hourFormatter) + "_" +
+                    desiredLeave.getLeaveDate().format(ClientController.format) + "_" +
+                    listOfRecoveries.get(0).getRecoveryDate().format(ClientController.format) + "_" +
+                            listOfRecoveries.get(0).getNumberOfHours().format(ClientController.hourFormatter)
+            );
+            firstRecovery.setVisibility(PdfFormField.HIDDEN);
+            form.addField(firstRecovery, page);
+
+            try{
+                secondRecovery.setValue(
+                        listOfRecoveries.get(1).getRecoveryDate().format(ClientController.format) + "_" +
+                                listOfRecoveries.get(1).getNumberOfHours().format(ClientController.hourFormatter)
+                );
+                form.addField(secondRecovery, page);
+            }catch (Exception e){
+                secondRecovery.setValue("");
+                form.addField(secondRecovery, page);
+            }
+            try{
+                thirdRecovery.setValue(
+                        listOfRecoveries.get(2).getRecoveryDate().format(ClientController.format) + "_" +
+                            listOfRecoveries.get(2).getNumberOfHours().format(ClientController.hourFormatter)
+                );
+                form.addField(thirdRecovery, page);
+            }catch (Exception e){
+                thirdRecovery.setValue("");
+                form.addField(thirdRecovery, page);
+            }
+            try {
+                fourthRecovery.setValue(
+                        listOfRecoveries.get(3).getRecoveryDate().format(ClientController.format) + "_" +
+                                listOfRecoveries.get(3).getNumberOfHours().format(ClientController.hourFormatter)
+                );
+                form.addField(fourthRecovery, page);
+            }catch (Exception e){
+                fourthRecovery.setValue("");
+                form.addField(fourthRecovery, page);
+            }
+
             document.add(
                     new Paragraph("SIEMENS SRL")
                             .setTextAlignment(TextAlignment.LEFT)
@@ -857,7 +978,7 @@ public class PaginaSefController {
             document.close();
             fullPath = pdfFilePath;
         } catch (Exception e) {
-            System.out.println(e.getMessage());
+           e.printStackTrace();
         }
     }
 }

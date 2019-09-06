@@ -145,12 +145,10 @@ public class MailConfiguration {
             } catch (MessagingException e) {
                 ClientStart.logger.severe(e.getMessage());
             }
-        } catch (IOException e) {
+        } catch (Exception e) {
             ClientStart.logger.severe(e.getMessage());
         }
-        catch (Exception e){
-            ClientStart.logger.severe(e.getMessage());
-        }
+
     }
 
 }

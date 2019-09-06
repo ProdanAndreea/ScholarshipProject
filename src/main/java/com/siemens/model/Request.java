@@ -4,7 +4,9 @@ import lombok.*;
 
 import java.io.File;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -19,6 +21,8 @@ public class Request implements Comparable<Request> {
     private boolean isSent;
     private LocalDate sendDate;
     private Date sentTime;
+    private String hoursToRecoverForMail;
+    private List<Recovery> recoveries;
     @Override
     public String toString(){
         String toString = (isSigned) ? this.fileName + " - SEMNAT" : this.fileName;
@@ -53,5 +57,9 @@ public class Request implements Comparable<Request> {
                 .isSigned(this.isSigned)
                 .sendDate(this.sendDate)
                 .build();
+    }
+
+    public List<Recovery> getRecoveries(){
+        return recoveries;
     }
 }

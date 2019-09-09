@@ -564,6 +564,20 @@ public class ClientController {
                 LocalTime.now().format(hourFormatterWithSeconds) + "," +
                 recoveryGroups;
     }
+    private void showDialogBox(String statusMessage){
+        if(!statusMessage.equals("Mail has been sent succsessfully!")){
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Something went wrong");
+            alert.setContentText(statusMessage);
+            alert.showAndWait();
+        }
+        else{
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Notification sent");
+            alert.setContentText(statusMessage + "\n The application will now close");
+            alert.showAndWait();
+        }
+    }
 
     public void generateMailData(){
         Superior directLeader = null;
@@ -596,16 +610,36 @@ public class ClientController {
         message.append("<a href=\"invoiri:" + encodedMessage + "\">Apasa aici pentru a rezolva cererea</a>");
 
         if(ClientStart.userPosition.equals("Team Leader")){
-            MailConfiguration.sendMessage(departmentLeader.getEmail(), "[INVOIRI] Cerere Invoire", message.toString());
+            try{
+                MailConfiguration.sendMessage(departmentLeader.getEmail(), "[INVOIRI] Cerere Invoire", message.toString());
+                showDialogBox("Mail has been sent successfully!");
+                System.exit(0);
+            }catch (Exception mailExcepiton){
+                showDialogBox(mailExcepiton.getMessage());
+            }
             return;
         }
 
         if (directLeader.getAvailable()) {
-            MailConfiguration.sendMessage(directLeader.getEmail(), "{INVOIRI] Cerere Invoire", message.toString());
+            try{
+                MailConfiguration.sendMessage(directLeader.getEmail(), "{INVOIRI] Cerere Invoire", message.toString());
+                showDialogBox("Mail has been sent successfully!");
+                System.exit(0);
+            }catch (Exception mailExcepiton){
+                showDialogBox(mailExcepiton.getMessage());
+            }
+
         } else {
-            MailConfiguration.sendMessage(departmentLeader.getEmail(), "[INVOIRI] Cerere Invoire", message.toString());
+            try{
+                MailConfiguration.sendMessage(departmentLeader.getEmail(), "[INVOIRI] Cerere Invoire", message.toString());
+                showDialogBox("Mail has been sent successfully!");
+                System.exit(0);
+            }catch (Exception mailException){
+                showDialogBox(mailException.getMessage());
+            }
+
         }
-        System.exit(0);
+
     }
 
     public static byte[] toByteArray(InputStream is) throws IOException {

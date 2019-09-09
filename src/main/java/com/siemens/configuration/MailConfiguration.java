@@ -9,6 +9,7 @@ import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
 
 import java.io.*;
+import java.net.URISyntaxException;
 import java.security.CodeSource;
 import java.util.Properties;
 
@@ -97,7 +98,7 @@ public class MailConfiguration {
 //            e.printStackTrace();
 //        }
 //    }
-    public static void sendMessage(String to, String subject, String text) {
+    public static void sendMessage(String to, String subject, String text)throws Exception {
         try {
             Properties prop = new Properties();
             CodeSource codeSource = ClientStart.class.getProtectionDomain().getCodeSource();
@@ -142,11 +143,23 @@ public class MailConfiguration {
 
                 Transport.send(message);
 
-            } catch (MessagingException e) {
-                ClientStart.logger.severe(e.getMessage());
+            }catch (AuthenticationFailedException loginFailure){
+                throw new Exception("Wrong e-mail or password provided in the configurations file");
             }
-        } catch (Exception e) {
+            catch (MessagingException e) {
+                ClientStart.logger.severe(e.getMessage());
+                throw new Exception("Connection timed out. Please make sure there is a valid connection to the internet\n" +
+                        "The servers might be down at the moment");
+            }
+        }catch (URISyntaxException uriException){
+            ClientStart.logger.severe(uriException.getMessage() + "\n" + uriException.getReason());
+            System.exit(0);
+        }
+        catch (IOException e) {
             ClientStart.logger.severe(e.getMessage());
+            System.exit(0);
+        }catch (Exception sendException){
+            throw sendException;
         }
 
     }

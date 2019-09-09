@@ -271,7 +271,20 @@ public class PaginaSefController {
         }
         return message.toString();
     }
-
+    private void showMailAlert(String statusMessage){
+        if(!statusMessage.equals("Respose has been sent succsessfully!")){
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Something went wrong");
+            alert.setContentText(statusMessage);
+            alert.showAndWait();
+        }
+        else{
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Notification sent");
+            alert.setContentText(statusMessage);
+            alert.showAndWait();
+        }
+    }
     private void setHandlers(){
         requestListView.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
@@ -370,11 +383,17 @@ public class PaginaSefController {
                                 denyButton.setDisable(true);
                                 acceptButton.setDisable(true);
                                 refreshItems();
-                                MailConfiguration.sendMessage(
-                                        selectedRequest.getEmailSender(),
-                                        "[INVOIRI]Confirmare cerere:",
-                                        generateResponseMessage("Se aproba cerearea de invoire: ",selectedRequest)
-                                );
+                                try{
+                                    MailConfiguration.sendMessage(
+                                            selectedRequest.getEmailSender(),
+                                            "[INVOIRI]Confirmare cerere:",
+                                            generateResponseMessage("Se aproba cerearea de invoire: ",selectedRequest)
+                                    );
+                                    showMailAlert("Respose has been sent succsessfully!");
+                                }catch (Exception e){
+                                    showMailAlert(e.getMessage());
+                                }
+
 
                             }
                         });
@@ -397,12 +416,17 @@ public class PaginaSefController {
                                         }
                                 );
                                 refreshItems();
+                                try{
+                                    MailConfiguration.sendMessage(
+                                            selectedRequest.getEmailSender(),
+                                            "[INVOIRI]Cerere Respinsa",
+                                            generateResponseMessage("Se respinge cererea de invoire: ", selectedRequest)
+                                    );
+                                    showMailAlert("Respose has been sent succsessfully!");
+                                }catch (Exception e){
+                                    showMailAlert(e.getMessage());
+                                }
 
-                                MailConfiguration.sendMessage(
-                                        selectedRequest.getEmailSender(),
-                                        "[INVOIRI]Cerere Respinsa",
-                                        generateResponseMessage("Se respinge cererea de invoire: ", selectedRequest)
-                                );
                             }
                         });
 

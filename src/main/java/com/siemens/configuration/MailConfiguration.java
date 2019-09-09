@@ -3,10 +3,7 @@ package com.siemens.configuration;
 import com.siemens.view.ClientStart;
 
 import javax.mail.*;
-import javax.mail.internet.InternetAddress;
-import javax.mail.internet.MimeBodyPart;
-import javax.mail.internet.MimeMessage;
-import javax.mail.internet.MimeMultipart;
+import javax.mail.internet.*;
 
 import java.io.*;
 import java.net.URISyntaxException;
@@ -143,11 +140,16 @@ public class MailConfiguration {
 
                 Transport.send(message);
 
-            }catch (AuthenticationFailedException loginFailure){
+            }catch (AddressException addressException){
+                ClientStart.logger.severe(addressException.toString());
+                throw new Exception("Configuration error!\nThe format of the provided mail might be invalid");
+            }
+            catch (AuthenticationFailedException loginFailure){
+                ClientStart.logger.severe(loginFailure.toString());
                 throw new Exception("Wrong e-mail or password provided in the configurations file");
             }
             catch (MessagingException e) {
-                ClientStart.logger.severe(e.getMessage());
+                ClientStart.logger.severe(e.toString());
                 throw new Exception("Connection timed out. Please make sure there is a valid connection to the internet\n" +
                         "The servers might be down at the moment");
             }

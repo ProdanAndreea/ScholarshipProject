@@ -367,6 +367,19 @@ public class PaginaSefController {
                         acceptButton.setOnAction(new EventHandler<ActionEvent>() {
                             @Override
                             public void handle(ActionEvent event) {
+
+
+                                try{
+                                    MailConfiguration.sendMessage(
+                                            selectedRequest.getEmailSender(),
+                                            "[INVOIRI]Confirmare cerere:",
+                                            generateResponseMessage("Se aproba cerearea de invoire: ",selectedRequest)
+                                    );
+                                    showMailAlert("Respose has been sent succsessfully!");
+                                }catch (Exception e){
+                                    showMailAlert(e.getMessage());
+                                    return;
+                                }
                                 handleDocument(
                                         selectedRequest,
                                         source,
@@ -383,16 +396,6 @@ public class PaginaSefController {
                                 denyButton.setDisable(true);
                                 acceptButton.setDisable(true);
                                 refreshItems();
-                                try{
-                                    MailConfiguration.sendMessage(
-                                            selectedRequest.getEmailSender(),
-                                            "[INVOIRI]Confirmare cerere:",
-                                            generateResponseMessage("Se aproba cerearea de invoire: ",selectedRequest)
-                                    );
-                                    showMailAlert("Respose has been sent succsessfully!");
-                                }catch (Exception e){
-                                    showMailAlert(e.getMessage());
-                                }
 
 
                             }
@@ -400,6 +403,18 @@ public class PaginaSefController {
                         denyButton.setOnAction(new EventHandler<ActionEvent>() {
                             @Override
                             public void handle(ActionEvent event) {
+
+                                try{
+                                    MailConfiguration.sendMessage(
+                                            selectedRequest.getEmailSender(),
+                                            "[INVOIRI]Cerere Respinsa",
+                                            generateResponseMessage("Se respinge cererea de invoire: ", selectedRequest)
+                                    );
+                                    showMailAlert("Respose has been sent succsessfully!");
+                                }catch (Exception e){
+                                    showMailAlert(e.getMessage());
+                                    return;
+                                }
                                 handleDocument(
                                         selectedRequest,
                                         source,
@@ -416,16 +431,6 @@ public class PaginaSefController {
                                         }
                                 );
                                 refreshItems();
-                                try{
-                                    MailConfiguration.sendMessage(
-                                            selectedRequest.getEmailSender(),
-                                            "[INVOIRI]Cerere Respinsa",
-                                            generateResponseMessage("Se respinge cererea de invoire: ", selectedRequest)
-                                    );
-                                    showMailAlert("Respose has been sent succsessfully!");
-                                }catch (Exception e){
-                                    showMailAlert(e.getMessage());
-                                }
 
                             }
                         });

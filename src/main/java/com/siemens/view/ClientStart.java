@@ -70,10 +70,10 @@ public class ClientStart extends Application {
     public static void  restartApplication()
     {
         try{
-            CodeSource codeSource = ClientStart.class.getProtectionDomain().getCodeSource();
-            File jarFile = new File(codeSource.getLocation().toURI().getPath());
-            String jarDir = jarFile.getParentFile().getPath();
-            Process process = new ProcessBuilder(jarDir + "/Bilete Invoire.exe").start();
+//            CodeSource codeSource = ClientStart.class.getProtectionDomain().getCodeSource();
+//            File jarFile = new File(codeSource.getLocation().toURI().getPath());
+//            String jarDir = jarFile.getParentFile().getPath();
+//            Process process = new ProcessBuilder(jarDir + "/Bilete Invoire.exe").start();
             System.exit(0);
         }catch (Exception e){
             e.printStackTrace();

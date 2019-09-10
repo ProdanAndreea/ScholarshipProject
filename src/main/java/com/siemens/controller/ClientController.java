@@ -385,6 +385,8 @@ public class ClientController {
             bossButton.setOpacity(100);
             bossButton.setDisable(false);
         }
+        if(ClientStart.userPosition.equals("Department Leader"))
+            availableButton.setVisible(false);
         nume.setText(ClientStart.userName);
     }
     private void launchPdfForSigning(){
@@ -565,7 +567,7 @@ public class ClientController {
                 recoveryGroups;
     }
     private void showDialogBox(String statusMessage){
-        if(!statusMessage.equals("Mail has been sent succsessfully!")){
+        if(!statusMessage.equals("Mail has been sent successfully")){
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Something went wrong");
             alert.setContentText(statusMessage);
@@ -622,7 +624,7 @@ public class ClientController {
 
         if (directLeader.getAvailable()) {
             try{
-                MailConfiguration.sendMessage(directLeader.getEmail(), "{INVOIRI] Cerere Invoire", message.toString());
+                MailConfiguration.sendMessage(directLeader.getEmail(), "[INVOIRI] Cerere Invoire", message.toString());
                 showDialogBox("Mail has been sent successfully!");
                 System.exit(0);
             }catch (Exception mailExcepiton){

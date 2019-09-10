@@ -372,8 +372,8 @@ public class PaginaSefController {
                                 try{
                                     MailConfiguration.sendMessage(
                                             selectedRequest.getEmailSender(),
-                                            "[INVOIRI]Confirmare cerere:",
-                                            generateResponseMessage("Se aproba cerearea de invoire: ",selectedRequest)
+                                            "[INVOIRI] Cerere aprobata:",
+                                            generateResponseMessage("A fost aprobata cerearea de invoire: ",selectedRequest)
                                     );
                                     showMailAlert("Respose has been sent succsessfully!");
                                 }catch (Exception e){
@@ -407,8 +407,8 @@ public class PaginaSefController {
                                 try{
                                     MailConfiguration.sendMessage(
                                             selectedRequest.getEmailSender(),
-                                            "[INVOIRI]Cerere Respinsa",
-                                            generateResponseMessage("Se respinge cererea de invoire: ", selectedRequest)
+                                            "[INVOIRI] Cerere respinsa:",
+                                            generateResponseMessage("A fost respinsa cererea de invoire: ", selectedRequest)
                                     );
                                     showMailAlert("Respose has been sent succsessfully!");
                                 }catch (Exception e){

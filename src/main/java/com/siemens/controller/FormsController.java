@@ -211,9 +211,35 @@ public class FormsController {
 
                             properties.store(writer, "User Information");
                             writer.close();
+                        }else{
+                            userFile.delete();
+                            //insert properties into the user configuration file
+                            Writer writer = new FileWriter(userFile);
+                            Properties properties = new Properties();
+                            //store the properties encoded with the established alg.
+                            properties.setProperty(encodeMessage("appUser"), encodeMessage(nameText.getCharacters().toString()));
+                            properties.setProperty(encodeMessage("userOccupiedPosition"), encodeMessage(position));
+                            properties.setProperty(encodeMessage("superiorName"), encodeMessage(directLeaderName));
+                            properties.setProperty(encodeMessage("departmentSuperiorName"), encodeMessage(departmentLeaderName));
+                            properties.setProperty(encodeMessage("pathToXML"), encodeMessage(xmlLabel.getText()));
+                            //WARNING! THIS IS ONLY A TEMPORARY SOLUTION UNTIL WE DECIDE WHAT THE ACTUAL PATH SHOULD BE !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+                            properties.setProperty(encodeMessage("pathToDocuments"), encodeMessage(defaultRootDirectoryTextField.getText().replace("\\","/")));
+
+                            properties.store(writer, "User Information");
+                            writer.close();
                         }
                         if(mailFile.createNewFile()){
                             //insert properties into the mail configuration file
+                            Writer writer = new FileWriter(mailFile);
+                            Properties properties = new Properties();
+                            properties.setProperty(encodeMessage("username"), encodeMessage(mailText.getCharacters().toString()));
+                            properties.setProperty(encodeMessage("password"), encodeMessage(passwordText.getCharacters().toString()));
+
+                            //store the properties in the file
+                            properties.store(writer, "E-mail information");
+                            writer.close();
+                        }else{
+                            mailFile.delete();
                             Writer writer = new FileWriter(mailFile);
                             Properties properties = new Properties();
                             properties.setProperty(encodeMessage("username"), encodeMessage(mailText.getCharacters().toString()));

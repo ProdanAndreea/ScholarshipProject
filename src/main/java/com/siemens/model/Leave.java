@@ -1,12 +1,15 @@
 package com.siemens.model;
 
 
+import lombok.Setter;
+
 import java.time.LocalDate;
 
 import java.time.LocalTime;
 
 
 //@Builder
+@Setter
 public class Leave {
     private LocalDate leaveDate;
     private LocalTime numberOfHours;

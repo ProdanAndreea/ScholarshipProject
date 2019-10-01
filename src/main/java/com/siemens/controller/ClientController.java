@@ -47,6 +47,7 @@ import javafx.util.StringConverter;
 
 import java.io.*;
 import java.security.CodeSource;
+import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -237,12 +238,11 @@ public class ClientController {
                     root.setId("pane");
                     Stage stage = new Stage();
                     stage.setTitle("Ore Recuperare");
-                    stage.setResizable(false);
-                    stage.initModality(Modality.WINDOW_MODAL);
+                                        stage.initModality(Modality.WINDOW_MODAL);
                     stage.initOwner(ClientStart.primaryStage.getScene().getWindow());
                     RecuperareController recuperareController = fxmlLoader.getController();
 
-                    if (desiredLeave == null)
+                    if (desiredLeave == null || (desiredLeave != null && listOfRecoveries.isEmpty()))
                         desiredLeave = new Leave(
                                 datePickerInvoire.getValue(),
                                 LocalTime.parse(nrOreInvoire.getValue().toString(), hourFormatter)
@@ -252,6 +252,9 @@ public class ClientController {
                     Scene scene = new Scene(root);
                     scene.getStylesheets().add("style/add_recuperare.css");
                     stage.setScene(scene);
+                    stage.setWidth(503.0);
+                    stage.setHeight(293.0);
+                    stage.setResizable(false);
                     stage.show();
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -267,7 +270,7 @@ public class ClientController {
                     root.setId("pane");
                     Stage stage = new Stage();
                     stage.setTitle("Cereri de invoire");
-                    stage.setResizable(false);
+
 
                     stage.initModality(Modality.WINDOW_MODAL);
                     stage.initOwner(ClientStart.primaryStage.getScene().getWindow());
@@ -278,6 +281,9 @@ public class ClientController {
                     Scene scene = new Scene(root);
                     scene.getStylesheets().add("style/pagina_sef.css");
                     stage.setScene(scene);
+                    stage.setWidth(616.0);
+                    stage.setHeight(404.0);
+                    stage.setResizable(false);
                     stage.show();
                 }catch (Exception e){
                     e.printStackTrace();
@@ -294,7 +300,7 @@ public class ClientController {
                     root.setId("pane");
                     Stage stage = new Stage();
                     stage.setTitle("Confirmare");
-                    stage.setResizable(false);
+
 
                     stage.initModality(Modality.WINDOW_MODAL);
                     stage.initOwner(ClientStart.primaryStage.getScene().getWindow());
@@ -305,6 +311,9 @@ public class ClientController {
                     Scene scene = new Scene(root);
                     scene.getStylesheets().add("style/confirmare.css");
                     stage.setScene(scene);
+                    stage.setWidth(440.0);
+                    stage.setHeight(194.0);
+                    stage.setResizable(false);
                     stage.show();
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -345,7 +354,7 @@ public class ClientController {
                     Parent root = fxmlLoader.load();
                     Stage stage = new Stage();
                     stage.setTitle("Confirmare");
-                    stage.setResizable(false);
+
 
 
 
@@ -358,6 +367,9 @@ public class ClientController {
 
 
                     stage.setScene(scene);
+                    stage.setWidth(397.0);
+                    stage.setHeight(223.0);
+                    stage.setResizable(false);
                     stage.show();
                 }catch (Exception e){
                     e.printStackTrace();
@@ -537,12 +549,11 @@ public class ClientController {
                 }
             }
         });
-
         datePicker.setDayCellFactory(picker -> new DateCell() {
             public void updateItem(LocalDate date, boolean empty) {
                 super.updateItem(date, empty);
                 LocalDate today = LocalDate.now();
-                setDisable(empty || date.compareTo(today) < 0 );
+                setDisable(empty || date.compareTo(today) < 0 || date.getDayOfWeek() == DayOfWeek.SUNDAY || date.getDayOfWeek() == DayOfWeek.SATURDAY);
             }
         });
     }
@@ -567,7 +578,7 @@ public class ClientController {
                 recoveryGroups;
     }
     private void showDialogBox(String statusMessage){
-        if(!statusMessage.equals("Mail has been sent successfully")){
+        if(!statusMessage.equals("Mail has been sent successfully!")){
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Something went wrong");
             alert.setContentText(statusMessage);

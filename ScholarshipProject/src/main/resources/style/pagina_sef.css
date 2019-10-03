@@ -1,0 +1,114 @@
+/* BACKGROUND */
+#pane{
+    -fx-background-color: #ffffff;
+    -fx-background-repeat: stretch;
+    -fx-background-size: 900 506;
+    -fx-background-position: center center;
+    -fx-effect: dropshadow(three-pass-box, black, 30, 0.5, 0, 0);
+}
+
+#acceptButton, #denyButton, #waitingToggleButton, #signedToggleButton, #resolvedToggleButton, #waitingToggleButton {
+    -fx-background-color:
+            #e3e3e3,
+            linear-gradient(#ebebeb 50%, white 20%),
+            radial-gradient(center 50% -40%, radius 20%, #f0f0f0 25%, rgba(245, 245, 245, 1) 20%);
+    -fx-background-radius: 20;
+    -fx-background-insets: 0,1,1;
+    -fx-effect: dropshadow( three-pass-box , rgba(0,0,0,0.5) , 3, 0.0 , 0 , 1 );
+}
+
+#resolvedToggleButton:hover {
+    -fx-background-color:
+            #15009c,
+            linear-gradient(#ebebeb 50%, white 20%),
+            radial-gradient(center 50% -40%, radius 20%, #f0f0f0 25%, rgba(245, 245, 245, 1) 20%);
+
+}
+
+#resolvedToggleButton:selected {
+    -fx-background-color:
+            #15009c,
+            linear-gradient(#ebebeb 50%, white 20%),
+            radial-gradient(center 50% -40%, radius 20%, #f0f0f0 25%, rgba(245, 245, 245, 1) 20%);
+    -fx-background-insets: 0, 1.7, 1.7;
+
+}
+
+#resolvedToggleButton:pressed {
+    -fx-background-color: #AAAFB4;
+}
+
+#signedToggleButton:hover {
+    -fx-background-color:
+            #058348,
+            linear-gradient(#ebebeb 50%, white 20%),
+            radial-gradient(center 50% -40%, radius 20%, #f0f0f0 25%, rgba(245, 245, 245, 1) 20%);
+}
+
+
+
+#signedToggleButton:selected {
+    -fx-background-color:
+            #058348,
+            linear-gradient(#ebebeb 50%, white 20%),
+            radial-gradient(center 50% -40%, radius 20%, #f0f0f0 25%, rgba(245, 245, 245, 1) 20%);
+    -fx-background-insets: 0, 1.7, 1.7;
+
+}
+
+#signedToggleButton:pressed {
+    -fx-background-color: #AAAFB4;
+}
+
+#waitingToggleButton:hover {
+    -fx-background-color:
+            #c67d00,
+            linear-gradient(#ebebeb 50%, white 20%),
+            radial-gradient(center 50% -40%, radius 20%, #f0f0f0 25%, rgba(245, 245, 245, 1) 20%);
+}
+
+
+#waitingToggleButton:selected {
+    -fx-background-color:
+            #c67d00,
+            linear-gradient(#ebebeb 50%, white 20%),
+            radial-gradient(center 50% -40%, radius 20%, #f0f0f0 25%, rgba(245, 245, 245, 1) 20%);
+    -fx-background-insets: 0, 1.7, 1.7;
+}
+
+
+#waitingToggleButton:pressed {
+    -fx-background-color: #AAAFB4;
+}
+
+#acceptButton:hover {
+    -fx-effect: dropshadow( three-pass-box , rgba(33, 130, 57, 1) , 3, 0.5 , 0.8 , 1 );
+}
+#denyButton:hover {
+    -fx-effect: dropshadow( three-pass-box , rgba(166, 41, 41, 1) , 3, 0.5 , 0.8 , 1 );
+}
+
+
+.scroll-pane > .corner {
+    -fx-background-color: black;
+}
+.list-view .scroll-bar:vertical {
+    -fx-background-color: #D6DBDF, white, white;
+}
+
+.scroll-bar > .thumb,
+.scroll-bar > .increment-button,
+.scroll-bar > .decrement-button {
+    -fx-color: white;
+}
+
+.scroll-bar > .thumb:hover,
+.scroll-bar > .increment-button:hover,
+.scroll-bar > .decrement-button:hover {
+    -fx-color: #EAF2F8;
+}
+.scroll-bar > .thumb:pressed,
+.scroll-bar > .increment-button:pressed,
+.scroll-bar > .decrement-button:pressed {
+    -fx-color: #D4E6F1;
+}

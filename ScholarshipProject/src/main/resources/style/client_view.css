@@ -1,0 +1,187 @@
+#btnTrimite {
+    -fx-background-color:
+            #e3e3e3,
+            linear-gradient(#ebebeb 50%, white 20%),
+            radial-gradient(center 50% -40%, radius 20%, #f0f0f0 25%, rgba(245, 245, 245, 1) 20%);
+    -fx-background-radius: 5,4,3,5;
+    -fx-background-insets: 0,1,2,0;
+    -fx-text-fill: black;
+    -fx-effect: dropshadow( three-pass-box , rgba(0,0,0,0.6) , 5, 0.0 , 0 , 1 );
+    -fx-font-family: "Arial";
+    -fx-font-size: 12px;
+    -fx-padding: 10 20 10 20;
+}
+#btnTrimite:hover {
+    -fx-effect: dropshadow( three-pass-box , rgba(0,0,0,0.5) , 3, 0.5 , 0.8 , 1 );
+}
+
+#changeConfigsButton {
+    -fx-background-color:
+            #e3e3e3,
+            linear-gradient(#ebebeb 50%, white 100%),
+            radial-gradient(center 50% -40%, radius 200%, #f0f0f0 45%, rgba(245, 245, 245, 1) 50%);
+    -fx-background-radius: 30;
+    -fx-background-insets: 0,1,1;
+    -fx-effect: dropshadow( three-pass-box , rgba(0,0,0,0.5) , 3, 0.0 , 0 , 1 );
+}
+
+#changeConfigsButton:hover {
+    -fx-effect: dropshadow( three-pass-box , rgba(0,0,0,0.5) , 3, 0.5 , 0.8 , 1 );
+}
+
+#bossButton {
+    -fx-background-color: white;
+    -fx-effect: dropshadow( three-pass-box , rgba(0,0,0,0.2) , 3, 0.0 , 0 , 1 );
+}
+#bossButton:hover {
+    -fx-background-color: white;
+    -fx-effect: dropshadow( three-pass-box , rgba(0,0,0,0.5) , 3, 0.5 , 0.8 , 1 );
+}
+#bossButton {
+    -fx-background-image: url("../pictures/pdf_icon.png");
+    -fx-background-size: 50px 58px;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center;
+
+}
+
+
+#addRecuperare {
+    -fx-background-color:
+            #e3e3e3,
+            linear-gradient(#ebebeb 50%, white 100%),
+            radial-gradient(center 50% -40%, radius 200%, #f0f0f0 45%, rgba(245, 245, 245, 1) 50%);
+    -fx-background-radius: 30;
+    -fx-background-insets: 0,1,1;
+    -fx-effect: dropshadow( three-pass-box , rgba(0,0,0,0.5) , 3, 0.0 , 0 , 1 );
+}
+
+#addRecuperare:hover {
+    -fx-background-color:
+            #e0e0e0,
+            linear-gradient(#ebebeb 50%, white 100%),
+            radial-gradient(center 50% -40%, radius 200%, #f0f0f0 45%, rgba(245, 245, 245, 1) 50%);
+    -fx-effect: dropshadow( three-pass-box , rgba(0,0,0,0.5) , 3, 0.5 , 0.8 , 1 );
+}
+
+
+#btnDelete {
+    -fx-background-color:
+            #e3e3e3,
+            linear-gradient(#ebebeb 50%, white 100%),
+            radial-gradient(center 50% -40%, radius 200%, #f0f0f0 45%, rgba(245, 245, 245, 1) 50%);
+    -fx-background-radius: 30;
+    -fx-background-insets: 0,1,1;
+    -fx-effect: dropshadow( three-pass-box , rgba(0,0,0,0.5) , 3, 0.0 , 0 , 1 );
+}
+#btnDelete:hover {
+    -fx-background-color:
+            #b03030,
+            linear-gradient(#db5e5e 50%, white 100%),
+            radial-gradient(center 50% -40%, radius 200%, #db5e5e 45%, rgba(176, 48, 48, 1) 50%);
+    -fx-background-radius: 30;
+    -fx-background-insets: 0,1,1;
+    -fx-text-fill: white;
+}
+
+
+#availableButton {
+    -fx-background-color: #990000;
+    -fx-background-radius: 30;
+    -fx-background-insets: 0,1,1;
+    -fx-effect: dropshadow( three-pass-box , rgba(0,0,0,0.5) , 3, 0.0 , 0 , 1 );
+}
+
+#availableButton:hover {
+    -fx-effect: dropshadow( three-pass-box , rgba(0,0,0,0.5) , 3, 0.5 , 0.8 , 1 );
+}
+
+
+
+#availableButton:selected {
+    -fx-background-color: green;
+    -fx-background-insets: 0, 1.7, 1.7;
+}
+
+#availableButton:pressed {
+    -fx-background-color: grey
+}
+
+/* BACKGROUND */
+#pane{
+    -fx-background-color: #ffffff;
+    -fx-background-repeat: stretch;
+    -fx-background-size: 900 506;
+    -fx-background-position: center center;
+    -fx-effect: dropshadow(three-pass-box, black, 30, 0.5, 0, 0);
+}
+
+/* COMBO BOX */
+.combo-box-base {
+    -fx-background-color: -fx-shadow-highlight-color, -fx-outer-border, -fx-inner-border, white;
+    -fx-background-insets: 0 0 -1 0, 0, 1, 2;
+    -fx-background-radius: 3px, 3px, 2px, 1px;
+}
+
+
+
+/* C:\Program Files\Java\jdk1.8.0_181\jre\lib\ext
+unrar jfxrt
+com\sun\javafx\scene\control\skin\modena\modena.css
+ */
+
+/* DATE PICKER */
+
+.date-picker-popup {
+    -fx-background-color:
+            transparent;
+}
+.date-picker-popup > .month-year-pane {
+    -fx-background-color: #38bdcf;
+}
+.date-picker-popup > * > .spinner {
+    -fx-background-color: #38bdcf;;
+}
+.date-picker-popup > * > .spinner > .button {
+    -fx-background-color: #38bdcf;
+    -fx-color: white;
+}
+.date-picker-popup > * > .spinner > .button:focused {
+    -fx-background-color: #38bdcf;
+    -fx-color: white;
+}
+.date-picker-popup > * > .spinner > .button:hover {
+    -fx-color: white;
+}
+.date-picker-popup > * > .spinner > .button:armed {
+    -fx-color: white;
+}
+.date-picker-popup > * > .spinner > .button > .left-arrow,
+.date-picker-popup > * > .spinner > .button > .right-arrow {
+    -fx-background-color: black;
+}
+.date-picker-popup > * > .spinner > .button:hover > .left-arrow,
+.date-picker-popup > * > .spinner > .button:hover > .right-arrow {
+    -fx-background-color: #dedede;
+}
+.date-picker-popup > * > .spinner > .button:pressed > .left-arrow,
+.date-picker-popup > * > .spinner > .button:pressed > .right-arrow {
+    -fx-background-color: #dedede;
+}
+
+
+/* TABLE */
+/* The column header row is made up of a number of column-header, one for each
+   TableColumn, and a 'filler' area that extends from the right-most column
+   to the edge of the tableview, or up to the 'column control' button. */
+.table-view .column-header,
+.tree-table-view .column-header,
+.table-view .filler,
+.tree-table-view .filler,
+.table-view > .column-header-background > .show-hide-columns-button,
+.tree-table-view > .column-header-background > .show-hide-columns-button {
+    -fx-background-color: #D6DBDF , #ffffff, #ffffff;
+}
+
+
+

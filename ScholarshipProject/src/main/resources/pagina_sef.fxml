@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.ToggleButton?>
+<?import javafx.scene.control.Tooltip?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane prefHeight="365.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.siemens.controller.PaginaSefController">
+   <children>
+      <ListView fx:id="requestListView" layoutY="85.0" prefHeight="211.0" prefWidth="600.0" AnchorPane.bottomAnchor="69.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="85.0" />
+      <Label layoutX="78.0" layoutY="1.0" prefHeight="27.0" prefWidth="149.0" text="Listă cereri învoiri" AnchorPane.bottomAnchor="337.0" AnchorPane.leftAnchor="78.0" AnchorPane.rightAnchor="373.0" AnchorPane.topAnchor="1.0">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Label>
+      <Button fx:id="acceptButton" layoutX="105.0" layoutY="313.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="149.0" text="Acceptă Cerere" AnchorPane.bottomAnchor="27.0" AnchorPane.leftAnchor="105.0" AnchorPane.rightAnchor="346.0" AnchorPane.topAnchor="313.0">
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor></Button>
+      <Button fx:id="denyButton" layoutX="380.0" layoutY="313.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="149.0" text="Respinge Cerere" AnchorPane.bottomAnchor="27.0" AnchorPane.leftAnchor="380.0" AnchorPane.rightAnchor="71.0" AnchorPane.topAnchor="313.0">
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor></Button>
+      <Label layoutX="233.0" layoutY="4.0" prefHeight="21.0" prefWidth="348.0" text="(dublu click pe cerere pentru a o deschide și semna)" textFill="#754747" AnchorPane.bottomAnchor="340.0" AnchorPane.leftAnchor="233.0" AnchorPane.rightAnchor="19.0" AnchorPane.topAnchor="4.0" />
+      <Separator layoutY="0.5" prefHeight="0.0" prefWidth="600.0" />
+      <ToggleButton fx:id="signedToggleButton" layoutX="274.0" layoutY="46.0" mnemonicParsing="false" text="Semnate" textFill="#058348" AnchorPane.bottomAnchor="294.0" AnchorPane.leftAnchor="274.0" AnchorPane.rightAnchor="260.0" AnchorPane.topAnchor="46.0">
+         <font>
+            <Font name="System Bold" size="12.0" />
+         </font>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+         <tooltip>
+            <Tooltip text="Cererile care au fost semnate.&#10;&#10;Apasă o dată ca să vezi cererile semnate.&#10;Apasă din nou ca să vezi toate cererile." />
+         </tooltip></ToggleButton>
+      <ToggleButton fx:id="waitingToggleButton" layoutX="105.0" layoutY="46.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="94.0" text="În Așteptare" textFill="#c67d00" AnchorPane.bottomAnchor="294.0" AnchorPane.leftAnchor="105.0" AnchorPane.rightAnchor="401.0" AnchorPane.topAnchor="46.0">
+         <font>
+            <Font name="System Bold" size="12.0" />
+         </font>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+         <tooltip>
+            <Tooltip text="Cererile create care nu au fost semnate.&#10;&#10;Apasă o dată ca să vezi cererile în așteptare.&#10;Apasă din nou ca să vezi toate cererile." />
+         </tooltip></ToggleButton>
+      <ToggleButton fx:id="resolvedToggleButton" layoutX="407.0" layoutY="46.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="94.0" text="Rezolvate" textFill="#15009c" AnchorPane.bottomAnchor="294.0" AnchorPane.leftAnchor="407.0" AnchorPane.rightAnchor="99.0" AnchorPane.topAnchor="46.0">
+         <font>
+            <Font name="System Bold" size="12.0" />
+         </font>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+         <tooltip>
+            <Tooltip text="Cererile semnate și rezolvate.&#10;&#10;Apasă o dată ca să vezi cererile rezolvate.&#10;Apasă din nou ca să vezi toate cererile." />
+         </tooltip></ToggleButton>
+   </children>
+</AnchorPane>
